@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRIZM — Esport Valorant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,700&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════
+   ROOT & RESET
+═══════════════════════════════════════ */
+:root{
+  --bg:#08080a;--bg2:#0f0f13;--surface:#14141a;--surface2:#1c1c24;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
+  --white:#eeedf0;--accent:#5c6fff;--adim:rgba(92,111,255,0.15);
+  --red:#ff4444;--green:#3ddc84;--muted:#52525e;--muted2:#74748a;--text:#a8a8bc;
+  --fd:'Barlow Condensed',sans-serif;--fb:'Barlow',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:var(--fb);font-size:16px;line-height:1.6;overflow-x:hidden;cursor:none}
+/* ═══ SITE PAGES ═══ */
+.page{display:none}.page.active{display:block}
+/* ═══ CURSOR ═══ */
+.cursor{position:fixed;top:0;left:0;z-index:9999;pointer-events:none}
+.cdot{width:5px;height:5px;background:var(--accent);border-radius:50%;transform:translate(-50%,-50%)}
+.cring{width:30px;height:30px;border:1px solid rgba(92,111,255,.45);border-radius:50%;transform:translate(-50%,-50%);transition:width .2s,height .2s,border-color .2s;position:absolute;top:0;left:0}
+body:has(a:hover) .cring,body:has(button:hover) .cring{width:44px;height:44px;border-color:var(--accent)}
+/* ═══ NOISE ═══ */
+body::before{content:'';position:fixed;inset:0;z-index:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;opacity:.5}
+/* ═══ NAV ═══ */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 56px;height:68px;border-bottom:1px solid var(--border);background:rgba(8,8,10,.9);backdrop-filter:blur(24px)}
+.nav-logo{display:flex;align-items:center;gap:11px;text-decoration:none;cursor:none}
+.nav-logo img,.nav-logo svg{height:34px;width:34px;object-fit:contain}
+.nav-logo-text{font-family:var(--fd);font-size:21px;font-weight:900;letter-spacing:.14em;color:var(--white);text-transform:uppercase}
+.nav-links{display:flex;list-style:none}
+.nav-links a{font-family:var(--fd);font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted2);text-decoration:none;padding:8px 15px;transition:color .2s;cursor:none;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-1px;left:15px;right:15px;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .25s}
+.nav-links a:hover,.nav-links a.active{color:var(--white)}
+.nav-links a:hover::after,.nav-links a.active::after{transform:scaleX(1)}
+.nav-cta{font-family:var(--fd);font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--white);background:transparent;border:1px solid var(--accent);padding:9px 22px;cursor:none;transition:all .2s;clip-path:polygon(7px 0,100% 0,calc(100% - 7px) 100%,0 100%)}
+.nav-cta:hover{background:var(--accent)}
+/* ═══ HERO ═══ */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;padding:140px 56px 100px;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 55% 70% at 75% 35%,rgba(92,111,255,.06) 0%,transparent 65%),radial-gradient(ellipse 30% 40% at 15% 85%,rgba(92,111,255,.03) 0%,transparent 60%),var(--bg)}
+.hero-grid{position:absolute;inset:0;overflow:hidden;opacity:.07}
+.hero-grid svg{width:100%;height:100%}
+.hero-content{position:relative;z-index:2;max-width:820px}
+.h-eye{display:inline-flex;align-items:center;gap:10px;font-family:var(--fd);font-size:11px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-bottom:26px}
+.h-eye::before{content:'';display:block;width:28px;height:1px;background:var(--accent)}
+.h-title{font-family:var(--fd);font-size:clamp(68px,9.5vw,136px);font-weight:900;line-height:.87;letter-spacing:-.01em;text-transform:uppercase;margin-bottom:30px}
+.h-title .l1{display:block;color:var(--white)}
+.h-title .l2{display:block;-webkit-text-stroke:1.5px rgba(255,255,255,.2);color:transparent;font-style:italic}
+.h-title .aw{color:var(--accent);-webkit-text-stroke:0}
+.h-desc{font-size:15px;font-weight:300;color:var(--text);line-height:1.75;max-width:400px;margin-bottom:44px}
+.h-act{display:flex;gap:14px;align-items:center}
+.btn-p{font-family:var(--fd);font-size:13px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--white);background:var(--accent);border:none;padding:15px 38px;cursor:none;text-decoration:none;display:inline-block;clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);transition:all .2s;position:relative;overflow:hidden}
+.btn-p::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,.15);transform:translateX(-100%);transition:transform .3s}
+.btn-p:hover::before{transform:translateX(0)}.btn-p:hover{transform:translateY(-2px)}
+.btn-g{font-family:var(--fd);font-size:13px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--white);background:transparent;border:1px solid var(--border2);padding:15px 38px;cursor:none;text-decoration:none;display:inline-block;clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);transition:all .2s}
+.btn-g:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
+.hero-deco{position:absolute;right:7%;bottom:10%;width:280px;height:280px;opacity:.05;pointer-events:none}
+.hero-deco img,.hero-deco svg{width:100%;height:100%;object-fit:contain}
+/* ═══ STATS STRIP ═══ */
+.stats-strip{border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg2);display:flex}
+.stat-item{flex:1;padding:34px 40px;border-right:1px solid var(--border);position:relative;overflow:hidden;cursor:default}
+.stat-item:last-child{border-right:none}
+.stat-item::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.stat-item:hover::before{transform:scaleX(1)}
+.sv{font-family:var(--fd);font-size:50px;font-weight:900;line-height:1;color:var(--white);letter-spacing:-.02em}
+.sv span{color:var(--accent)}
+.sl{font-family:var(--fd);font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+/* ═══ SECTION COMMONS ═══ */
+.slabel{display:inline-flex;align-items:center;gap:10px;font-family:var(--fd);font-size:11px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-bottom:22px}
+.slabel::before{content:'';display:block;width:22px;height:1px;background:var(--accent)}
+.stitle{font-family:var(--fd);font-size:clamp(38px,4.5vw,68px);font-weight:900;line-height:.9;text-transform:uppercase;letter-spacing:-.01em;margin-bottom:18px}
+.sp{padding:110px 56px}
+/* ═══ ROSTER ═══ */
+.rh{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:56px}
+.rh-l{max-width:480px}
+.rsub{color:var(--text);font-size:14px;font-weight:300;line-height:1.75;margin-top:14px}
+.rgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:2px}
+.pc{position:relative;overflow:hidden;cursor:none;background:var(--surface)}
+.pci{aspect-ratio:3/4;position:relative;overflow:hidden;background:linear-gradient(150deg,#1a1a24 0%,#0d0d12 100%)}
+.pnum{position:absolute;top:14px;right:14px;font-family:var(--fd);font-size:58px;font-weight:900;color:rgba(255,255,255,.04);line-height:1;user-select:none;z-index:1}
+.pflag{position:absolute;top:14px;left:14px;font-size:17px;z-index:2}
+.pav{width:100%;height:65%;display:flex;align-items:flex-end;justify-content:center;overflow:hidden}
+.pav img{width:100%;height:100%;object-fit:cover;object-position:top;transition:transform .4s}
+.pc:hover .pav img{transform:scale(1.04)}
+.pav svg{height:84%;fill:rgba(255,255,255,.055);transition:fill .3s}
+.pc:hover .pav svg{fill:rgba(92,111,255,.12)}
+.pi{position:absolute;bottom:0;left:0;right:0;padding:18px 16px;background:linear-gradient(0deg,rgba(0,0,0,.9) 0%,rgba(0,0,0,.4) 60%,transparent 100%);z-index:2}
+.prole{display:inline-block;font-family:var(--fd);font-size:9px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;padding:3px 8px;background:rgba(92,111,255,.15);color:var(--accent);border:1px solid rgba(92,111,255,.3);margin-bottom:6px;clip-path:polygon(4px 0,100% 0,calc(100% - 4px) 100%,0 100%)}
+.pign{font-family:var(--fd);font-size:21px;font-weight:900;text-transform:uppercase;color:var(--white);letter-spacing:.04em;line-height:1}
+.prname{font-size:11px;font-weight:300;color:rgba(255,255,255,.6);margin-top:2px}
+.pc::after{content:'';position:absolute;inset:0;border:1px solid transparent;transition:border-color .3s;pointer-events:none;z-index:3}
+.pc:hover::after{border-color:rgba(92,111,255,.4)}
+/* ═══ STAFF ═══ */
+.sgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:56px}
+.sc{background:var(--surface);border:1px solid var(--border);overflow:hidden;transition:border-color .2s,background .2s;cursor:default;position:relative}
+.sc::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--accent);transform:scaleY(0);transition:transform .3s;z-index:1}
+.sc:hover{background:var(--surface2);border-color:rgba(92,111,255,.2)}.sc:hover::before{transform:scaleY(1)}
+.sc-img{height:160px;overflow:hidden;background:linear-gradient(135deg,#1a1a24,#0d0d12)}
+.sc-img img{width:100%;height:100%;object-fit:cover;object-position:top;transition:transform .4s}
+.sc:hover .sc-img img{transform:scale(1.04)}
+.sc-img-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+.sc-img-ph svg{width:52px;height:52px;fill:rgba(255,255,255,.04);stroke:rgba(255,255,255,.06);stroke-width:.5}
+.sc-body{padding:24px 24px 28px}
+.srt{font-family:var(--fd);font-size:10px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.sn{font-family:var(--fd);font-size:26px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+.srn{font-size:13px;color:var(--muted2);font-weight:300}
+.sbio{font-size:13px;color:var(--text);line-height:1.6;margin-top:14px;border-top:1px solid var(--border);padding-top:14px}
+/* ═══ TABS ═══ */
+.tab-bar{display:flex;gap:2px;margin-bottom:48px;border-bottom:1px solid var(--border)}
+.tab-btn{font-family:var(--fd);font-size:12px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--muted2);background:none;border:none;padding:14px 24px;cursor:none;transition:color .2s;position:relative}
+.tab-btn::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transition:transform .25s}
+.tab-btn.active{color:var(--white)}.tab-btn.active::after{transform:scaleX(1)}
+.tab-content{display:none}.tab-content.active{display:block}
+/* ═══ MATCH ITEMS ═══ */
+.mi{display:flex;align-items:center;padding:24px 28px;border:1px solid var(--border);margin-bottom:2px;background:var(--surface);transition:background .2s,border-color .2s;cursor:default;position:relative;overflow:hidden}
+.mi::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--accent);transform:scaleY(0);transition:transform .25s}
+.mi:hover{background:rgba(255,255,255,.025);border-color:rgba(255,255,255,.1)}.mi:hover::before{transform:scaleY(1)}
+.md{font-family:var(--fd);font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--muted2);width:110px;flex-shrink:0}
+.mteams{flex:1;display:flex;align-items:center;gap:16px;padding:0 24px}
+.mt{font-family:var(--fd);font-size:19px;font-weight:900;text-transform:uppercase;letter-spacing:.04em}
+.mt.p{color:var(--white)}.mt.o{color:var(--muted2)}
+.mvs{font-family:var(--fd);font-size:10px;font-weight:800;letter-spacing:.2em;color:var(--muted)}
+.rb{font-family:var(--fd);font-size:9px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;padding:3px 9px;clip-path:polygon(4px 0,100% 0,calc(100% - 4px) 100%,0 100%);margin-right:12px;flex-shrink:0}
+.bw{background:rgba(92,111,255,.12);color:var(--accent);border:1px solid rgba(92,111,255,.25)}
+.bl{background:rgba(255,68,68,.1);color:var(--red);border:1px solid rgba(255,68,68,.2)}
+.bu{background:rgba(255,255,255,.06);color:var(--muted2);border:1px solid var(--border)}
+.ms{font-family:var(--fd);font-size:26px;font-weight:900;min-width:90px;text-align:center;flex-shrink:0}
+.sw{color:var(--accent)}.sl2{color:var(--red)}
+.su{color:var(--muted2);font-size:13px;font-weight:600;letter-spacing:.04em}
+.mtourn{font-family:var(--fd);font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);width:160px;text-align:right;flex-shrink:0}
+.cal-month{margin-bottom:56px}
+.cmt{font-family:var(--fd);font-size:18px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted2);margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.mi.ulive .md{color:var(--accent)}.mi.ulive::before{transform:scaleY(1)}
+/* ═══ ARCHIVE ═══ */
+.as{border:1px solid var(--border);margin-bottom:4px;overflow:hidden}
+.ash{display:flex;align-items:center;justify-content:space-between;padding:20px 28px;cursor:pointer;background:var(--surface);transition:background .2s}
+.ash:hover{background:var(--surface2)}
+.ast{font-family:var(--fd);font-size:20px;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
+.am{display:flex;gap:28px;align-items:center}
+.av2{font-family:var(--fd);font-size:22px;font-weight:900;color:var(--white);line-height:1}
+.av2.g{color:var(--accent)}
+.ala{font-size:10px;color:var(--muted2);font-family:var(--fd);letter-spacing:.12em;text-transform:uppercase}
+.ach{width:20px;height:20px;stroke:var(--muted2);fill:none;transition:transform .3s;flex-shrink:0}
+.as.open .ach{transform:rotate(180deg)}
+.ab{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.as.open .ab{max-height:2000px}
+/* ═══ PALMARES ═══ */
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:56px}
+.tc{background:var(--surface);border:1px solid var(--border);position:relative;overflow:hidden;transition:border-color .2s,background .2s;cursor:default}
+.tc:hover{background:var(--surface2);border-color:rgba(92,111,255,.25)}
+.tc-img{height:140px;overflow:hidden;background:linear-gradient(135deg,#16162a,#0a0a14);position:relative}
+.tc-img img{width:100%;height:100%;object-fit:cover;opacity:.7;transition:transform .4s}
+.tc:hover .tc-img img{transform:scale(1.05)}
+.tc-img-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:40px}
+.tc-body{padding:28px}
+.tr2{font-family:var(--fd);font-size:52px;font-weight:900;color:rgba(255,255,255,.04);position:absolute;top:10px;right:16px;line-height:1}
+.ti{font-size:28px;margin-bottom:12px}
+.tp{font-family:var(--fd);font-size:13px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.te{font-family:var(--fd);font-size:22px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;line-height:1.1;margin-bottom:8px}
+.tddate{font-size:12px;color:var(--muted2);font-weight:300}
+/* ═══ ABOUT ═══ */
+.aw2{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.avis{position:relative;background:var(--bg2);min-height:580px;display:flex;align-items:center;justify-content:center;overflow:hidden;border-right:1px solid var(--border)}
+.ag{position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(92,111,255,.07) 0%,transparent 65%);animation:gpulse 5s ease-in-out infinite}
+@keyframes gpulse{0%,100%{opacity:.5}50%{opacity:1}}
+.alw{position:relative;width:220px;height:220px;z-index:2}
+.alw img,.alw svg{width:100%;height:100%;object-fit:contain;animation:float 7s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-14px) rotate(1.5deg)}}
+.ar2{position:absolute;inset:-80px;pointer-events:none}
+.ar2 svg{width:100%;height:100%}
+.ac{padding:80px 72px;display:flex;flex-direction:column;justify-content:center}
+.abody{font-size:14px;font-weight:300;color:var(--text);line-height:1.85;margin-top:18px}
+.abody p+p{margin-top:14px}
+.afeats{margin-top:44px;display:flex;flex-direction:column}
+.af2{display:flex;align-items:center;gap:14px;padding:18px 0;border-bottom:1px solid var(--border)}
+.af2:first-child{border-top:1px solid var(--border)}
+.afi{width:38px;height:38px;flex-shrink:0;background:var(--adim);border:1px solid rgba(92,111,255,.25);display:flex;align-items:center;justify-content:center;clip-path:polygon(7px 0,100% 0,calc(100% - 7px) 100%,0 100%)}
+.afi svg{width:17px;height:17px;stroke:var(--accent);fill:none;stroke-width:2}
+.aft{font-family:var(--fd);font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--white)}
+.afd{font-size:12px;color:var(--muted2);margin-top:2px}
+/* ═══ NEWS ═══ */
+.ngrid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:2px;margin-top:56px}
+.nc{background:var(--surface);border:1px solid var(--border);overflow:hidden;cursor:none;transition:border-color .2s}
+.nc:hover{border-color:rgba(92,111,255,.3)}
+.nci{height:200px;overflow:hidden;background:linear-gradient(135deg,#16162a,#0a0a14);position:relative}
+.nc.feat .nci{height:260px}
+.nci img{width:100%;height:100%;object-fit:cover;opacity:.7;transition:transform .4s}
+.nc:hover .nci img{transform:scale(1.03)}
+.nci-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+.nci-ph img{width:80px;height:80px;object-fit:contain;opacity:.08}
+.ntag{position:absolute;top:16px;left:16px;font-family:var(--fd);font-size:9px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;padding:4px 10px;background:var(--accent);color:var(--white);clip-path:polygon(4px 0,100% 0,calc(100% - 4px) 100%,0 100%)}
+.nb{padding:24px}
+.nd{font-family:var(--fd);font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--muted2);margin-bottom:8px}
+.ntitle{font-family:var(--fd);font-size:20px;font-weight:900;text-transform:uppercase;letter-spacing:.03em;line-height:1.1;margin-bottom:10px}
+.nc.feat .ntitle{font-size:26px}
+.nexc{font-size:13px;color:var(--text);font-weight:300;line-height:1.6}
+.nlink{display:inline-flex;align-items:center;gap:6px;font-family:var(--fd);font-size:11px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);text-decoration:none;margin-top:14px;cursor:none;transition:gap .2s}
+.nlink:hover{gap:10px}
+/* ═══ RECRUTEMENT ═══ */
+.rw2{display:grid;grid-template-columns:1fr 1.6fr;gap:64px;align-items:start;margin-top:56px}
+.rts{font-family:var(--fd);font-size:14px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:20px}
+.rbody2{font-size:14px;color:var(--text);line-height:1.8;font-weight:300}
+.rbody2 p+p{margin-top:12px}
+.openings{margin-top:36px;display:flex;flex-direction:column;gap:10px}
+.op{background:var(--surface);border:1px solid var(--border);padding:18px 20px;display:flex;align-items:center;justify-content:space-between;transition:border-color .2s}
+.op:hover{border-color:rgba(92,111,255,.3)}
+.opt{font-family:var(--fd);font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:.06em}
+.otag{font-family:var(--fd);font-size:9px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;padding:3px 9px;clip-path:polygon(4px 0,100% 0,calc(100% - 4px) 100%,0 100%)}
+.to2{background:rgba(92,111,255,.12);color:var(--accent);border:1px solid rgba(92,111,255,.3)}
+.tc3{background:rgba(255,255,255,.04);color:var(--muted2);border:1px solid var(--border)}
+/* ═══ FORM SITE ═══ */
+.fb2{background:var(--surface);border:1px solid var(--border);padding:40px}
+.ft2{font-family:var(--fd);font-size:28px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.fsub2{font-size:13px;color:var(--text);margin-bottom:32px}
+.fg2{margin-bottom:20px}
+.frow2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.fl2{font-family:var(--fd);font-size:10px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:var(--muted2);display:block;margin-bottom:7px}
+.fi2,.fsel2,.fta2{width:100%;background:var(--bg2);border:1px solid var(--border);color:var(--white);font-family:var(--fb);font-size:14px;font-weight:400;padding:12px 14px;outline:none;transition:border-color .2s;-webkit-appearance:none;appearance:none}
+.fi2::placeholder,.fta2::placeholder{color:var(--muted)}
+.fi2:focus,.fsel2:focus,.fta2:focus{border-color:rgba(92,111,255,.5)}
+.fsel2{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2374748a' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:calc(100% - 14px) 50%;padding-right:36px;cursor:none}
+.fsel2 option{background:var(--bg2);color:var(--white)}
+.fta2{resize:vertical;min-height:110px;line-height:1.6}
+.fradios2{display:flex;gap:10px;flex-wrap:wrap}
+.fr2{font-family:var(--fd);font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;padding:9px 18px;border:1px solid var(--border);color:var(--muted2);cursor:none;transition:all .2s;background:transparent;clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%)}
+.fr2.sel,.fr2:hover{border-color:var(--accent);color:var(--accent);background:var(--adim)}
+.fsub-btn2{width:100%;font-family:var(--fd);font-size:14px;font-weight:900;letter-spacing:.18em;text-transform:uppercase;color:var(--white);background:var(--accent);border:none;padding:16px;cursor:none;margin-top:8px;transition:all .2s;position:relative;overflow:hidden;clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%)}
+.fsub-btn2::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,.12);transform:translateX(-100%);transition:transform .3s}
+.fsub-btn2:hover::before{transform:translateX(0)}.fsub-btn2:hover{transform:translateY(-1px)}
+.fok2{display:none;text-align:center;padding:48px 24px}
+.fok2.show{display:block}
+.fokt2{font-family:var(--fd);font-size:32px;font-weight:900;text-transform:uppercase;margin:16px 0 8px}
+/* ═══ CONTACT ═══ */
+.cw2{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;margin-top:56px}
+.cbody2{font-size:14px;color:var(--text);line-height:1.8;font-weight:300;margin-bottom:40px}
+.citems2{display:flex;flex-direction:column;gap:2px}
+.cit2{background:var(--surface);border:1px solid var(--border);padding:22px 24px;display:flex;align-items:center;gap:16px;transition:border-color .2s}
+.cit2:hover{border-color:rgba(92,111,255,.3)}
+.cii2{width:38px;height:38px;background:var(--adim);border:1px solid rgba(92,111,255,.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;clip-path:polygon(7px 0,100% 0,calc(100% - 7px) 100%,0 100%)}
+.cii2 svg{width:17px;height:17px;stroke:var(--accent);fill:none;stroke-width:2}
+.cil2{font-family:var(--fd);font-size:10px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--muted2)}
+.civ2{font-family:var(--fd);font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--white);margin-top:2px}
+.socgrid2{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:28px}
+.socc2{background:var(--surface);border:1px solid var(--border);padding:22px 20px;display:flex;align-items:center;gap:12px;cursor:none;text-decoration:none;color:inherit;transition:border-color .2s,background .2s}
+.socc2:hover{border-color:rgba(92,111,255,.3);background:var(--surface2)}
+.socn2{font-family:var(--fd);font-size:16px;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
+.soch2{font-size:12px;color:var(--muted2);font-weight:300;margin-top:2px}
+.soca2{margin-left:auto;stroke:var(--muted);fill:none;transition:stroke .2s}
+.socc2:hover .soca2{stroke:var(--accent)}
+/* ═══ SPONSORS ═══ */
+.spons{background:var(--bg2);padding:72px 56px;border-top:1px solid var(--border)}
+.spons-l{font-family:var(--fd);font-size:10px;font-weight:800;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);text-align:center;margin-bottom:36px}
+.spons-e{text-align:center;padding:48px;border:1px dashed var(--border)}
+.spons-et{font-family:var(--fd);font-size:16px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:8px}
+.spons-es{font-size:13px;color:var(--muted);font-weight:300}
+.spons-cta{margin-top:20px;display:inline-block;font-family:var(--fd);font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);text-decoration:none;cursor:none}
+/* ═══ FOOTER ═══ */
+footer{background:var(--bg);border-top:1px solid var(--border);padding:60px 56px 36px}
+.ft-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:56px}
+.ft-brand{max-width:320px}
+.ft-logo{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.ft-logo img,.ft-logo svg{height:30px;object-fit:contain}
+.ft-lt{font-family:var(--fd);font-size:20px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
+.ft-tg{font-size:13px;color:var(--muted2);line-height:1.6;font-weight:300}
+.ft-nav{display:flex;gap:64px}
+.fnc h4{font-family:var(--fd);font-size:10px;font-weight:800;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
+.fnc ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+.fnc a{font-size:13px;color:var(--text);text-decoration:none;transition:color .2s;cursor:none}
+.fnc a:hover{color:var(--white)}
+.ft-bot{display:flex;justify-content:space-between;align-items:center;padding-top:28px;border-top:1px solid var(--border);font-size:11px;color:var(--muted2);font-family:var(--fd);letter-spacing:.08em}
+.ft-soc{display:flex;gap:18px}
+.ft-soc a{font-family:var(--fd);font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--muted2);text-decoration:none;transition:color .2s;cursor:none}
+.ft-soc a:hover{color:var(--accent)}
+/* ═══ REVEAL ═══ */
+.rv{opacity:0;transform:translateY(20px);transition:opacity .65s ease,transform .65s ease}
+.rv.vis{opacity:1;transform:none}
+/* ═══ SCROLLBAR ═══ */
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:rgba(92,111,255,.35);border-radius:2px}
+
+/* ════════════════════════════════════════
+   ADMIN PANEL
+════════════════════════════════════════ */
+#admin-wrap{display:none;position:fixed;inset:0;z-index:500;background:var(--bg);overflow:hidden}
+/* LOGIN */
+#adm-login{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:10}
+#adm-login::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(92,111,255,.05) 0%,transparent 70%);pointer-events:none}
+.lb{width:420px;background:var(--surface);border:1px solid var(--border2);padding:48px;position:relative;z-index:1}
+.lb-logo{display:flex;align-items:center;gap:10px;margin-bottom:36px}
+.lb-logo img,.lb-logo svg{height:32px;width:32px;object-fit:contain}
+.lb-logo-t{font-family:var(--fd);font-size:20px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
+.lb-badge{font-family:var(--fd);font-size:9px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;background:rgba(92,111,255,.2);color:var(--accent);padding:2px 7px;border:1px solid rgba(92,111,255,.3);clip-path:polygon(3px 0,100% 0,calc(100% - 3px) 100%,0 100%);margin-left:auto}
+.lb-title{font-family:var(--fd);font-size:26px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.lb-sub{font-size:12px;color:var(--muted2);margin-bottom:28px;font-weight:300}
+.ll{font-family:var(--fd);font-size:9px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:var(--muted2);display:block;margin-bottom:6px}
+.li{width:100%;background:var(--bg2);border:1px solid var(--border);color:var(--white);font-family:var(--fb);font-size:14px;padding:11px 14px;outline:none;transition:border-color .2s;margin-bottom:14px}
+.li:focus{border-color:rgba(92,111,255,.5)}.li::placeholder{color:var(--muted)}
+.lb-btn{width:100%;font-family:var(--fd);font-size:13px;font-weight:900;letter-spacing:.18em;text-transform:uppercase;color:var(--white);background:var(--accent);border:none;padding:14px;cursor:pointer;transition:all .2s;clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%)}
+.lb-btn:hover{background:#7080ff}
+.lb-err{font-size:12px;color:var(--red);margin-top:10px;display:none}.lb-err.show{display:block}
+/* ADMIN LAYOUT */
+#adm-panel{display:none;height:100%;overflow:hidden;flex-direction:row}
+#adm-panel.show{display:flex}
+.adm-sb{width:230px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100%;overflow:y:auto}
+.sb-logo{display:flex;align-items:center;gap:9px;padding:18px 16px;border-bottom:1px solid var(--border)}
+.sb-logo img,.sb-logo svg{height:26px;width:26px;object-fit:contain}
+.sb-logo-t{font-family:var(--fd);font-size:17px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
+.sb-nav{flex:1;padding:12px 0;overflow-y:auto}
+.sb-group{margin-bottom:20px}
+.sb-gt{font-family:var(--fd);font-size:8px;font-weight:800;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);padding:0 14px;margin-bottom:4px}
+.sb-item{display:flex;align-items:center;gap:9px;padding:9px 14px;cursor:pointer;color:var(--muted2);font-family:var(--fd);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-left:2px solid transparent;transition:all .15s}
+.sb-item:hover{color:var(--white);background:rgba(255,255,255,.03)}
+.sb-item.active{color:var(--white);background:rgba(92,111,255,.1);border-left-color:var(--accent)}
+.sb-item svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0}
+.sb-foot{padding:14px;border-top:1px solid var(--border)}
+.sb-user{font-size:11px;color:var(--muted2);margin-bottom:8px}
+.sb-user strong{color:var(--white);display:block;font-family:var(--fd);letter-spacing:.06em;text-transform:uppercase;font-size:12px}
+.sb-logout{width:100%;font-family:var(--fd);font-size:10px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--muted2);background:transparent;border:1px solid var(--border);padding:7px;cursor:pointer;transition:all .2s;clip-path:polygon(4px 0,100% 0,calc(100% - 4px) 100%,0 100%)}
+.sb-logout:hover{border-color:var(--red);color:var(--red)}
+.adm-main{flex:1;height:100%;overflow-y:auto;padding:28px 36px}
+/* PANELS */
+.apanel{display:none}.apanel.active{display:block}
+.atopbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.apage-title{font-family:var(--fd);font-size:28px;font-weight:900;text-transform:uppercase;letter-spacing:.04em}
+.apage-sub{font-size:11px;color:var(--muted2);margin-top:2px}
+/* CARDS */
+.acard{background:var(--surface);border:1px solid var(--border);margin-bottom:14px;overflow:hidden}
+.acard-h{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.02)}
+.acard-t{font-family:var(--fd);font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+.acard-b{padding:18px}
+/* FORM ADMIN */
+.af3{margin-bottom:16px}
+.arow{display:grid;gap:12px;margin-bottom:12px}
+.arow.c2{grid-template-columns:1fr 1fr}.arow.c3{grid-template-columns:1fr 1fr 1fr}.arow.c4{grid-template-columns:1fr 1fr 1fr 1fr}
+.al{font-family:var(--fd);font-size:9px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:var(--muted2);display:block;margin-bottom:5px}
+.ai,.asel,.ata{width:100%;background:var(--bg2);border:1px solid var(--border);color:var(--white);font-family:var(--fb);font-size:13px;padding:9px 12px;outline:none;transition:border-color .2s;-webkit-appearance:none;appearance:none}
+.ai:focus,.asel:focus,.ata:focus{border-color:rgba(92,111,255,.5)}.ai::placeholder,.ata::placeholder{color:var(--muted)}
+.asel{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2374748a' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:calc(100% - 12px) 50%;padding-right:28px;cursor:pointer}
+.asel option{background:var(--bg2)}.ata{resize:vertical;min-height:70px;line-height:1.5}
+/* IMAGE UPLOAD */
+.img-upload-area{border:1px dashed var(--border2);padding:16px;text-align:center;cursor:pointer;transition:border-color .2s;position:relative;overflow:hidden}
+.img-upload-area:hover{border-color:var(--accent)}
+.img-upload-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.img-preview{width:100%;height:120px;object-fit:cover;margin-bottom:8px;display:none}
+.img-preview.show{display:block}
+.img-upload-text{font-family:var(--fd);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted2)}
+.img-upload-text span{color:var(--accent)}
+/* ITEM LIST */
+.ilist{display:flex;flex-direction:column;gap:6px}
+.irow{background:var(--bg2);border:1px solid var(--border);padding:12px 14px;display:flex;align-items:center;gap:12px;transition:border-color .15s}
+.irow:hover{border-color:rgba(92,111,255,.3)}
+.irow-thumb{width:40px;height:40px;object-fit:cover;flex-shrink:0;background:var(--surface)}
+.irow-thumb-ph{width:40px;height:40px;flex-shrink:0;background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:18px}
+.irow-info{flex:1;min-width:0}
+.irow-t{font-family:var(--fd);font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.irow-s{font-size:11px;color:var(--muted2);margin-top:2px}
+.ibadge{font-family:var(--fd);font-size:8px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;padding:2px 7px;clip-path:polygon(3px 0,100% 0,calc(100% - 3px) 100%,0 100%);flex-shrink:0}
+.ibadge.w{background:rgba(92,111,255,.12);color:var(--accent);border:1px solid rgba(92,111,255,.25)}
+.ibadge.l{background:rgba(255,68,68,.1);color:var(--red);border:1px solid rgba(255,68,68,.2)}
+.ibadge.u{background:rgba(255,255,255,.05);color:var(--muted2);border:1px solid var(--border)}
+.ibadge.open{background:rgba(61,220,132,.1);color:var(--green);border:1px solid rgba(61,220,132,.25)}
+.irow-acts{display:flex;gap:5px;flex-shrink:0}
+/* BTNS */
+.abtn{font-family:var(--fd);font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;border:none;padding:7px 14px;cursor:pointer;transition:all .15s;clip-path:polygon(4px 0,100% 0,calc(100% - 4px) 100%,0 100%)}
+.ab-ac{color:var(--white);background:var(--accent)}.ab-ac:hover{background:#7080ff}
+.ab-g{color:var(--muted2);background:transparent;border:1px solid var(--border)}.ab-g:hover{border-color:var(--accent);color:var(--accent)}
+.ab-d{color:var(--red);background:transparent;border:1px solid rgba(255,68,68,.2)}.ab-d:hover{background:rgba(255,68,68,.1)}
+.ab-gr{color:var(--bg);background:var(--green)}.ab-gr:hover{background:#5ae899}
+/* STATS */
+.ast-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px}
+.ast-card{background:var(--surface);border:1px solid var(--border);padding:16px;position:relative;overflow:hidden}
+.ast-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent)}
+.ast-num{font-family:var(--fd);font-size:36px;font-weight:900;color:var(--white);line-height:1}
+.ast-num span{color:var(--accent)}
+.ast-lbl{font-family:var(--fd);font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-top:5px}
+/* SAVE BTN */
+.save-btn{font-family:var(--fd);font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--white);background:var(--accent);border:none;padding:10px 24px;cursor:pointer;transition:all .2s;clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);display:flex;align-items:center;gap:7px}
+.save-btn:hover{background:#7080ff}
+.save-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.5}
+/* MODAL */
+.amodal-ov{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:600;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.amodal-ov.open{display:flex}
+.amodal{background:var(--surface);border:1px solid var(--border2);width:580px;max-width:95vw;max-height:88vh;overflow-y:auto;display:flex;flex-direction:column}
+.amodal-h{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--border);flex-shrink:0}
+.amodal-t{font-family:var(--fd);font-size:18px;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
+.amodal-x{width:30px;height:30px;background:transparent;border:1px solid var(--border);color:var(--muted2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;font-size:14px}
+.amodal-x:hover{border-color:var(--red);color:var(--red)}
+.amodal-b{padding:22px;flex:1}
+.amodal-f{padding:14px 22px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px;flex-shrink:0}
+/* TOAST */
+.toast2{position:fixed;bottom:24px;right:24px;z-index:9999;background:var(--surface);border:1px solid var(--border2);padding:12px 18px;display:flex;align-items:center;gap:10px;transform:translateY(80px);opacity:0;transition:all .3s;min-width:240px}
+.toast2.show{transform:none;opacity:1}
+.toast2-icon svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.5}
+.toast2-icon.ok{color:var(--green)}.toast2-icon.er{color:var(--red)}
+.toast2-text{font-family:var(--fd);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+/* RESPONSIVE */
+@media(max-width:1100px){
+  nav{padding:0 24px}.sp{padding:80px 24px}.hero{padding:120px 24px 80px}
+  .rgrid{grid-template-columns:repeat(3,1fr)}.aw2,.cw2,.rw2{grid-template-columns:1fr}
+  .avis{min-height:360px}.ac{padding:56px 24px}
+  .pgrid,.sgrid{grid-template-columns:repeat(2,1fr)}.ngrid{grid-template-columns:1fr}
+  footer{padding:48px 24px 28px}.ft-top{flex-direction:column;gap:44px}
+  .nav-links a{padding:8px 10px;font-size:11px}
+  .ast-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"><div class="cdot" id="cDot"></div><div class="cring" id="cRing"></div></div>
+
+<!-- ══════════════════════════════════════
+     PUBLIC SITE
+══════════════════════════════════════ -->
+<nav id="site-nav">
+  <a href="#" class="nav-logo" data-page="home">
+    <img src="logo.png" alt="PRIZM" onerror="this.style.display='none';document.getElementById('nls').style.display='block'">
+    <svg id="nls" style="display:none" viewBox="0 0 100 100"><polygon points="18,82 18,18 65,18 82,35 82,56 54,56 54,44 70,44 70,38 28,38 28,82" fill="white" opacity=".9"/><polygon points="54,56 82,56 67,82 40,82" fill="rgba(255,255,255,.35)"/></svg>
+    <span class="nav-logo-text" id="site-team-name">PRIZM</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#" data-page="home" class="nav-link active">Accueil</a></li>
+    <li><a href="#" data-page="roster" class="nav-link">Roster</a></li>
+    <li><a href="#" data-page="competitions" class="nav-link">Compétitions</a></li>
+    <li><a href="#" data-page="palmares" class="nav-link">Palmarès</a></li>
+    <li><a href="#" data-page="actualites" class="nav-link">Actualités</a></li>
+    <li><a href="#" data-page="about" class="nav-link">À propos</a></li>
+    <li><a href="#" data-page="contact" class="nav-link">Contact</a></li>
+  </ul>
+  <button class="nav-cta" data-page="recrutement">Candidater</button>
+</nav>
+
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"><svg viewBox="0 0 1400 900" preserveAspectRatio="xMidYMid slice"><defs><pattern id="gg" width="56" height="56" patternUnits="userSpaceOnUse"><path d="M 56 0 L 0 0 0 56" fill="none" stroke="white" stroke-width=".5"/></pattern></defs><rect width="100%" height="100%" fill="url(#gg)"/><line x1="0" y1="450" x2="1400" y2="450" stroke="white" stroke-width="1" opacity=".3"/></svg></div>
+    <div class="hero-content rv">
+      <div class="h-eye" id="hero-eyebrow">Team Esport Valorant — France</div>
+      <h1 class="h-title"><span class="l1">Jouer</span><span class="l2"><span class="aw">sans</span> limite</span></h1>
+      <p class="h-desc" id="hero-desc">PRIZM est une organisation esport d'élite compétissant au plus haut niveau sur Valorant. Précision, cohésion, résultats.</p>
+      <div class="h-act"><a href="#" class="btn-p" data-page="roster">Notre roster</a><a href="#" class="btn-g" data-page="competitions">Voir les matchs</a></div>
+    </div>
+    <div class="hero-deco"><img src="logo.png" alt="" onerror="this.style.display='none'"></div>
+  </section>
+  <div class="stats-strip" id="stats-strip">
+    <div class="stat-item rv"><div class="sv" id="s-players">5</div><div class="sl">Joueurs titulaires</div></div>
+    <div class="stat-item rv"><div class="sv" id="s-wr">78<span>%</span></div><div class="sl">Win rate saison</div></div>
+    <div class="stat-item rv"><div class="sv" id="s-tourn">12<span>+</span></div><div class="sl">Tournois joués</div></div>
+    <div class="stat-item rv"><div class="sv" id="s-titles">3</div><div class="sl">Titres remportés</div></div>
+  </div>
+  <section class="sp" style="background:var(--bg2)">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:40px">
+      <div><div class="slabel">Résultats récents</div><h2 class="stitle">Derniers matchs</h2></div>
+      <a href="#" class="btn-g" data-page="competitions" style="flex-shrink:0">Tous les matchs</a>
+    </div>
+    <div id="home-matches-list"></div>
+  </section>
+  <div class="aw2">
+    <div class="avis"><div class="ag"></div><div class="alw"><div class="ar2"><svg viewBox="0 0 400 400"><circle cx="200" cy="200" r="150" fill="none" stroke="rgba(92,111,255,.08)" stroke-width="1" stroke-dasharray="4 8"/><circle cx="200" cy="200" r="110" fill="none" stroke="rgba(92,111,255,.05)" stroke-width="1"/><circle cx="200" cy="200" r="70" fill="none" stroke="rgba(92,111,255,.07)" stroke-width="1" stroke-dasharray="2 6"/></svg></div><img src="logo.png" alt="PRIZM" onerror="this.style.display='none'"></div></div>
+    <div class="ac"><div class="slabel">Notre ADN</div><h2 class="stitle">Ce que nous<br>représentons</h2><div class="abody" id="about-teaser"><p>PRIZM a été fondée avec une seule conviction : la compétition de haut niveau demande autant de rigueur que de créativité.</p><p>Nous formons des joueurs qui n'ont pas peur d'innover, de se dépasser, et de porter les couleurs PRIZM avec fierté sur chaque serveur.</p></div><div class="afeats"><div class="af2"><div class="afi"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div><div class="aft">Analyse & Performance</div><div class="afd">Sessions VOD review hebdomadaires avec staff dédié</div></div></div><div class="af2"><div class="afi"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div><div class="aft">Structure Pro</div><div class="afd">Contrats, coaching, préparateur mental</div></div></div><div class="af2"><div class="afi"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><div><div class="aft">Ambition Nationale</div><div class="afd">Objectif VCT Challengers France 2025</div></div></div></div></div>
+  </div>
+</div>
+
+<!-- ROSTER -->
+<div class="page" id="page-roster">
+  <section class="sp">
+    <div class="rh rv"><div class="rh-l"><div class="slabel">Saison 2025</div><h2 class="stitle">Notre<br>Roster</h2><p class="rsub">Cinq joueurs, un objectif. L'équipe PRIZM est composée des meilleurs talents de la scène francophone.</p></div><a href="#" class="btn-g" data-page="recrutement">Candidater</a></div>
+    <div class="rgrid" id="site-roster-grid"></div>
+    <div style="margin-top:80px"><div class="slabel rv">Staff technique</div><h2 class="stitle rv">Notre équipe<br>d'encadrement</h2><div class="sgrid" id="site-staff-grid"></div></div>
+  </section>
+</div>
+
+<!-- COMPETITIONS -->
+<div class="page" id="page-competitions">
+  <section class="sp">
+    <div class="slabel rv">Compétitions</div><h2 class="stitle rv">Matchs &<br>Calendrier</h2>
+    <div class="tab-bar rv">
+      <button class="tab-btn active" data-tab="res">Résultats</button>
+      <button class="tab-btn" data-tab="cal">Calendrier</button>
+      <button class="tab-btn" data-tab="arc">Archives</button>
+    </div>
+    <div class="tab-content active" id="tab-res"><div id="site-matches-list"></div></div>
+    <div class="tab-content" id="tab-cal"><div id="site-calendar-list"></div></div>
+    <div class="tab-content" id="tab-arc"><div id="site-archive-list"></div></div>
+  </section>
+</div>
+
+<!-- PALMARES -->
+<div class="page" id="page-palmares">
+  <section class="sp">
+    <div class="slabel rv">Historique</div><h2 class="stitle rv">Palmarès</h2>
+    <p class="rv" style="font-size:14px;color:var(--text);font-weight:300;margin-top:12px;max-width:480px">Les résultats qui définissent l'histoire de PRIZM, tournoi après tournoi.</p>
+    <div class="pgrid" id="site-palmares-grid"></div>
+  </section>
+</div>
+
+<!-- ACTUALITES -->
+<div class="page" id="page-actualites">
+  <section class="sp"><div class="slabel rv">News</div><h2 class="stitle rv">Actualités</h2><div class="ngrid" id="site-news-grid"></div></section>
+</div>
+
+<!-- A PROPOS -->
+<div class="page" id="page-about">
+  <div class="aw2">
+    <div class="avis"><div class="ag"></div><div class="alw"><div class="ar2"><svg viewBox="0 0 400 400"><circle cx="200" cy="200" r="150" fill="none" stroke="rgba(92,111,255,.08)" stroke-width="1" stroke-dasharray="4 8"/><circle cx="200" cy="200" r="110" fill="none" stroke="rgba(92,111,255,.05)" stroke-width="1"/></svg></div><img src="logo.png" alt="PRIZM" onerror="this.style.display='none'"></div></div>
+    <div class="ac"><div class="slabel">Notre ADN</div><h2 class="stitle">Ce que nous<br>représentons</h2><div class="abody" id="about-full"><p>PRIZM a été fondée avec une seule conviction : la compétition de haut niveau demande autant de rigueur que de créativité. Nous construisons une structure durable, capable d'évoluer vers les plus grandes scènes européennes.</p></div><div class="afeats"><div class="af2"><div class="afi"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div><div class="aft">Analyse & Performance</div><div class="afd">Sessions VOD review, analyse de données, suivi individuel</div></div></div><div class="af2"><div class="afi"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div><div class="aft">Structure Professionnelle</div><div class="afd">Contrats officiels, coaching certifié, préparateur mental</div></div></div><div class="af2"><div class="afi"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><div><div class="aft">Ambition Nationale & Européenne</div><div class="afd">Objectif VCT Challengers France, puis EMEA 2026</div></div></div></div></div>
+  </div>
+</div>
+
+<!-- RECRUTEMENT -->
+<div class="page" id="page-recrutement">
+  <section class="sp">
+    <div class="slabel rv">Rejoindre PRIZM</div><h2 class="stitle rv">Candidatures</h2>
+    <div class="rw2">
+      <div class="rv"><div class="rts">Postes ouverts</div><div class="rbody2"><p>PRIZM recherche les meilleurs profils pour compléter son effectif et son staff technique.</p><p>Nous évaluons chaque candidature avec sérieux. Un niveau compétitif élevé est attendu.</p></div><div class="openings" id="site-openings"></div></div>
+      <div class="fb2 rv" id="site-form-wrap">
+        <div id="site-form-inner">
+          <div class="ft2">Candidater</div>
+          <div class="fsub2">Remplissez ce formulaire. Réponse sous 72h.</div>
+          <!-- TYPE SELECT -->
+          <div class="fg2">
+            <label class="fl2">Type de candidature</label>
+            <div class="fradios2" id="site-type-radios"></div>
+          </div>
+          <!-- PLAYER FIELDS -->
+          <div id="fields-player">
+            <div class="frow2"><div class="fg2"><label class="fl2">Pseudo in-game</label><input type="text" class="fi2" id="f-ign" placeholder="Votre IGN"></div><div class="fg2"><label class="fl2">Nom réel</label><input type="text" class="fi2" id="f-name" placeholder="Prénom Nom"></div></div>
+            <div class="frow2"><div class="fg2"><label class="fl2">Email</label><input type="email" class="fi2" id="f-email" placeholder="contact@exemple.fr"></div><div class="fg2"><label class="fl2">Discord</label><input type="text" class="fi2" id="f-discord" placeholder="pseudo#0000"></div></div>
+            <div class="frow2">
+              <div class="fg2"><label class="fl2">Rang actuel</label><select class="fsel2" id="f-rank"><option>Radiant</option><option>Immortel 3</option><option>Immortel 2</option><option>Immortel 1</option><option>Ascendant 3</option><option>Ascendant 2</option><option>Ascendant 1</option><option>Diamant 3</option><option>Diamant 2</option><option>Diamant 1</option></select></div>
+              <div class="fg2"><label class="fl2">Poste souhaité</label><select class="fsel2" id="f-role"><option>Duelist</option><option>Initiator</option><option>Controller</option><option>Sentinel</option><option>IGL</option><option>Flex</option></select></div>
+            </div>
+            <div class="fg2"><label class="fl2">Lien tracker</label><input type="text" class="fi2" id="f-tracker" placeholder="tracker.gg/valorant/..."></div>
+          </div>
+          <!-- STAFF FIELDS -->
+          <div id="fields-staff" style="display:none">
+            <div class="frow2"><div class="fg2"><label class="fl2">Prénom Nom</label><input type="text" class="fi2" id="f-sname" placeholder="Votre nom"></div><div class="fg2"><label class="fl2">Email</label><input type="email" class="fi2" id="f-semail" placeholder="contact@exemple.fr"></div></div>
+            <div class="fg2"><label class="fl2">Discord</label><input type="text" class="fi2" id="f-sdiscord" placeholder="pseudo#0000"></div>
+            <div class="fg2"><label class="fl2">Expérience</label><input type="text" class="fi2" id="f-sexp" placeholder="Ex: 3 ans coach semi-pro, équipe X..."></div>
+            <div class="fg2"><label class="fl2">Portfolio / Références</label><input type="text" class="fi2" id="f-sport" placeholder="Lien ou description"></div>
+          </div>
+          <div class="fg2"><label class="fl2">Motivation</label><textarea class="fta2" id="f-motiv" placeholder="Pourquoi voulez-vous rejoindre PRIZM ?..."></textarea></div>
+          <button class="fsub-btn2" onclick="submitSiteForm()">Envoyer ma candidature</button>
+        </div>
+        <div class="fok2" id="site-form-ok"><div style="font-size:48px">✓</div><div class="fokt2">Candidature reçue</div><div style="font-size:14px;color:var(--text)">Nous vous recontacterons sous 72h via Discord ou email.</div></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- CONTACT -->
+<div class="page" id="page-contact">
+  <section class="sp">
+    <div class="slabel rv">Nous écrire</div><h2 class="stitle rv">Contact</h2>
+    <div class="cw2">
+      <div class="rv">
+        <p class="cbody2">Pour toute demande de partenariat, presse, ou prise de contact générale.</p>
+        <div class="citems2">
+          <div class="cit2"><div class="cii2"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div><div class="cil2">Email général</div><div class="civ2" id="c-email">contact@prizm.gg</div></div></div>
+          <div class="cit2"><div class="cii2"><svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.054 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.1.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg></div><div><div class="cil2">Discord</div><div class="civ2" id="c-discord">discord.gg/prizm</div></div></div>
+          <div class="cit2"><div class="cii2"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div><div class="cil2">Partenariats</div><div class="civ2" id="c-email2">business@prizm.gg</div></div></div>
+        </div>
+        <div class="socgrid2" id="site-socials"></div>
+      </div>
+      <div class="fb2 rv">
+        <div class="ft2">Message</div><div class="fsub2">Partenariat, presse, ou question générale.</div>
+        <div class="frow2"><div class="fg2"><label class="fl2">Nom</label><input type="text" class="fi2" placeholder="Prénom Nom"></div><div class="fg2"><label class="fl2">Organisation</label><input type="text" class="fi2" placeholder="Société / Team..."></div></div>
+        <div class="fg2"><label class="fl2">Email</label><input type="email" class="fi2" placeholder="votre@email.fr"></div>
+        <div class="fg2"><label class="fl2">Sujet</label><select class="fsel2"><option value="">Sélectionner...</option><option>Partenariat</option><option>Presse / Media</option><option>Sponsoring</option><option>Question générale</option><option>Autre</option></select></div>
+        <div class="fg2"><label class="fl2">Message</label><textarea class="fta2" style="min-height:140px" placeholder="Décrivez votre demande..."></textarea></div>
+        <button class="fsub-btn2" onclick="this.textContent='✓ Message envoyé';this.style.background='var(--green)';this.style.color='var(--bg)'">Envoyer</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- SPONSORS + FOOTER -->
+<div class="spons"><div class="spons-l">Partenaires & Sponsors</div><div class="spons-e"><div class="spons-et">Devenez partenaire de PRIZM</div><div class="spons-es">Votre logo ici. Contactez-nous pour discuter d'un partenariat.</div><a href="#" class="spons-cta" data-page="contact">→ Nous contacter</a></div></div>
+<footer>
+  <div class="ft-top">
+    <div class="ft-brand"><div class="ft-logo"><img src="logo.png" alt="PRIZM" onerror="this.style.display='none'"><span class="ft-lt" id="footer-name">PRIZM</span></div><p class="ft-tg" id="footer-tag">Organisation esport française compétissant sur Valorant.</p></div>
+    <div class="ft-nav">
+      <div class="fnc"><h4>Team</h4><ul><li><a href="#" data-page="roster">Roster</a></li><li><a href="#" data-page="roster">Staff</a></li><li><a href="#" data-page="palmares">Palmarès</a></li><li><a href="#" data-page="recrutement">Recrutement</a></li></ul></div>
+      <div class="fnc"><h4>Compétitions</h4><ul><li><a href="#" data-page="competitions">Résultats</a></li><li><a href="#" data-page="competitions">Calendrier</a></li><li><a href="#" data-page="competitions">Archives</a></li></ul></div>
+      <div class="fnc"><h4>Organisation</h4><ul><li><a href="#" data-page="about">À propos</a></li><li><a href="#" data-page="actualites">Actualités</a></li><li><a href="#" data-page="contact">Contact</a></li></ul></div>
+    </div>
+  </div>
+  <div class="ft-bot"><span>© 2025 <span id="footer-copy">PRIZM</span> Esport — Tous droits réservés</span><div class="ft-soc" id="footer-socials"></div></div>
+</footer>
+
+<!-- ══════════════════════════════════════
+     ADMIN PANEL (overlay)
+══════════════════════════════════════ -->
+<div id="admin-wrap">
+  <!-- LOGIN -->
+  <div id="adm-login">
+    <div class="lb">
+      <div class="lb-logo"><img src="logo.png" alt="" onerror="this.style.display='none'"><span class="lb-logo-t">PRIZM</span><span class="lb-badge">Admin</span></div>
+      <div class="lb-title">Connexion</div>
+      <div class="lb-sub">Accès réservé aux administrateurs</div>
+      <label class="ll">Identifiant</label>
+      <input type="text" class="li" id="l-user" placeholder="admin" autocomplete="off">
+      <label class="ll">Mot de passe</label>
+      <input type="password" class="li" id="l-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+      <button class="lb-btn" onclick="doLogin()">Se connecter</button>
+      <div class="lb-err" id="l-err">Identifiant ou mot de passe incorrect.</div>
+      <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);font-size:11px;color:var(--muted)">Défaut : <strong style="color:var(--muted2)">admin</strong> / <strong style="color:var(--muted2)">prizm2025</strong> — Changer dans Sécurité.</div>
+    </div>
+  </div>
+  <!-- PANEL -->
+  <div id="adm-panel">
+    <aside class="adm-sb">
+      <div class="sb-logo"><img src="logo.png" alt="" onerror="this.style.display='none'"><span class="sb-logo-t">PRIZM</span><span class="lb-badge" style="margin-left:auto">Admin</span></div>
+      <nav class="sb-nav">
+        <div class="sb-group"><div class="sb-gt">Général</div>
+          <div class="sb-item active" data-apanel="dashboard"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Dashboard</div>
+        </div>
+        <div class="sb-group"><div class="sb-gt">Équipe</div>
+          <div class="sb-item" data-apanel="roster"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Roster</div>
+          <div class="sb-item" data-apanel="staff"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/></svg>Staff</div>
+        </div>
+        <div class="sb-group"><div class="sb-gt">Compétitions</div>
+          <div class="sb-item" data-apanel="matches"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>Résultats</div>
+          <div class="sb-item" data-apanel="calendar"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Calendrier</div>
+          <div class="sb-item" data-apanel="palmares"><svg viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg>Palmarès</div>
+        </div>
+        <div class="sb-group"><div class="sb-gt">Contenu</div>
+          <div class="sb-item" data-apanel="news"><svg viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 0-2 2z"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8z"/></svg>Actualités</div>
+          <div class="sb-item" data-apanel="recrutement"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>Recrutement</div>
+        </div>
+        <div class="sb-group"><div class="sb-gt">Système</div>
+          <div class="sb-item" data-apanel="infos"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Infos générales</div>
+          <div class="sb-item" data-apanel="security"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Sécurité</div>
+        </div>
+      </nav>
+      <div class="sb-foot">
+        <div class="sb-user">Connecté en tant que<strong id="sb-username">ADMIN</strong></div>
+        <div style="display:flex;gap:6px">
+          <button class="sb-logout" style="flex:1" onclick="closeAdmin()">← Site</button>
+          <button class="sb-logout" style="flex:1;border-color:rgba(255,68,68,.3)" onclick="doLogout()">⏻ Déco.</button>
+        </div>
+      </div>
+    </aside>
+    <main class="adm-main">
+      <!-- DASHBOARD -->
+      <div class="apanel active" id="apanel-dashboard">
+        <div class="atopbar"><div><div class="apage-title">Dashboard</div><div class="apage-sub">Vue d'ensemble</div></div></div>
+        <div class="ast-grid" id="adash-stats"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+          <div class="acard"><div class="acard-h"><div class="acard-t">Derniers résultats</div></div><div id="adash-matches" style="padding:0"></div></div>
+          <div class="acard"><div class="acard-h"><div class="acard-t">Prochain match</div></div><div class="acard-b" id="adash-next"></div></div>
+        </div>
+      </div>
+      <!-- ROSTER -->
+      <div class="apanel" id="apanel-roster">
+        <div class="atopbar"><div><div class="apage-title">Roster</div><div class="apage-sub">Joueurs titulaires</div></div><button class="abtn ab-ac" onclick="openMod('player')">+ Ajouter joueur</button></div>
+        <div class="acard"><div class="acard-h"><div class="acard-t">Joueurs</div></div><div class="acard-b"><div class="ilist" id="a-roster-list"></div></div></div>
+      </div>
+      <!-- STAFF -->
+      <div class="apanel" id="apanel-staff">
+        <div class="atopbar"><div><div class="apage-title">Staff</div><div class="apage-sub">Encadrement technique</div></div><button class="abtn ab-ac" onclick="openMod('staff')">+ Ajouter membre</button></div>
+        <div class="acard"><div class="acard-h"><div class="acard-t">Staff</div></div><div class="acard-b"><div class="ilist" id="a-staff-list"></div></div></div>
+      </div>
+      <!-- MATCHES -->
+      <div class="apanel" id="apanel-matches">
+        <div class="atopbar"><div><div class="apage-title">Résultats</div><div class="apage-sub">Matchs joués</div></div><button class="abtn ab-ac" onclick="openMod('match')">+ Ajouter résultat</button></div>
+        <div class="acard"><div class="acard-h"><div class="acard-t">Tous les résultats</div></div><div class="acard-b"><div class="ilist" id="a-matches-list"></div></div></div>
+      </div>
+      <!-- CALENDAR -->
+      <div class="apanel" id="apanel-calendar">
+        <div class="atopbar"><div><div class="apage-title">Calendrier</div><div class="apage-sub">Matchs à venir</div></div><button class="abtn ab-ac" onclick="openMod('event')">+ Ajouter match</button></div>
+        <div class="acard"><div class="acard-h"><div class="acard-t">Matchs programmés</div></div><div class="acard-b"><div class="ilist" id="a-calendar-list"></div></div></div>
+      </div>
+      <!-- PALMARES -->
+      <div class="apanel" id="apanel-palmares">
+        <div class="atopbar"><div><div class="apage-title">Palmarès</div><div class="apage-sub">Titres et résultats</div></div><button class="abtn ab-ac" onclick="openMod('trophy')">+ Ajouter trophée</button></div>
+        <div class="acard"><div class="acard-h"><div class="acard-t">Trophées</div></div><div class="acard-b"><div class="ilist" id="a-palmares-list"></div></div></div>
+      </div>
+      <!-- NEWS -->
+      <div class="apanel" id="apanel-news">
+        <div class="atopbar"><div><div class="apage-title">Actualités</div><div class="apage-sub">Articles</div></div><button class="abtn ab-ac" onclick="openMod('news')">+ Nouvel article</button></div>
+        <div class="acard"><div class="acard-h"><div class="acard-t">Articles</div></div><div class="acard-b"><div class="ilist" id="a-news-list"></div></div></div>
+      </div>
+      <!-- RECRUTEMENT -->
+      <div class="apanel" id="apanel-recrutement">
+        <div class="atopbar"><div><div class="apage-title">Recrutement</div><div class="apage-sub">Postes ouverts</div></div><button class="abtn ab-ac" onclick="openMod('opening')">+ Ajouter poste</button></div>
+        <div class="acard"><div class="acard-h"><div class="acard-t">Postes</div></div><div class="acard-b"><div class="ilist" id="a-openings-list"></div></div></div>
+      </div>
+      <!-- INFOS -->
+      <div class="apanel" id="apanel-infos">
+        <div class="atopbar"><div><div class="apage-title">Infos générales</div><div class="apage-sub">Paramètres publics</div></div><button class="save-btn" onclick="saveInfos()"><svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Sauvegarder</button></div>
+        <div class="acard"><div class="acard-h"><div class="acard-t">Identité</div></div><div class="acard-b">
+          <div class="arow c2"><div class="af3"><label class="al">Nom équipe</label><input type="text" class="ai" id="i-name" placeholder="PRIZM"></div><div class="af3"><label class="al">Jeu</label><input type="text" class="ai" id="i-game" placeholder="Valorant"></div></div>
+          <div class="af3"><label class="al">Slogan</label><input type="text" class="ai" id="i-tagline" placeholder="Organisation esport..."></div>
+          <div class="af3"><label class="al">Description (À propos)</label><textarea class="ata" id="i-desc" style="min-height:90px"></textarea></div>
+        </div></div>
+        <div class="acard"><div class="acard-h"><div class="acard-t">Contact & Réseaux</div></div><div class="acard-b">
+          <div class="arow c2"><div class="af3"><label class="al">Email général</label><input type="email" class="ai" id="i-email" placeholder="contact@prizm.gg"></div><div class="af3"><label class="al">Email partenariats</label><input type="email" class="ai" id="i-email2" placeholder="business@prizm.gg"></div></div>
+          <div class="arow c2"><div class="af3"><label class="al">Discord</label><input type="text" class="ai" id="i-discord" placeholder="discord.gg/prizm"></div><div class="af3"><label class="al">Twitter / X</label><input type="text" class="ai" id="i-twitter" placeholder="@prizmesport"></div></div>
+          <div class="arow c3"><div class="af3"><label class="al">Twitch</label><input type="text" class="ai" id="i-twitch" placeholder="twitch.tv/prizm"></div><div class="af3"><label class="al">Instagram</label><input type="text" class="ai" id="i-insta" placeholder="@prizm.esport"></div><div class="af3"><label class="al">YouTube</label><input type="text" class="ai" id="i-yt" placeholder="PRIZM Esport"></div></div>
+        </div></div>
+        <div class="acard"><div class="acard-h"><div class="acard-t">Statistiques (Hero)</div></div><div class="acard-b">
+          <div class="arow c4"><div class="af3"><label class="al">Joueurs</label><input type="number" class="ai" id="i-sp" placeholder="5"></div><div class="af3"><label class="al">Win rate %</label><input type="number" class="ai" id="i-swr" placeholder="78"></div><div class="af3"><label class="al">Tournois</label><input type="number" class="ai" id="i-st" placeholder="12"></div><div class="af3"><label class="al">Titres</label><input type="number" class="ai" id="i-sti" placeholder="3"></div></div>
+        </div></div>
+      </div>
+      <!-- SECURITY -->
+      <div class="apanel" id="apanel-security">
+        <div class="atopbar"><div><div class="apage-title">Sécurité</div><div class="apage-sub">Accès administrateur</div></div></div>
+        <div class="acard" style="max-width:460px"><div class="acard-h"><div class="acard-t">Changer le mot de passe</div></div><div class="acard-b">
+          <div class="af3"><label class="al">Mot de passe actuel</label><input type="password" class="ai" id="sec-old" placeholder="••••••••"></div>
+          <div class="af3"><label class="al">Nouveau mot de passe</label><input type="password" class="ai" id="sec-new" placeholder="••••••••"></div>
+          <div class="af3"><label class="al">Confirmer</label><input type="password" class="ai" id="sec-conf" placeholder="••••••••"></div>
+          <button class="abtn ab-ac" style="margin-top:8px" onclick="chgPwd()">Mettre à jour</button>
+        </div></div>
+        <div class="acard" style="max-width:460px"><div class="acard-h"><div class="acard-t">Changer l'identifiant</div></div><div class="acard-b">
+          <div class="af3"><label class="al">Nouvel identifiant</label><input type="text" class="ai" id="sec-uname" placeholder="admin"></div>
+          <div class="af3"><label class="al">Confirmer avec le mot de passe actuel</label><input type="password" class="ai" id="sec-upass" placeholder="••••••••"></div>
+          <button class="abtn ab-ac" style="margin-top:8px" onclick="chgUsr()">Mettre à jour</button>
+        </div></div>
+        <div class="acard" style="max-width:460px"><div class="acard-h"><div class="acard-t">Export / Import données</div></div><div class="acard-b">
+          <p style="font-size:12px;color:var(--text);margin-bottom:14px;line-height:1.6">Sauvegarde complète ou restauration des données.</p>
+          <div style="display:flex;gap:8px"><button class="abtn ab-g" onclick="exportData()">⬇ Exporter JSON</button><label class="abtn ab-g" style="cursor:pointer">⬆ Importer JSON<input type="file" accept=".json" style="display:none" onchange="importData(event)"></label></div>
+        </div></div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="amodal-ov" id="amodal" onclick="if(event.target===this)closeMod()">
+  <div class="amodal">
+    <div class="amodal-h"><div class="amodal-t" id="amod-title">Ajouter</div><button class="amodal-x" onclick="closeMod()">✕</button></div>
+    <div class="amodal-b" id="amod-body"></div>
+    <div class="amodal-f"><button class="abtn ab-g" onclick="closeMod()">Annuler</button><button class="abtn ab-ac" onclick="saveMod()">Sauvegarder</button></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast2" id="toast2">
+  <div class="toast2-icon ok" id="t2-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+  <div class="toast2-text" id="t2-text">Sauvegardé</div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+// CURSOR
+// ══════════════════════════════════════════════
+const cDot=document.getElementById('cDot'),cRing=document.getElementById('cRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+(function loop(){cDot.style.left=mx+'px';cDot.style.top=my+'px';rx+=(mx-rx)*.1;ry+=(my-ry)*.1;cRing.style.left=rx+'px';cRing.style.top=ry+'px';requestAnimationFrame(loop)})();
+
+// ══════════════════════════════════════════════
+// DATA STORE
+// ══════════════════════════════════════════════
+const DK='prizm_data',CK='prizm_creds';
+const DD={
+  roster:[
+    {id:1,ign:'PHANTOM',name:'Lucas Moreau',role:'Duelist',country:'🇫🇷',rank:'Radiant',img:''},
+    {id:2,ign:'VORTEX',name:'Théo Lambert',role:'IGL',country:'🇫🇷',rank:'Immortel 3',img:''},
+    {id:3,ign:'LYNX',name:'Alexis Dubois',role:'Sentinel',country:'🇧🇪',rank:'Radiant',img:''},
+    {id:4,ign:'WRAITH',name:'Rayan Benali',role:'Initiator',country:'🇫🇷',rank:'Immortel 3',img:''},
+    {id:5,ign:'SPECTR',name:'Kevin Müller',role:'Controller',country:'🇨🇭',rank:'Immortel 2',img:''},
+  ],
+  staff:[
+    {id:1,alias:'AXIOM',name:'Julien Perret',role:'Head Coach',bio:'10 ans d\'expérience compétitive sur FPS.',img:''},
+    {id:2,alias:'DELTA',name:'Camille Royer',role:'Analyst',bio:'Analyste data et vidéo.',img:''},
+    {id:3,alias:'NYTE',name:'Sophie Marchand',role:'Manager',bio:'Gestion administrative et logistique.',img:''},
+  ],
+  matches:[
+    {id:1,date:'22 Mar 2025',opponent:'NOXUS',result:'w',score:'2 — 0',tournament:'VCT France Open'},
+    {id:2,date:'18 Mar 2025',opponent:'APEX FR',result:'w',score:'2 — 1',tournament:'VCT France Open'},
+    {id:3,date:'14 Mar 2025',opponent:'SURGE',result:'l',score:'0 — 2',tournament:'Tournoi Challenger'},
+    {id:4,date:'08 Mar 2025',opponent:'ORBITAL',result:'w',score:'2 — 0',tournament:'VCT France Open'},
+    {id:5,date:'02 Mar 2025',opponent:'ZENITH',result:'w',score:'2 — 1',tournament:'Coupe Nationale'},
+    {id:6,date:'24 Fév 2025',opponent:'VENOM',result:'l',score:'1 — 2',tournament:'Tournoi Challenger'},
+  ],
+  calendar:[
+    {id:1,date:'28 Mar 2025',opponent:'ECLIPSE',time:'18h00',tournament:'VCT France Open'},
+    {id:2,date:'31 Mar 2025',opponent:'FRAGMENT',time:'20h00',tournament:'Coupe Nationale'},
+    {id:3,date:'04 Avr 2025',opponent:'STORM',time:'20h00',tournament:'Tournoi Challenger'},
+    {id:4,date:'11 Avr 2025',opponent:'NOVA',time:'18h30',tournament:'VCT France Open'},
+  ],
+  palmares:[
+    {id:1,place:'1ère place',event:'Finale Nationale 2024',date:'Novembre 2024',icon:'🏆',img:''},
+    {id:2,place:'1ère place',event:'Coupe Nationale S2',date:'Septembre 2024',icon:'🥇',img:''},
+    {id:3,place:'1ère place',event:'Open France Summer 2023',date:'Juillet 2023',icon:'🥇',img:''},
+    {id:4,place:'2ème place',event:'Tournoi Challenger S1 2025',date:'Février 2025',icon:'🥈',img:''},
+  ],
+  news:[
+    {id:1,title:'PRIZM s\'impose face à NOXUS 2-0',date:'22 Mars 2025',tag:'Résultat',excerpt:'Une performance solide sur Haven et Ascent.',img:''},
+    {id:2,title:'WRAITH rejoint PRIZM',date:'10 Mars 2025',tag:'Roster',excerpt:'Rayan Benali signe officiellement avec PRIZM.',img:''},
+    {id:3,title:'PRIZM qualifié pour les phases finales',date:'01 Mars 2025',tag:'Tournoi',excerpt:'PRIZM valide sa place dans le top 8 du VCT France Open.',img:''},
+  ],
+  openings:[
+    {id:1,title:'Joueur Titulaire',type:'player',open:true},
+    {id:2,title:'Head Coach',type:'staff',open:true},
+    {id:3,title:'Analyste VOD',type:'staff',open:true},
+    {id:4,title:'Remplaçant',type:'player',open:false},
+    {id:5,title:'Manager',type:'staff',open:false},
+  ],
+  infos:{
+    name:'PRIZM',game:'Valorant',tagline:'Organisation esport française compétissant sur Valorant. Fondée sur l\'excellence, animée par la passion.',
+    desc:'PRIZM a été fondée avec une seule conviction : la compétition de haut niveau demande autant de rigueur que de créativité.',
+    email:'contact@prizm.gg',email2:'business@prizm.gg',discord:'discord.gg/prizm',twitter:'@prizmesport',
+    twitch:'twitch.tv/prizm',insta:'@prizm.esport',yt:'PRIZM Esport',
+    statPlayers:5,statWr:78,statTourn:12,statTitles:3
+  }
+};
+
+function gd(){const r=localStorage.getItem(DK);if(!r){localStorage.setItem(DK,JSON.stringify(DD));return DD;}return JSON.parse(r);}
+function sd(d){localStorage.setItem(DK,JSON.stringify(d));}
+function nid(arr){return arr.length?Math.max(...arr.map(x=>x.id))+1:1;}
+function gc(){const r=localStorage.getItem(CK);return r?JSON.parse(r):{user:'admin',pass:'prizm2025'};}
+function sc(u,p){localStorage.setItem(CK,JSON.stringify({user:u,pass:p}));}
+
+// ══════════════════════════════════════════════
+// SITE NAVIGATION
+// ══════════════════════════════════════════════
+function nav(page){
+  if(!page)return;
+  document.querySelectorAll('.page').forEach(p=>p.style.display='none');
+  const t=document.getElementById('page-'+page);
+  if(t){t.style.display='block';window.scrollTo(0,0);setTimeout(trigRv,50);}
+  document.querySelectorAll('.nav-link').forEach(a=>a.classList.toggle('active',a.dataset.page===page));
+  if(page==='roster'){renderSiteRoster();renderSiteStaff();}
+  if(page==='competitions'){renderSiteMatches();renderSiteCalendar();renderSiteArchive();}
+  if(page==='palmares')renderSitePalmares();
+  if(page==='actualites')renderSiteNews();
+  if(page==='recrutement')renderSiteRecrutement();
+  if(page==='contact')renderSiteContact();
+  if(page==='home'){renderHomeMatches();applyInfosToSite();}
+}
+document.querySelectorAll('[data-page]').forEach(el=>el.addEventListener('click',e=>{e.preventDefault();nav(el.dataset.page);}));
+// TABS
+document.querySelectorAll('.tab-btn').forEach(b=>b.addEventListener('click',()=>{
+  const tab=b.dataset.tab;
+  b.closest('section').querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  b.closest('section').querySelectorAll('.tab-content').forEach(x=>x.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  setTimeout(trigRv,50);
+}));
+// Archive accordion
+window.toggleA=h=>h.closest('.as').classList.toggle('open');
+
+// ══════════════════════════════════════════════
+// SITE RENDERS — driven by data
+// ══════════════════════════════════════════════
+function imgOrPh(img,cls,phSvg){
+  if(img)return `<img src="${img}" class="${cls}" alt="">`;
+  return phSvg||'';
+}
+
+function renderSiteRoster(){
+  const d=gd();
+  document.getElementById('site-roster-grid').innerHTML=d.roster.map((p,i)=>`
+    <div class="pc rv">
+      <div class="pci">
+        <div class="pflag">${p.country}</div>
+        <div class="pnum">0${i+1}</div>
+        <div class="pav">
+          ${p.img?`<img src="${p.img}" alt="${p.ign}">`:`<svg viewBox="0 0 100 160"><ellipse cx="50" cy="22" rx="16" ry="18"/><path d="M24 65C20 50 28 35 50 32C72 35 80 50 76 65L70 100H30Z"/><rect x="28" y="98" width="14" height="52" rx="3"/><rect x="58" y="98" width="14" height="52" rx="3"/><rect x="14" y="62" width="12" height="40" rx="4"/><rect x="74" y="62" width="12" height="40" rx="4"/></svg>`}
+        </div>
+        <div class="pi"><div class="prole">${p.role}</div><div class="pign">${p.ign}</div><div class="prname">${p.name}</div></div>
+      </div>
+    </div>`).join('');
+  setTimeout(trigRv,50);
+}
+
+function renderSiteStaff(){
+  const d=gd();
+  document.getElementById('site-staff-grid').innerHTML=d.staff.map(s=>`
+    <div class="sc rv">
+      <div class="sc-img">
+        ${s.img?`<img src="${s.img}" alt="${s.alias}">`:`<div class="sc-img-ph"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="30" rx="18" ry="20"/><path d="M15 90C15 65 85 65 85 90"/></svg></div>`}
+      </div>
+      <div class="sc-body"><div class="srt">${s.role}</div><div class="sn">${s.alias}</div><div class="srn">${s.name}</div><div class="sbio">${s.bio}</div></div>
+    </div>`).join('');
+  setTimeout(trigRv,50);
+}
+
+function miHTML(m){
+  return`<div class="mi rv"><div class="md">${m.date}</div><div class="mteams"><span class="mt p">PRIZM</span><span class="mvs">VS</span><span class="mt o">${m.opponent}</span></div><span class="rb ${m.result==='w'?'bw':'bl'}">${m.result==='w'?'Victoire':'Défaite'}</span><div class="ms ${m.result==='w'?'sw':'sl2'}">${m.score}</div><div class="mtourn">${m.tournament}</div></div>`;
+}
+function renderHomeMatches(){
+  const d=gd();document.getElementById('home-matches-list').innerHTML=d.matches.slice(0,3).map(miHTML).join('');setTimeout(trigRv,50);
+}
+function renderSiteMatches(){
+  const d=gd();document.getElementById('site-matches-list').innerHTML=d.matches.map(miHTML).join('');setTimeout(trigRv,50);
+}
+function renderSiteCalendar(){
+  const d=gd();
+  const months={};
+  d.calendar.forEach(e=>{const m=e.date.split(' ').slice(1).join(' ');if(!months[m])months[m]=[];months[m].push(e);});
+  document.getElementById('site-calendar-list').innerHTML=Object.entries(months).map(([m,evs])=>`
+    <div class="cal-month">
+      <div class="cmt rv">${m}</div>
+      ${evs.map(e=>`<div class="mi ulive rv"><div class="md">${e.date}</div><div class="mteams"><span class="mt p">PRIZM</span><span class="mvs">VS</span><span class="mt o">${e.opponent}</span></div><span class="rb bu">${e.time}</span><div class="ms su">À venir</div><div class="mtourn">${e.tournament}</div></div>`).join('')}
+    </div>`).join('');
+  setTimeout(trigRv,50);
+}
+function renderSiteArchive(){
+  const d=gd();
+  // Group by season (just show all as one block for now)
+  const wins=d.matches.filter(m=>m.result==='w').length,losses=d.matches.filter(m=>m.result==='l').length;
+  const wr=d.matches.length?Math.round(wins/d.matches.length*100):0;
+  document.getElementById('site-archive-list').innerHTML=`
+    <div class="as open rv">
+      <div class="ash" onclick="toggleA(this)">
+        <div><div style="font-size:11px;font-family:var(--fd);letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:4px">Saison en cours</div><div class="ast">Saison 2025</div></div>
+        <div class="am"><div><div class="av2 g">${wins}</div><div class="ala">Victoires</div></div><div><div class="av2">${losses}</div><div class="ala">Défaites</div></div><div><div class="av2 g">${wr}%</div><div class="ala">Win rate</div></div><svg class="ach" viewBox="0 0 24 24" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      </div>
+      <div class="ab"><div>${d.matches.map(miHTML).join('')}</div></div>
+    </div>`;
+  setTimeout(trigRv,50);
+}
+function renderSitePalmares(){
+  const d=gd();
+  document.getElementById('site-palmares-grid').innerHTML=d.palmares.map(t=>`
+    <div class="tc rv">
+      ${t.img?`<div class="tc-img"><img src="${t.img}" alt="${t.event}"></div>`:`<div class="tc-img"><div class="tc-img-ph">${t.icon}</div></div>`}
+      <div class="tc-body"><div class="ti">${t.icon}</div><div class="tp">${t.place}</div><div class="te">${t.event}</div><div class="tddate">${t.date}</div></div>
+    </div>`).join('');
+  setTimeout(trigRv,50);
+}
+function renderSiteNews(){
+  const d=gd();
+  document.getElementById('site-news-grid').innerHTML=d.news.map((n,i)=>`
+    <div class="nc ${i===0?'feat':''} rv">
+      <div class="nci">
+        ${n.img?`<img src="${n.img}" alt="${n.title}">`:`<div class="nci-ph"><img src="logo.png" alt="" onerror="this.style.display='none'"></div>`}
+        <div class="ntag">${n.tag}</div>
+      </div>
+      <div class="nb"><div class="nd">${n.date}</div><div class="ntitle">${n.title}</div><div class="nexc">${n.excerpt}</div><a href="#" class="nlink">Lire la suite →</a></div>
+    </div>`).join('');
+  setTimeout(trigRv,50);
+}
+function renderSiteRecrutement(){
+  const d=gd();
+  // Openings list
+  document.getElementById('site-openings').innerHTML=d.openings.map(o=>`
+    <div class="op"><div class="opt">${o.title}</div><div class="otag ${o.open?'to2':'tc3'}">${o.open?'Ouvert':'Fermé'}</div></div>`).join('');
+  // Build type radios from open openings
+  const open=d.openings.filter(o=>o.open);
+  const playerOpen=open.filter(o=>o.type==='player');
+  const staffOpen=open.filter(o=>o.type==='staff');
+  const radios=document.getElementById('site-type-radios');
+  radios.innerHTML='';
+  const types=[];
+  if(playerOpen.length)types.push({label:'Joueur',type:'player'});
+  staffOpen.forEach(s=>types.push({label:s.title,type:'staff'}));
+  if(!types.length)types.push({label:'Autre',type:'other'});
+  types.forEach((t,i)=>{
+    const b=document.createElement('button');
+    b.className='fr2'+(i===0?' sel':'');
+    b.textContent=t.label;
+    b.dataset.type=t.type;
+    b.onclick=()=>{document.querySelectorAll('.fr2').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');toggleFormFields(t.type);};
+    radios.appendChild(b);
+  });
+  // Show correct fields for first type
+  if(types.length)toggleFormFields(types[0].type);
+}
+function toggleFormFields(type){
+  document.getElementById('fields-player').style.display=type==='player'?'block':'none';
+  document.getElementById('fields-staff').style.display=type==='staff'?'block':'none';
+}
+function submitSiteForm(){
+  document.getElementById('site-form-inner').style.display='none';
+  document.getElementById('site-form-ok').classList.add('show');
+}
+function renderSiteContact(){
+  const d=gd();const inf=d.infos||{};
+  const set=(id,val)=>{const el=document.getElementById(id);if(el&&val)el.textContent=val;};
+  set('c-email',inf.email);set('c-discord',inf.discord);set('c-email2',inf.email2);
+  const socials=[['Twitter',inf.twitter||''],['Twitch',inf.twitch||''],['Instagram',inf.insta||''],['YouTube',inf.yt||'']];
+  document.getElementById('site-socials').innerHTML=socials.filter(s=>s[1]).map(s=>`
+    <a href="#" class="socc2"><div><div class="socn2">${s[0]}</div><div class="soch2">${s[1]}</div></div><svg class="soca2" viewBox="0 0 24 24" width="16" height="16" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>`).join('');
+}
+function applyInfosToSite(){
+  const d=gd();const inf=d.infos||{};
+  const s=(id,v)=>{const el=document.getElementById(id);if(el&&v)el.textContent=v;};
+  s('site-team-name',inf.name);s('footer-name',inf.name);s('footer-copy',inf.name);s('footer-tag',inf.tagline);
+  // Stats
+  if(inf.statPlayers)document.getElementById('s-players').textContent=inf.statPlayers;
+  if(inf.statWr)document.getElementById('s-wr').innerHTML=inf.statWr+'<span>%</span>';
+  if(inf.statTourn)document.getElementById('s-tourn').innerHTML=inf.statTourn+'<span>+</span>';
+  if(inf.statTitles)document.getElementById('s-titles').textContent=inf.statTitles;
+  // Footer socials
+  const socials=[['Twitter',inf.twitter||''],['Twitch',inf.twitch||''],['Instagram',inf.insta||''],['YouTube',inf.yt||''],['Discord',inf.discord||'']];
+  document.getElementById('footer-socials').innerHTML=socials.filter(s=>s[1]).map(s=>`<a href="#">${s[0]}</a>`).join('');
+  // Description
+  if(inf.desc){document.getElementById('about-teaser').innerHTML=`<p>${inf.desc}</p>`;document.getElementById('about-full').innerHTML=`<p>${inf.desc}</p>`;}
+}
+
+// ══════════════════════════════════════════════
+// REVEAL
+// ══════════════════════════════════════════════
+function trigRv(){
+  document.querySelectorAll('.rv:not(.vis)').forEach((el,i)=>{
+    const r=el.getBoundingClientRect();
+    if(r.top<window.innerHeight+80)setTimeout(()=>el.classList.add('vis'),i*55);
+  });
+}
+const ro=new IntersectionObserver(entries=>entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('vis'),i*55);ro.unobserve(e.target);}}),{threshold:.08});
+document.querySelectorAll('.rv').forEach(el=>ro.observe(el));
+window.addEventListener('scroll',trigRv);
+
+// ══════════════════════════════════════════════
+// ADMIN AUTH
+// ══════════════════════════════════════════════
+function openAdmin(){document.getElementById('admin-wrap').style.display='block';}
+function closeAdmin(){document.getElementById('admin-wrap').style.display='none';}
+function doLogin(){
+  const u=document.getElementById('l-user').value.trim();
+  const p=document.getElementById('l-pass').value;
+  const cr=gc();
+  if(u===cr.user&&p===cr.pass){
+    sessionStorage.setItem('prizm_auth','1');
+    document.getElementById('adm-login').style.display='none';
+    document.getElementById('adm-panel').classList.add('show');
+    document.getElementById('sb-username').textContent=u.toUpperCase();
+    renderAPanel('dashboard');
+  }else{
+    document.getElementById('l-err').classList.add('show');
+    document.getElementById('l-pass').value='';
+  }
+}
+function doLogout(){sessionStorage.removeItem('prizm_auth');location.reload();}
+// Secret key combo: Ctrl+Shift+A opens admin
+document.addEventListener('keydown',e=>{if(e.ctrlKey&&e.shiftKey&&e.key==='A'){e.preventDefault();openAdmin();if(sessionStorage.getItem('prizm_auth')){document.getElementById('adm-login').style.display='none';document.getElementById('adm-panel').classList.add('show');renderAPanel('dashboard');}}});
+
+// ══════════════════════════════════════════════
+// ADMIN SIDEBAR NAV
+// ══════════════════════════════════════════════
+document.querySelectorAll('.sb-item').forEach(item=>{
+  item.addEventListener('click',()=>{
+    document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
+    item.classList.add('active');
+    renderAPanel(item.dataset.apanel);
+  });
+});
+function renderAPanel(p){
+  document.querySelectorAll('.apanel').forEach(x=>x.classList.remove('active'));
+  const el=document.getElementById('apanel-'+p);if(el)el.classList.add('active');
+  const d=gd();
+  if(p==='dashboard')renderDash(d);
+  if(p==='roster')renderARoster(d);
+  if(p==='staff')renderAStaff(d);
+  if(p==='matches')renderAMatches(d);
+  if(p==='calendar')renderACalendar(d);
+  if(p==='palmares')renderAPalmares(d);
+  if(p==='news')renderANews(d);
+  if(p==='recrutement')renderARecrutement(d);
+  if(p==='infos')fillInfosForm(d);
+}
+function curPanel(){return document.querySelector('.sb-item.active')?.dataset.apanel||'dashboard';}
+
+// ══════════════════════════════════════════════
+// ADMIN RENDERS
+// ══════════════════════════════════════════════
+function renderDash(d){
+  const w=d.matches.filter(m=>m.result==='w').length,l=d.matches.filter(m=>m.result==='l').length;
+  const wr=d.matches.length?Math.round(w/d.matches.length*100):0;
+  document.getElementById('adash-stats').innerHTML=`
+    <div class="ast-card"><div class="ast-num">${d.roster.length}</div><div class="ast-lbl">Joueurs</div></div>
+    <div class="ast-card"><div class="ast-num">${d.matches.length}</div><div class="ast-lbl">Matchs</div></div>
+    <div class="ast-card"><div class="ast-num">${wr}<span>%</span></div><div class="ast-lbl">Win rate</div></div>
+    <div class="ast-card"><div class="ast-num">${d.calendar.length}</div><div class="ast-lbl">À venir</div></div>`;
+  document.getElementById('adash-matches').innerHTML=d.matches.slice(0,4).map(m=>`
+    <div style="display:flex;align-items:center;padding:10px 16px;border-bottom:1px solid var(--border);gap:10px">
+      <div style="flex:1;font-family:var(--fd);font-size:12px;font-weight:800;text-transform:uppercase">PRIZM vs ${m.opponent}</div>
+      <span class="ibadge ${m.result==='w'?'w':'l'}">${m.score}</span>
+    </div>`).join('');
+  const nx=d.calendar[0];
+  document.getElementById('adash-next').innerHTML=nx?`<div style="font-family:var(--fd);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:6px">${nx.date} — ${nx.time}</div><div style="font-family:var(--fd);font-size:24px;font-weight:900;text-transform:uppercase;margin-bottom:4px">PRIZM vs ${nx.opponent}</div><div style="font-size:12px;color:var(--muted2)">${nx.tournament}</div>`:`<div style="color:var(--muted2);font-size:12px">Aucun match programmé</div>`;
+}
+
+function thumbHTML(img,ph){
+  return img?`<img src="${img}" class="irow-thumb" alt="">`:`<div class="irow-thumb-ph">${ph}</div>`;
+}
+function renderARoster(d){
+  document.getElementById('a-roster-list').innerHTML=d.roster.map(p=>`
+    <div class="irow">
+      ${thumbHTML(p.img,p.country)}
+      <div class="irow-info"><div class="irow-t">${p.ign}</div><div class="irow-s">${p.name} · ${p.role} · ${p.rank}</div></div>
+      <div class="irow-acts"><button class="abtn ab-g" onclick="openMod('player',${p.id})">Modifier</button><button class="abtn ab-d" onclick="delItem('roster',${p.id})">Suppr.</button></div>
+    </div>`).join('');
+}
+function renderAStaff(d){
+  document.getElementById('a-staff-list').innerHTML=d.staff.map(s=>`
+    <div class="irow">
+      ${thumbHTML(s.img,'👤')}
+      <div class="irow-info"><div class="irow-t">${s.alias}</div><div class="irow-s">${s.name} · ${s.role}</div></div>
+      <div class="irow-acts"><button class="abtn ab-g" onclick="openMod('staff',${s.id})">Modifier</button><button class="abtn ab-d" onclick="delItem('staff',${s.id})">Suppr.</button></div>
+    </div>`).join('');
+}
+function renderAMatches(d){
+  document.getElementById('a-matches-list').innerHTML=d.matches.map(m=>`
+    <div class="irow">
+      <span class="ibadge ${m.result==='w'?'w':'l'}" style="flex-shrink:0">${m.result==='w'?'V':'D'}</span>
+      <div class="irow-info"><div class="irow-t">PRIZM vs ${m.opponent}</div><div class="irow-s">${m.date} · ${m.tournament} · ${m.score}</div></div>
+      <div class="irow-acts"><button class="abtn ab-g" onclick="openMod('match',${m.id})">Modifier</button><button class="abtn ab-d" onclick="delItem('matches',${m.id})">Suppr.</button></div>
+    </div>`).join('');
+}
+function renderACalendar(d){
+  document.getElementById('a-calendar-list').innerHTML=d.calendar.map(e=>`
+    <div class="irow">
+      <span class="ibadge u" style="flex-shrink:0">${e.time}</span>
+      <div class="irow-info"><div class="irow-t">PRIZM vs ${e.opponent}</div><div class="irow-s">${e.date} · ${e.tournament}</div></div>
+      <div class="irow-acts"><button class="abtn ab-g" onclick="openMod('event',${e.id})">Modifier</button><button class="abtn ab-d" onclick="delItem('calendar',${e.id})">Suppr.</button></div>
+    </div>`).join('');
+}
+function renderAPalmares(d){
+  document.getElementById('a-palmares-list').innerHTML=d.palmares.map(t=>`
+    <div class="irow">
+      ${thumbHTML(t.img,t.icon)}
+      <div class="irow-info"><div class="irow-t">${t.event}</div><div class="irow-s">${t.place} · ${t.date}</div></div>
+      <div class="irow-acts"><button class="abtn ab-g" onclick="openMod('trophy',${t.id})">Modifier</button><button class="abtn ab-d" onclick="delItem('palmares',${t.id})">Suppr.</button></div>
+    </div>`).join('');
+}
+function renderANews(d){
+  document.getElementById('a-news-list').innerHTML=d.news.map(n=>`
+    <div class="irow">
+      ${n.img?`<img src="${n.img}" class="irow-thumb" alt="" style="object-fit:cover">`:`<div class="irow-thumb-ph" style="background:linear-gradient(135deg,#16162a,#0a0a14);font-size:12px;font-family:var(--fd);font-weight:800;color:var(--accent)">${n.tag.slice(0,3).toUpperCase()}</div>`}
+      <div class="irow-info"><div class="irow-t">${n.title}</div><div class="irow-s">${n.date} · ${n.tag}</div></div>
+      <div class="irow-acts"><button class="abtn ab-g" onclick="openMod('news',${n.id})">Modifier</button><button class="abtn ab-d" onclick="delItem('news',${n.id})">Suppr.</button></div>
+    </div>`).join('');
+}
+function renderARecrutement(d){
+  document.getElementById('a-openings-list').innerHTML=d.openings.map(o=>`
+    <div class="irow">
+      <div class="irow-info"><div class="irow-t">${o.title}</div><div class="irow-s">Type: ${o.type==='player'?'Joueur':'Staff'}</div></div>
+      <span class="ibadge ${o.open?'open':'u'}">${o.open?'Ouvert':'Fermé'}</span>
+      <div class="irow-acts">
+        <button class="abtn ${o.open?'ab-d':'ab-gr'}" onclick="toggleOpening(${o.id})">${o.open?'Fermer':'Ouvrir'}</button>
+        <button class="abtn ab-g" onclick="openMod('opening',${o.id})">Modifier</button>
+        <button class="abtn ab-d" onclick="delItem('openings',${o.id})">Suppr.</button>
+      </div>
+    </div>`).join('');
+}
+function toggleOpening(id){const d=gd();const o=d.openings.find(x=>x.id===id);if(o){o.open=!o.open;sd(d);renderARecrutement(d);showToast('Statut mis à jour');};}
+function fillInfosForm(d){
+  const inf=d.infos||{};
+  const s=(id,v)=>{const el=document.getElementById(id);if(el)el.value=v||'';};
+  s('i-name',inf.name);s('i-game',inf.game);s('i-tagline',inf.tagline);s('i-desc',inf.desc);
+  s('i-email',inf.email);s('i-email2',inf.email2);s('i-discord',inf.discord);s('i-twitter',inf.twitter);
+  s('i-twitch',inf.twitch);s('i-insta',inf.insta);s('i-yt',inf.yt);
+  s('i-sp',inf.statPlayers);s('i-swr',inf.statWr);s('i-st',inf.statTourn);s('i-sti',inf.statTitles);
+}
+function saveInfos(){
+  const d=gd();const g=id=>document.getElementById(id)?.value||'';
+  d.infos={name:g('i-name'),game:g('i-game'),tagline:g('i-tagline'),desc:g('i-desc'),
+    email:g('i-email'),email2:g('i-email2'),discord:g('i-discord'),twitter:g('i-twitter'),
+    twitch:g('i-twitch'),insta:g('i-insta'),yt:g('i-yt'),
+    statPlayers:+g('i-sp'),statWr:+g('i-swr'),statTourn:+g('i-st'),statTitles:+g('i-sti')};
+  sd(d);applyInfosToSite();showToast('Infos sauvegardées ✓');
+}
+function delItem(section,id){
+  if(!confirm('Supprimer ?'))return;
+  const d=gd();d[section]=d[section].filter(x=>x.id!==id);sd(d);
+  renderAPanel(curPanel());showToast('Supprimé');
+}
+
+// ══════════════════════════════════════════════
+// IMAGE UPLOAD HELPER
+// ══════════════════════════════════════════════
+function imgUploadField(fieldId,currentImg,label='Photo'){
+  return`
+    <div class="af3"><label class="al">${label}</label>
+      <div class="img-upload-area" onclick="document.getElementById('${fieldId}-file').click()">
+        ${currentImg?`<img src="${currentImg}" class="img-preview show" id="${fieldId}-preview">`:`<img class="img-preview" id="${fieldId}-preview">`}
+        <div class="img-upload-text"><span>Cliquer pour uploader</span> une image (JPG, PNG, WebP)</div>
+        <input type="file" id="${fieldId}-file" accept="image/*" style="display:none" onchange="previewImg('${fieldId}',this)">
+      </div>
+    </div>`;
+}
+function previewImg(fieldId,input){
+  if(!input.files[0])return;
+  const r=new FileReader();
+  r.onload=e=>{
+    const prev=document.getElementById(fieldId+'-preview');
+    prev.src=e.target.result;prev.classList.add('show');
+    document.getElementById(fieldId+'-data').value=e.target.result;
+  };
+  r.readAsDataURL(input.files[0]);
+}
+
+// ══════════════════════════════════════════════
+// MODAL
+// ══════════════════════════════════════════════
+let curMod=null,editId=null;
+const MODS={
+  player:{
+    title:'Joueur',
+    section:'roster',
+    html:item=>`
+      ${imgUploadField('m-img',item?.img||'')}
+      <input type="hidden" id="m-img-data" value="${item?.img||''}">
+      <div class="arow c2"><div class="af3"><label class="al">Pseudo (IGN)</label><input class="ai" id="m-ign" value="${item?.ign||''}" placeholder="PHANTOM"></div><div class="af3"><label class="al">Nom réel</label><input class="ai" id="m-name" value="${item?.name||''}" placeholder="Lucas Moreau"></div></div>
+      <div class="arow c2"><div class="af3"><label class="al">Rôle</label><select class="asel" id="m-role"><option>Duelist</option><option>Initiator</option><option>Controller</option><option>Sentinel</option><option>IGL</option><option>Flex</option></select></div><div class="af3"><label class="al">Drapeau (emoji)</label><input class="ai" id="m-country" value="${item?.country||'🇫🇷'}" placeholder="🇫🇷"></div></div>
+      <div class="af3"><label class="al">Rang</label><select class="asel" id="m-rank"><option>Radiant</option><option>Immortel 3</option><option>Immortel 2</option><option>Immortel 1</option><option>Ascendant 3</option><option>Ascendant 2</option><option>Ascendant 1</option><option>Diamant 3</option></select></div>`,
+    fillSel:(item)=>{if(item){sv2('m-role',item.role);sv2('m-rank',item.rank);}},
+    collect:()=>({ign:gv2('m-ign'),name:gv2('m-name'),role:gv2('m-role'),country:gv2('m-country'),rank:gv2('m-rank'),img:gv2('m-img-data')||document.getElementById('m-img-preview')?.src||''})
+  },
+  staff:{
+    title:'Membre staff',section:'staff',
+    html:item=>`
+      ${imgUploadField('m-img',item?.img||'')}
+      <input type="hidden" id="m-img-data" value="${item?.img||''}">
+      <div class="arow c2"><div class="af3"><label class="al">Alias</label><input class="ai" id="m-alias" value="${item?.alias||''}" placeholder="AXIOM"></div><div class="af3"><label class="al">Nom réel</label><input class="ai" id="m-name" value="${item?.name||''}" placeholder="Julien Perret"></div></div>
+      <div class="af3"><label class="al">Rôle</label><select class="asel" id="m-role"><option>Head Coach</option><option>Analyst</option><option>Manager</option><option>Préparateur mental</option><option>Consultant</option></select></div>
+      <div class="af3"><label class="al">Bio</label><textarea class="ata" id="m-bio">${item?.bio||''}</textarea></div>`,
+    fillSel:(item)=>{if(item)sv2('m-role',item.role);},
+    collect:()=>({alias:gv2('m-alias'),name:gv2('m-name'),role:gv2('m-role'),bio:gv2('m-bio'),img:gv2('m-img-data')||''})
+  },
+  match:{
+    title:'Résultat',section:'matches',
+    html:item=>`
+      <div class="arow c2"><div class="af3"><label class="al">Date</label><input class="ai" id="m-date" value="${item?.date||''}" placeholder="22 Mar 2025"></div><div class="af3"><label class="al">Adversaire</label><input class="ai" id="m-opp" value="${item?.opponent||''}" placeholder="NOXUS"></div></div>
+      <div class="arow c2"><div class="af3"><label class="al">Résultat</label><select class="asel" id="m-res"><option value="w">Victoire</option><option value="l">Défaite</option></select></div><div class="af3"><label class="al">Score (ex: 2 — 1)</label><input class="ai" id="m-score" value="${item?.score||''}" placeholder="2 — 0"></div></div>
+      <div class="af3"><label class="al">Tournoi</label><input class="ai" id="m-tourn" value="${item?.tournament||''}" placeholder="VCT France Open"></div>`,
+    fillSel:(item)=>{if(item)sv2('m-res',item.result);},
+    collect:()=>({date:gv2('m-date'),opponent:gv2('m-opp'),result:gv2('m-res'),score:gv2('m-score'),tournament:gv2('m-tourn')})
+  },
+  event:{
+    title:'Match à venir',section:'calendar',
+    html:item=>`
+      <div class="arow c2"><div class="af3"><label class="al">Date</label><input class="ai" id="m-date" value="${item?.date||''}" placeholder="28 Mar 2025"></div><div class="af3"><label class="al">Heure</label><input class="ai" id="m-time" value="${item?.time||''}" placeholder="18h00"></div></div>
+      <div class="af3"><label class="al">Adversaire</label><input class="ai" id="m-opp" value="${item?.opponent||''}" placeholder="ECLIPSE"></div>
+      <div class="af3"><label class="al">Tournoi</label><input class="ai" id="m-tourn" value="${item?.tournament||''}" placeholder="VCT France Open"></div>`,
+    fillSel:()=>{},
+    collect:()=>({date:gv2('m-date'),time:gv2('m-time'),opponent:gv2('m-opp'),tournament:gv2('m-tourn')})
+  },
+  trophy:{
+    title:'Trophée',section:'palmares',
+    html:item=>`
+      ${imgUploadField('m-img',item?.img||'',"Image de l'événement")}
+      <input type="hidden" id="m-img-data" value="${item?.img||''}">
+      <div class="arow c2"><div class="af3"><label class="al">Classement</label><select class="asel" id="m-place"><option>1ère place</option><option>2ème place</option><option>3ème place</option><option>Top 4</option><option>Top 8</option><option>Qualification</option></select></div><div class="af3"><label class="al">Icône emoji</label><input class="ai" id="m-icon" value="${item?.icon||'🏆'}" placeholder="🏆"></div></div>
+      <div class="af3"><label class="al">Nom de l'événement</label><input class="ai" id="m-event" value="${item?.event||''}" placeholder="Finale Nationale 2024"></div>
+      <div class="af3"><label class="al">Date</label><input class="ai" id="m-date" value="${item?.date||''}" placeholder="Novembre 2024"></div>`,
+    fillSel:(item)=>{if(item)sv2('m-place',item.place);},
+    collect:()=>({place:gv2('m-place'),icon:gv2('m-icon'),event:gv2('m-event'),date:gv2('m-date'),img:gv2('m-img-data')||''})
+  },
+  news:{
+    title:'Article',section:'news',
+    html:item=>`
+      ${imgUploadField('m-img',item?.img||'','Image de couverture')}
+      <input type="hidden" id="m-img-data" value="${item?.img||''}">
+      <div class="af3"><label class="al">Titre</label><input class="ai" id="m-title" value="${item?.title||''}" placeholder="Titre de l'article"></div>
+      <div class="arow c2"><div class="af3"><label class="al">Date</label><input class="ai" id="m-date" value="${item?.date||''}" placeholder="22 Mars 2025"></div><div class="af3"><label class="al">Catégorie</label><select class="asel" id="m-tag"><option>Résultat</option><option>Roster</option><option>Tournoi</option><option>Organisation</option><option>Palmarès</option><option>Recrutement</option><option>Autre</option></select></div></div>
+      <div class="af3"><label class="al">Extrait</label><textarea class="ata" id="m-exc">${item?.excerpt||''}</textarea></div>`,
+    fillSel:(item)=>{if(item)sv2('m-tag',item.tag);},
+    collect:()=>({title:gv2('m-title'),date:gv2('m-date'),tag:gv2('m-tag'),excerpt:gv2('m-exc'),img:gv2('m-img-data')||''})
+  },
+  opening:{
+    title:'Poste',section:'openings',
+    html:item=>`
+      <div class="af3"><label class="al">Intitulé</label><input class="ai" id="m-title" value="${item?.title||''}" placeholder="Joueur Titulaire"></div>
+      <div class="af3"><label class="al">Type de poste</label><select class="asel" id="m-type"><option value="player">Joueur</option><option value="staff">Staff</option></select></div>
+      <div class="af3"><label class="al">Statut</label><select class="asel" id="m-open"><option value="true">Ouvert</option><option value="false">Fermé</option></select></div>`,
+    fillSel:(item)=>{if(item){sv2('m-type',item.type);sv2('m-open',item.open?'true':'false');}},
+    collect:()=>({title:gv2('m-title'),type:gv2('m-type'),open:gv2('m-open')==='true'})
+  }
+};
+function gv2(id){return document.getElementById(id)?.value||'';}
+function sv2(id,val){const el=document.getElementById(id);if(el)el.value=val||'';}
+
+function openMod(type,id=null){
+  curMod=type;editId=id;
+  const def=MODS[type];
+  const d=gd();
+  const item=id?d[def.section].find(x=>x.id===id):null;
+  document.getElementById('amod-title').textContent=(id?'Modifier':'Ajouter')+' — '+def.title;
+  document.getElementById('amod-body').innerHTML=def.html(item);
+  if(item)def.fillSel(item);
+  document.getElementById('amodal').classList.add('open');
+}
+function closeMod(){document.getElementById('amodal').classList.remove('open');curMod=null;editId=null;}
+function saveMod(){
+  const def=MODS[curMod];const d=gd();const col=def.collect();
+  if(editId){const idx=d[def.section].findIndex(x=>x.id===editId);if(idx!==-1)d[def.section][idx]={...d[def.section][idx],...col};}
+  else d[def.section].push({id:nid(d[def.section]),...col});
+  sd(d);closeMod();renderAPanel(curPanel());showToast(editId?'Modifié ✓':'Ajouté ✓');
+}
+
+// ══════════════════════════════════════════════
+// SECURITY
+// ══════════════════════════════════════════════
+function chgPwd(){
+  const old=document.getElementById('sec-old').value,nw=document.getElementById('sec-new').value,cf=document.getElementById('sec-conf').value;
+  const cr=gc();
+  if(old!==cr.pass){showToast('Mot de passe actuel incorrect',true);return;}
+  if(nw.length<6){showToast('Minimum 6 caractères',true);return;}
+  if(nw!==cf){showToast('Les mots de passe ne correspondent pas',true);return;}
+  sc(cr.user,nw);['sec-old','sec-new','sec-conf'].forEach(id=>document.getElementById(id).value='');
+  showToast('Mot de passe mis à jour ✓');
+}
+function chgUsr(){
+  const u=document.getElementById('sec-uname').value.trim(),p=document.getElementById('sec-upass').value;
+  const cr=gc();if(p!==cr.pass){showToast('Mot de passe incorrect',true);return;}
+  if(!u){showToast('Identifiant invalide',true);return;}
+  sc(u,cr.pass);document.getElementById('sb-username').textContent=u.toUpperCase();
+  ['sec-uname','sec-upass'].forEach(id=>document.getElementById(id).value='');
+  showToast('Identifiant mis à jour ✓');
+}
+function exportData(){
+  const blob=new Blob([JSON.stringify(gd(),null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='prizm_data_'+new Date().toISOString().slice(0,10)+'.json';a.click();showToast('Export téléchargé ✓');
+}
+function importData(e){
+  const file=e.target.files[0];if(!file)return;
+  const r=new FileReader();r.onload=ev=>{try{sd(JSON.parse(ev.target.result));renderAPanel(curPanel());showToast('Données importées ✓');}catch{showToast('Fichier JSON invalide',true);}};r.readAsText(file);
+}
+
+// ══════════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════════
+let toastTmr;
+function showToast(msg,err=false){
+  const t=document.getElementById('toast2'),ic=document.getElementById('t2-icon');
+  document.getElementById('t2-text').textContent=msg;
+  ic.className='toast2-icon '+(err?'er':'ok');
+  ic.innerHTML=err?`<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`:`<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>`;
+  t.classList.add('show');clearTimeout(toastTmr);toastTmr=setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ══════════════════════════════════════════════
+// BOOT
+// ══════════════════════════════════════════════
+// Init site
+applyInfosToSite();renderHomeMatches();
+document.getElementById('page-home').style.display='block';
+setTimeout(trigRv,100);
+
+// Auto-login if session
+if(sessionStorage.getItem('prizm_auth')){
+  openAdmin();
+  document.getElementById('adm-login').style.display='none';
+  document.getElementById('adm-panel').classList.add('show');
+  const cr=gc();document.getElementById('sb-username').textContent=cr.user.toUpperCase();
+  renderAPanel('dashboard');
+}
+</script>
+</body>
+</html>
