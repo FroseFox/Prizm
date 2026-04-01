@@ -1350,6 +1350,7 @@ if(sessionStorage.getItem('prizm_auth')){
   const cr=gc();document.getElementById('sb-username').textContent=cr.user.toUpperCase();
   renderAPanel('dashboard');
 }
+   <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, doc, setDoc, onSnapshot, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
@@ -1426,6 +1427,7 @@ document.addEventListener('mousemove', (e) => {
         }, { duration: 400, fill: "forwards" });
     }
 });
+</script>   
 </script>
 </body>
 </html>
