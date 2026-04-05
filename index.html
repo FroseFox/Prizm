@@ -931,7 +931,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:60px 56px
       </div>
       <!-- INFOS -->
       <div class="apanel" id="apanel-infos">
-        <div class="atopbar"><div><div class="apage-title">Infos générales</div><div class="apage-sub">Paramètres publics</div></div><button class="save-btn" onclick="saveInfos()"><svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Sauvegarder</button></div>
+        <div class="atopbar"><div><div class="apage-title">Infos générales</div><div class="apage-sub">Paramètres publics</div></div><button onclick="saveStats()">Sauvegarder</button><svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Sauvegarder</button></div>
         <div class="acard"><div class="acard-h"><div class="acard-t">Identité</div></div><div class="acard-b">
           <div class="arow c2"><div class="af3"><label class="al">Nom équipe</label><input type="text" class="ai" id="i-name" placeholder="PRIZM"></div><div class="af3"><label class="al">Jeu</label><input type="text" class="ai" id="i-game" placeholder="Valorant"></div></div>
           <div class="af3"><label class="al">Slogan</label><input type="text" class="ai" id="i-tagline" placeholder="Organisation esport..."></div>
@@ -1901,7 +1901,34 @@ function saveInfos(){
   const val = parseInt(el.value.replace(/\D/g, ''));
   return isNaN(val) ? null : val;
 }
+   const listenStats = () => {
+  db.collection('stats').doc('general')
+    .onSnapshot(doc => {
+      if (!doc.exists) return;
+      const data = doc.data();
+      document.getElementById('s-players').innerText = data.players || 5;
+      document.getElementById('s-wr').innerHTML = (data.winrate || 78) + '<span>%</span>';
+      document.getElementById('s-tourn').innerHTML = (data.tourn || 12) + '<span>+</span>';
+      document.getElementById('s-titles').innerText = data.titles || 3;
+    });
+}
+
+// Appelle la fonction au démarrage du site
+listenStats();
   // Merge avec les infos existantes pour ne pas écraser les clés non présentes dans le form
+   const saveStats = () => {
+  db.collection('stats').doc('general').set({
+    players: gn('i-sp') ?? 5,
+    winrate: gn('i-swr') ?? 78,
+    tourn: gn('i-st') ?? 12,
+    titles: gn('i-sti') ?? 3
+  }).then(() => {
+    alert('Stats sauvegardées avec succès ! 🔥');
+  }).catch(err => {
+    console.error('Erreur Firestore:', err);
+    alert('Erreur lors de la sauvegarde !');
+  });
+}
   d.infos = {
     ...(d.infos||{}),
     name:        g('i-name')    || 'PRIZM',
