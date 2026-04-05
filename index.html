@@ -931,7 +931,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:60px 56px
       </div>
       <!-- INFOS -->
       <div class="apanel" id="apanel-infos">
-        <div class="atopbar"><div><div class="apage-title">Infos générales</div><div class="apage-sub">Paramètres publics</div></div><button onclick="saveStats()">Sauvegarder</button><svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Sauvegarder</button></div>
+        <div class="atopbar"><div><div class="apage-title">Infos générales</div><div class="apage-sub">Paramètres publics</div></div><button onclick="saveStats()">Sauvegarder</button>
         <div class="acard"><div class="acard-h"><div class="acard-t">Identité</div></div><div class="acard-b">
           <div class="arow c2"><div class="af3"><label class="al">Nom équipe</label><input type="text" class="ai" id="i-name" placeholder="PRIZM"></div><div class="af3"><label class="al">Jeu</label><input type="text" class="ai" id="i-game" placeholder="Valorant"></div></div>
           <div class="af3"><label class="al">Slogan</label><input type="text" class="ai" id="i-tagline" placeholder="Organisation esport..."></div>
@@ -1901,7 +1901,7 @@ function saveInfos(){
   const val = parseInt(el.value.replace(/\D/g, ''));
   return isNaN(val) ? null : val;
 }
-   const listenStats = () => {
+const listenStats = () => {
   db.collection('stats').doc('general')
     .onSnapshot(doc => {
       if (!doc.exists) return;
@@ -1913,7 +1913,7 @@ function saveInfos(){
     });
 }
 
-// Appelle la fonction au démarrage du site
+// Appelle au démarrage
 listenStats();
   // Merge avec les infos existantes pour ne pas écraser les clés non présentes dans le form
    const saveStats = () => {
