@@ -1047,7 +1047,7 @@ const DD={
     desc:'PRIZM a été fondée avec une seule conviction : la compétition de haut niveau demande autant de rigueur que de créativité.',
     email:'contact@prizm.gg',email2:'business@prizm.gg',discord:'discord.gg/prizm',twitter:'@prizmesport',
     twitch:'twitch.tv/prizm',insta:'@prizm.esport',yt:'PRIZM Esport',
-    statPlayers:5,statWr:78,statTourn:12,statTitles:3
+    statPlayers:0,statWr:0,statTourn:0,statTitles:0
   }
 };
 
@@ -1894,7 +1894,13 @@ function fillInfosForm(d){
 function saveInfos(){
   const d=gd();
   const g=id=>{const el=document.getElementById(id);return el?el.value.trim():'';}
-  const gn=id=>{const el=document.getElementById(id);return el&&el.value!==''?+el.value:0;}
+  const gn = id => {
+  const el = document.getElementById(id);
+  if (!el || el.value === '') return null;
+
+  const val = parseInt(el.value.replace(/\D/g, ''));
+  return isNaN(val) ? null : val;
+}
   // Merge avec les infos existantes pour ne pas écraser les clés non présentes dans le form
   d.infos = {
     ...(d.infos||{}),
@@ -1909,10 +1915,10 @@ function saveInfos(){
     twitch:      g('i-twitch'),
     insta:       g('i-insta'),
     yt:          g('i-yt'),
-    statPlayers: gn('i-sp') || 5,
-    statWr:      gn('i-swr')|| 78,
-    statTourn:   gn('i-st') || 12,
-    statTitles:  gn('i-sti')|| 3,
+    statPlayers: gn('i-sp') ?? 5,
+    statWr:      gn('i-swr') ?? 78,
+    statTourn:   gn('i-st') ?? 12,
+    statTitles:  gn('i-sti') ?? 3,
   };
   sd(d);
   showToast('Infos générales sauvegardées ✓');
