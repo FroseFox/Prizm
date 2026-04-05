@@ -1534,27 +1534,8 @@ function clearAllRead() {
   showToast('Entrées lues supprimées');
 }
 function renderSiteContact(){
-  const d=gd();const inf=d.infos||{};
-  const set=(id,val)=>{const el=document.getElementById(id);if(el&&val)el.textContent=val;};
-  set('c-email',inf.email);set('c-discord',inf.discord);set('c-email2',inf.email2);
-  const socials=[['Twitter',inf.twitter||''],['Twitch',inf.twitch||''],['Instagram',inf.insta||''],['YouTube',inf.yt||'']];
-  document.getElementById('site-socials').innerHTML=socials.filter(s=>s[1]).map(s=>`
-    <a href="#" class="socc2"><div><div class="socn2">${s[0]}</div><div class="soch2">${s[1]}</div></div><svg class="soca2" viewBox="0 0 24 24" width="16" height="16" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>`).join('');
-}
-function applyInfosToSite(){
-  const d=gd();const inf=d.infos||{};
-  const s=(id,v)=>{const el=document.getElementById(id);if(el&&v)el.textContent=v;};
-  s('site-team-name',inf.name);s('footer-name',inf.name);s('footer-copy',inf.name);s('footer-tag',inf.tagline);
-  // Stats
-  if(inf.statPlayers)document.getElementById('s-players').textContent=inf.statPlayers;
-  if(inf.statWr)document.getElementById('s-wr').innerHTML=inf.statWr+'<span>%</span>';
-  if(inf.statTourn)document.getElementById('s-tourn').innerHTML=inf.statTourn+'<span>+</span>';
-  if(inf.statTitles)document.getElementById('s-titles').textContent=inf.statTitles;
-  // Footer socials
-  const socials=[['Twitter',inf.twitter||''],['Twitch',inf.twitch||''],['Instagram',inf.insta||''],['YouTube',inf.yt||''],['Discord',inf.discord||'']];
-  document.getElementById('footer-socials').innerHTML=socials.filter(s=>s[1]).map(s=>`<a href="#">${s[0]}</a>`).join('');
-  // Description
-  if(inf.desc){document.getElementById('about-teaser').innerHTML=`<p>${inf.desc}</p>`;document.getElementById('about-full').innerHTML=`<p>${inf.desc}</p>`;}
+  // Délégué à applyInfosToSite qui gère déjà les infos contact
+  applyInfosToSite();
 }
 
 // ══════════════════════════════════════════════
@@ -1899,19 +1880,82 @@ function delItem(section,id){delInline(section,id,'');}
 
 function fillInfosForm(d){
   const inf=d.infos||{};
-  const s=(id,v)=>{const el=document.getElementById(id);if(el)el.value=v||'';};
-  s('i-name',inf.name);s('i-game',inf.game);s('i-tagline',inf.tagline);s('i-desc',inf.desc);
-  s('i-email',inf.email);s('i-email2',inf.email2);s('i-discord',inf.discord);s('i-twitter',inf.twitter);
-  s('i-twitch',inf.twitch);s('i-insta',inf.insta);s('i-yt',inf.yt);
-  s('i-sp',inf.statPlayers);s('i-swr',inf.statWr);s('i-st',inf.statTourn);s('i-sti',inf.statTitles);
+  const set=(id,v)=>{const el=document.getElementById(id);if(el)el.value=(v===undefined||v===null)?'':v;};
+  set('i-name',inf.name);      set('i-game',inf.game);
+  set('i-tagline',inf.tagline);set('i-desc',inf.desc);
+  set('i-email',inf.email);    set('i-email2',inf.email2);
+  set('i-discord',inf.discord);set('i-twitter',inf.twitter);
+  set('i-twitch',inf.twitch);  set('i-insta',inf.insta);
+  set('i-yt',inf.yt);
+  set('i-sp',inf.statPlayers); set('i-swr',inf.statWr);
+  set('i-st',inf.statTourn);   set('i-sti',inf.statTitles);
 }
+
 function saveInfos(){
-  const d=gd();const g=id=>document.getElementById(id)?.value||'';
-  d.infos={name:g('i-name'),game:g('i-game'),tagline:g('i-tagline'),desc:g('i-desc'),
-    email:g('i-email'),email2:g('i-email2'),discord:g('i-discord'),twitter:g('i-twitter'),
-    twitch:g('i-twitch'),insta:g('i-insta'),yt:g('i-yt'),
-    statPlayers:+g('i-sp'),statWr:+g('i-swr'),statTourn:+g('i-st'),statTitles:+g('i-sti')};
-  sd(d);applyInfosToSite();showToast('Infos sauvegardées ✓');
+  const d=gd();
+  const g=id=>{const el=document.getElementById(id);return el?el.value.trim():'';}
+  const gn=id=>{const el=document.getElementById(id);return el&&el.value!==''?+el.value:0;}
+  // Merge avec les infos existantes pour ne pas écraser les clés non présentes dans le form
+  d.infos = {
+    ...(d.infos||{}),
+    name:        g('i-name')    || 'PRIZM',
+    game:        g('i-game')    || 'Valorant',
+    tagline:     g('i-tagline'),
+    desc:        g('i-desc'),
+    email:       g('i-email'),
+    email2:      g('i-email2'),
+    discord:     g('i-discord'),
+    twitter:     g('i-twitter'),
+    twitch:      g('i-twitch'),
+    insta:       g('i-insta'),
+    yt:          g('i-yt'),
+    statPlayers: gn('i-sp') || 5,
+    statWr:      gn('i-swr')|| 78,
+    statTourn:   gn('i-st') || 12,
+    statTitles:  gn('i-sti')|| 3,
+  };
+  sd(d);
+  showToast('Infos générales sauvegardées ✓');
+}
+
+function applyInfosToSite(){
+  const d=gd();
+  const inf=d.infos||{};
+  // Nom équipe
+  const setTxt=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v||'';};
+  setTxt('site-team-name', inf.name||'PRIZM');
+  setTxt('footer-name',    inf.name||'PRIZM');
+  setTxt('footer-copy',    inf.name||'PRIZM');
+  setTxt('footer-tag',     inf.tagline||'');
+  // Contact page
+  setTxt('c-email',   inf.email||'');
+  setTxt('c-discord', inf.discord||'');
+  setTxt('c-email2',  inf.email2||'');
+  // Stats hero
+  const setHTML=(id,v)=>{const el=document.getElementById(id);if(el)el.innerHTML=v;};
+  setHTML('s-players', inf.statPlayers||5);
+  setHTML('s-wr',      (inf.statWr||78)+'<span>%</span>');
+  setHTML('s-tourn',   (inf.statTourn||12)+'<span>+</span>');
+  setHTML('s-titles',  inf.statTitles||3);
+  // Description À propos
+  if(inf.desc){
+    const ab1=document.getElementById('about-teaser');
+    const ab2=document.getElementById('about-full');
+    if(ab1)ab1.innerHTML=`<p>${inf.desc}</p>`;
+    if(ab2)ab2.innerHTML=`<p>${inf.desc}</p>`;
+  }
+  // Footer réseaux
+  const socials=[
+    ['Twitter',inf.twitter],['Twitch',inf.twitch],
+    ['Instagram',inf.insta],['YouTube',inf.yt],['Discord',inf.discord]
+  ].filter(s=>s[1]);
+  const fsoc=document.getElementById('footer-socials');
+  if(fsoc)fsoc.innerHTML=socials.map(s=>`<a href="#">${s[0]}</a>`).join('');
+  // Page contact réseaux
+  const siteSoc=document.getElementById('site-socials');
+  if(siteSoc)siteSoc.innerHTML=socials.map(([name,handle])=>`
+    <a href="#" class="socc2"><div><div class="socn2">${name}</div><div class="soch2">${handle}</div></div>
+    <svg class="soca2" viewBox="0 0 24 24" width="16" height="16" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>`).join('');
 }
 function delItem(section,id){
   if(!confirm('Supprimer ?'))return;
