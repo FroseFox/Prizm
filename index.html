@@ -2386,6 +2386,44 @@ function bootSite() {
 
 // Lancer Firebase
 initFirebase();
+     // 🔹 2. Fonction gn() pour nettoyer les inputs
+  const gn = id => {
+    const el = document.getElementById(id);
+    if (!el || el.value === '') return null;
+    const val = parseInt(el.value.replace(/\D/g, ''));
+    return isNaN(val) ? null : val;
+  }
+
+  // 🔹 3. Fonction pour sauvegarder depuis l'admin
+  const saveStats = () => {
+    db.collection('stats').doc('general').set({
+      players: gn('i-sp') ?? 5,
+      winrate: gn('i-swr') ?? 78,
+      tourn: gn('i-st') ?? 12,
+      titles: gn('i-sti') ?? 3
+    }).then(() => {
+      alert('Stats sauvegardées ! 🔥');
+    }).catch(err => {
+      console.error('Erreur Firestore:', err);
+      alert('Erreur lors de la sauvegarde !');
+    });
+  }
+
+  // 🔹 4. FONCTION À AJOUTER POUR MISE À JOUR REALTIME
+  const listenStats = () => {
+    db.collection('stats').doc('general')
+      .onSnapshot(doc => {
+        if (!doc.exists) return;
+        const data = doc.data();
+        document.getElementById('s-players').innerText = data.players || 5;
+        document.getElementById('s-wr').innerHTML = (data.winrate || 78) + '<span>%</span>';
+        document.getElementById('s-tourn').innerHTML = (data.tourn || 12) + '<span>+</span>';
+        document.getElementById('s-titles').innerText = data.titles || 3;
+      });
+  }
+
+  // 🔹 5. Appel immédiat de listenStats() pour que la home récupère les stats
+  listenStats();
 
 </script>
 </body>
