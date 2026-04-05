@@ -306,14 +306,14 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:60px 56px
 /* ADMIN LAYOUT */
 #adm-panel{display:none;height:100%;overflow:hidden;flex-direction:row}
 #adm-panel.show{display:flex}
-.adm-sb{width:230px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100%;overflow:hidden}
+.adm-sb{width:230px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100%;overflow:y:auto}
 .sb-logo{display:flex;align-items:center;gap:9px;padding:18px 16px;border-bottom:1px solid var(--border)}
 .sb-logo img,.sb-logo svg{height:26px;width:26px;object-fit:contain}
 .sb-logo-t{font-family:var(--fd);font-size:17px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
-.sb-nav{flex:1;padding:12px 0;overflow-y:auto;overflow-x:hidden}
+.sb-nav{flex:1;padding:12px 0;overflow-y:auto}
 .sb-group{margin-bottom:20px}
-.sb-gt{font-family:var(--fd);font-size:8px;font-weight:800;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);padding:0 14px;margin-bottom:4px;display:block}
-.sb-item{display:flex;align-items:center;gap:9px;padding:9px 14px;cursor:pointer;color:var(--muted2);font-family:var(--fd);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-left:2px solid transparent;transition:all .15s;width:100%;text-align:left;white-space:nowrap}
+.sb-gt{font-family:var(--fd);font-size:8px;font-weight:800;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);padding:0 14px;margin-bottom:4px}
+.sb-item{display:flex;align-items:center;gap:9px;padding:9px 14px;cursor:pointer;color:var(--muted2);font-family:var(--fd);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-left:2px solid transparent;transition:all .15s}
 .sb-item:hover{color:var(--white);background:rgba(255,255,255,.03)}
 .sb-item.active{color:var(--white);background:rgba(92,111,255,.1);border-left-color:var(--accent)}
 .sb-item svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0}
@@ -383,7 +383,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:60px 56px
 .save-btn:hover{background:#7080ff}
 .save-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.5}
 /* INLINE PANEL LAYOUT */
-.panel-split{display:grid;grid-template-columns:380px 1fr;gap:16px;align-items:start}
+.panel-split{display:grid;grid-template-columns:1fr 390px;gap:16px;align-items:start}
 .inline-form-card{background:var(--surface);border:1px solid rgba(92,111,255,.3);position:sticky;top:16px}
 .inline-form-card .acard-h{background:rgba(92,111,255,.08);border-bottom:1px solid rgba(92,111,255,.2)}
 .inline-form-card .acard-t{color:var(--accent)}
@@ -582,12 +582,11 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:60px 56px
       </div>
       <div class="fb2 rv">
         <div class="ft2">Message</div><div class="fsub2">Partenariat, presse, ou question générale.</div>
-        <div class="frow2"><div class="fg2"><label class="fl2">Nom</label><input type="text" class="fi2" id="c-nom" placeholder="Prénom Nom"></div><div class="fg2"><label class="fl2">Organisation</label><input type="text" class="fi2" id="c-org" placeholder="Société / Team..."></div></div>
-        <div class="fg2"><label class="fl2">Email</label><input type="email" class="fi2" id="c-mail" placeholder="votre@email.fr"></div>
-        <div class="fg2"><label class="fl2">Sujet</label><select class="fsel2" id="c-sujet"><option value="">Sélectionner...</option><option>Partenariat</option><option>Presse / Media</option><option>Sponsoring</option><option>Question générale</option><option>Autre</option></select></div>
-        <div class="fg2"><label class="fl2">Message</label><textarea class="fta2" id="c-msg" style="min-height:140px" placeholder="Décrivez votre demande..."></textarea></div>
-        <button class="fsub-btn2" id="c-submit-btn" onclick="submitContactForm()">Envoyer</button>
-        <div id="c-success" style="display:none;text-align:center;padding:32px;font-family:var(--fd);font-size:20px;font-weight:900;text-transform:uppercase;color:var(--green)">✓ Message envoyé !</div>
+        <div class="frow2"><div class="fg2"><label class="fl2">Nom</label><input type="text" class="fi2" placeholder="Prénom Nom"></div><div class="fg2"><label class="fl2">Organisation</label><input type="text" class="fi2" placeholder="Société / Team..."></div></div>
+        <div class="fg2"><label class="fl2">Email</label><input type="email" class="fi2" placeholder="votre@email.fr"></div>
+        <div class="fg2"><label class="fl2">Sujet</label><select class="fsel2"><option value="">Sélectionner...</option><option>Partenariat</option><option>Presse / Media</option><option>Sponsoring</option><option>Question générale</option><option>Autre</option></select></div>
+        <div class="fg2"><label class="fl2">Message</label><textarea class="fta2" style="min-height:140px" placeholder="Décrivez votre demande..."></textarea></div>
+        <button class="fsub-btn2" onclick="this.textContent='✓ Message envoyé';this.style.background='var(--green)';this.style.color='var(--bg)'">Envoyer</button>
       </div>
     </div>
   </section>
@@ -646,7 +645,6 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:60px 56px
         <div class="sb-group"><div class="sb-gt">Contenu</div>
           <div class="sb-item" data-apanel="news"><svg viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 0-2 2z"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8z"/></svg>Actualités</div>
           <div class="sb-item" data-apanel="recrutement"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>Recrutement</div>
-          <div class="sb-item" data-apanel="candidatures" style="position:relative"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>Candidatures<span id="sb-cand-badge" style="display:none;background:var(--red);color:white;font-size:9px;font-weight:900;padding:1px 6px;border-radius:10px;margin-left:auto;font-family:var(--fd);letter-spacing:.05em">0</span></div>
         </div>
         <div class="sb-group"><div class="sb-gt">Système</div>
           <div class="sb-item" data-apanel="infos"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Infos générales</div>
@@ -673,13 +671,14 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:60px 56px
       </div>
       <!-- ROSTER -->
       <div class="apanel" id="apanel-roster">
-        <div class="atopbar"><div><div class="apage-title">Roster</div><div class="apage-sub">Cliquer sur un joueur dans la liste pour le modifier</div></div><button class="abtn ab-g" id="roster-reset-btn" onclick="resetInlineForm('player')" style="display:none">✕ Nouveau joueur</button></div>
+        <div class="atopbar"><div><div class="apage-title">Roster</div><div class="apage-sub">Joueurs titulaires — cliquer sur un joueur pour le modifier</div></div><button class="abtn ab-g" id="roster-reset-btn" onclick="resetInlineForm('player')" style="display:none">✕ Annuler</button></div>
         <div class="panel-split">
+          <div class="acard"><div class="acard-h"><div class="acard-t" id="roster-list-title">Joueurs (0)</div></div><div class="acard-b" style="padding:0"><div class="ilist" id="a-roster-list"></div></div></div>
           <div class="acard inline-form-card">
             <div class="acard-h"><div class="acard-t" id="roster-form-title">➕ Ajouter un joueur</div></div>
             <div class="acard-b">
               <div class="af3"><label class="al">Photo du joueur</label>
-                <div class="img-upload-area" onclick="document.getElementById('p-img-file').click()">
+                <div class="img-upload-area" onclick="document.getElementById('p-img-file').click()" style="margin-bottom:0">
                   <img class="img-preview" id="p-img-preview">
                   <div class="img-upload-text"><span>Cliquer pour uploader</span><br>JPG, PNG, WebP</div>
                   <input type="file" id="p-img-file" accept="image/*" style="display:none" onchange="previewImg('p-img',this)">
@@ -710,14 +709,14 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:60px 56px
               <button class="abtn ab-save" onclick="saveInlinePlayer()">💾 Sauvegarder le joueur</button>
             </div>
           </div>
-          <div class="acard"><div class="acard-h"><div class="acard-t" id="roster-list-title">Joueurs (0)</div></div><div class="acard-b" style="padding:0"><div class="ilist" id="a-roster-list"></div></div></div>
         </div>
       </div>
 
       <!-- STAFF -->
       <div class="apanel" id="apanel-staff">
-        <div class="atopbar"><div><div class="apage-title">Staff</div><div class="apage-sub">Cliquer sur un membre dans la liste pour le modifier</div></div><button class="abtn ab-g" id="staff-reset-btn" onclick="resetInlineForm('staff')" style="display:none">✕ Nouveau membre</button></div>
+        <div class="atopbar"><div><div class="apage-title">Staff</div><div class="apage-sub">Encadrement technique — cliquer pour modifier</div></div><button class="abtn ab-g" id="staff-reset-btn" onclick="resetInlineForm('staff')" style="display:none">✕ Annuler</button></div>
         <div class="panel-split">
+          <div class="acard"><div class="acard-h"><div class="acard-t" id="staff-list-title">Staff (0)</div></div><div class="acard-b" style="padding:0"><div class="ilist" id="a-staff-list"></div></div></div>
           <div class="acard inline-form-card">
             <div class="acard-h"><div class="acard-t" id="staff-form-title">➕ Ajouter un membre</div></div>
             <div class="acard-b">
@@ -744,14 +743,14 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:60px 56px
               <button class="abtn ab-save" onclick="saveInlineStaff()">💾 Sauvegarder le membre</button>
             </div>
           </div>
-          <div class="acard"><div class="acard-h"><div class="acard-t" id="staff-list-title">Staff (0)</div></div><div class="acard-b" style="padding:0"><div class="ilist" id="a-staff-list"></div></div></div>
         </div>
       </div>
 
       <!-- MATCHES -->
       <div class="apanel" id="apanel-matches">
-        <div class="atopbar"><div><div class="apage-title">Résultats</div><div class="apage-sub">Cliquer sur un résultat dans la liste pour le modifier</div></div><button class="abtn ab-g" id="match-reset-btn" onclick="resetInlineForm('match')" style="display:none">✕ Nouveau résultat</button></div>
+        <div class="atopbar"><div><div class="apage-title">Résultats</div><div class="apage-sub">Matchs joués — cliquer pour modifier</div></div><button class="abtn ab-g" id="match-reset-btn" onclick="resetInlineForm('match')" style="display:none">✕ Annuler</button></div>
         <div class="panel-split">
+          <div class="acard"><div class="acard-h"><div class="acard-t" id="match-list-title">Résultats (0)</div></div><div class="acard-b" style="padding:0"><div class="ilist" id="a-matches-list"></div></div></div>
           <div class="acard inline-form-card">
             <div class="acard-h"><div class="acard-t" id="match-form-title">➕ Ajouter un résultat</div></div>
             <div class="acard-b">
@@ -773,14 +772,14 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:60px 56px
               <button class="abtn ab-save" onclick="saveInlineMatch()">💾 Sauvegarder le résultat</button>
             </div>
           </div>
-          <div class="acard"><div class="acard-h"><div class="acard-t" id="match-list-title">Résultats (0)</div></div><div class="acard-b" style="padding:0"><div class="ilist" id="a-matches-list"></div></div></div>
         </div>
       </div>
 
       <!-- CALENDAR -->
       <div class="apanel" id="apanel-calendar">
-        <div class="atopbar"><div><div class="apage-title">Calendrier</div><div class="apage-sub">Cliquer sur un match dans la liste pour le modifier</div></div><button class="abtn ab-g" id="cal-reset-btn" onclick="resetInlineForm('cal')" style="display:none">✕ Nouveau match</button></div>
+        <div class="atopbar"><div><div class="apage-title">Calendrier</div><div class="apage-sub">Matchs à venir — cliquer pour modifier</div></div><button class="abtn ab-g" id="cal-reset-btn" onclick="resetInlineForm('cal')" style="display:none">✕ Annuler</button></div>
         <div class="panel-split">
+          <div class="acard"><div class="acard-h"><div class="acard-t" id="cal-list-title">Matchs programmés (0)</div></div><div class="acard-b" style="padding:0"><div class="ilist" id="a-calendar-list"></div></div></div>
           <div class="acard inline-form-card">
             <div class="acard-h"><div class="acard-t" id="cal-form-title">➕ Ajouter un match</div></div>
             <div class="acard-b">
@@ -794,14 +793,14 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:60px 56px
               <button class="abtn ab-save" onclick="saveInlineCal()">💾 Sauvegarder le match</button>
             </div>
           </div>
-          <div class="acard"><div class="acard-h"><div class="acard-t" id="cal-list-title">Matchs programmés (0)</div></div><div class="acard-b" style="padding:0"><div class="ilist" id="a-calendar-list"></div></div></div>
         </div>
       </div>
 
       <!-- PALMARES -->
       <div class="apanel" id="apanel-palmares">
-        <div class="atopbar"><div><div class="apage-title">Palmarès</div><div class="apage-sub">Cliquer sur un trophée dans la liste pour le modifier</div></div><button class="abtn ab-g" id="palm-reset-btn" onclick="resetInlineForm('palm')" style="display:none">✕ Nouveau trophée</button></div>
+        <div class="atopbar"><div><div class="apage-title">Palmarès</div><div class="apage-sub">Titres et résultats — cliquer pour modifier</div></div><button class="abtn ab-g" id="palm-reset-btn" onclick="resetInlineForm('palm')" style="display:none">✕ Annuler</button></div>
         <div class="panel-split">
+          <div class="acard"><div class="acard-h"><div class="acard-t" id="palm-list-title">Trophées (0)</div></div><div class="acard-b" style="padding:0"><div class="ilist" id="a-palmares-list"></div></div></div>
           <div class="acard inline-form-card">
             <div class="acard-h"><div class="acard-t" id="palm-form-title">➕ Ajouter un trophée</div></div>
             <div class="acard-b">
@@ -828,14 +827,14 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:60px 56px
               <button class="abtn ab-save" onclick="saveInlinePalm()">💾 Sauvegarder le trophée</button>
             </div>
           </div>
-          <div class="acard"><div class="acard-h"><div class="acard-t" id="palm-list-title">Trophées (0)</div></div><div class="acard-b" style="padding:0"><div class="ilist" id="a-palmares-list"></div></div></div>
         </div>
       </div>
 
       <!-- NEWS -->
       <div class="apanel" id="apanel-news">
-        <div class="atopbar"><div><div class="apage-title">Actualités</div><div class="apage-sub">Cliquer sur un article dans la liste pour le modifier</div></div><button class="abtn ab-g" id="news-reset-btn" onclick="resetInlineForm('news')" style="display:none">✕ Nouvel article</button></div>
+        <div class="atopbar"><div><div class="apage-title">Actualités</div><div class="apage-sub">Articles — cliquer pour modifier</div></div><button class="abtn ab-g" id="news-reset-btn" onclick="resetInlineForm('news')" style="display:none">✕ Annuler</button></div>
         <div class="panel-split">
+          <div class="acard"><div class="acard-h"><div class="acard-t" id="news-list-title">Articles (0)</div></div><div class="acard-b" style="padding:0"><div class="ilist" id="a-news-list"></div></div></div>
           <div class="acard inline-form-card">
             <div class="acard-h"><div class="acard-t" id="news-form-title">➕ Nouvel article</div></div>
             <div class="acard-b">
@@ -862,14 +861,14 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:60px 56px
               <button class="abtn ab-save" onclick="saveInlineNews()">💾 Sauvegarder l'article</button>
             </div>
           </div>
-          <div class="acard"><div class="acard-h"><div class="acard-t" id="news-list-title">Articles (0)</div></div><div class="acard-b" style="padding:0"><div class="ilist" id="a-news-list"></div></div></div>
         </div>
       </div>
 
       <!-- RECRUTEMENT -->
       <div class="apanel" id="apanel-recrutement">
-        <div class="atopbar"><div><div class="apage-title">Recrutement</div><div class="apage-sub">Cliquer sur un poste dans la liste pour le modifier</div></div><button class="abtn ab-g" id="op-reset-btn" onclick="resetInlineForm('op')" style="display:none">✕ Nouveau poste</button></div>
+        <div class="atopbar"><div><div class="apage-title">Recrutement</div><div class="apage-sub">Postes — cliquer pour modifier</div></div><button class="abtn ab-g" id="op-reset-btn" onclick="resetInlineForm('op')" style="display:none">✕ Annuler</button></div>
         <div class="panel-split">
+          <div class="acard"><div class="acard-h"><div class="acard-t" id="op-list-title">Postes (0)</div></div><div class="acard-b" style="padding:0"><div class="ilist" id="a-openings-list"></div></div></div>
           <div class="acard inline-form-card">
             <div class="acard-h"><div class="acard-t" id="op-form-title">➕ Ajouter un poste</div></div>
             <div class="acard-b">
@@ -890,48 +889,11 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:60px 56px
               <button class="abtn ab-save" onclick="saveInlineOpening()">💾 Sauvegarder le poste</button>
             </div>
           </div>
-          <div class="acard"><div class="acard-h"><div class="acard-t" id="op-list-title">Postes (0)</div></div><div class="acard-b" style="padding:0"><div class="ilist" id="a-openings-list"></div></div></div>
-        </div>
-      </div>
-      <!-- CANDIDATURES -->
-      <div class="apanel" id="apanel-candidatures">
-        <div class="atopbar">
-          <div><div class="apage-title">Candidatures & Messages</div><div class="apage-sub">Toutes les candidatures et messages reçus via le site</div></div>
-          <div style="display:flex;gap:8px;align-items:center">
-            <span id="cand-count-label" style="font-family:var(--fd);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted2)"></span>
-            <button class="abtn ab-d" onclick="clearAllRead()" style="font-size:9px">🗑 Supprimer lus</button>
-          </div>
-        </div>
-        <!-- FILTER TABS -->
-        <div style="display:flex;gap:2px;margin-bottom:20px;border-bottom:1px solid var(--border)">
-          <button class="tab-btn active" data-ctab="all" onclick="filterCand('all',this)">Tout</button>
-          <button class="tab-btn" data-ctab="pending" onclick="filterCand('pending',this)">⏳ En attente</button>
-          <button class="tab-btn" data-ctab="accepted" onclick="filterCand('accepted',this)">✅ Acceptés</button>
-          <button class="tab-btn" data-ctab="rejected" onclick="filterCand('rejected',this)">❌ Refusés</button>
-          <button class="tab-btn" data-ctab="message" onclick="filterCand('message',this)">💬 Messages</button>
-        </div>
-        <div id="cand-list"></div>
-        <!-- DETAIL MODAL INLINE -->
-        <div id="cand-detail" style="display:none;margin-top:16px">
-          <div class="acard" style="border-color:rgba(92,111,255,.4)">
-            <div class="acard-h" style="background:rgba(92,111,255,.08);display:flex;justify-content:space-between;align-items:center">
-              <div class="acard-t" id="cd-title">Détail</div>
-              <button class="amodal-x" onclick="document.getElementById('cand-detail').style.display='none'">✕</button>
-            </div>
-            <div class="acard-b" id="cd-body"></div>
-            <div style="padding:14px 18px;border-top:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap">
-              <button class="abtn ab-gr" id="cd-accept" onclick="setCandStatus('accepted')">✅ Accepter</button>
-              <button class="abtn ab-d" id="cd-reject" onclick="setCandStatus('rejected')">❌ Refuser</button>
-              <button class="abtn ab-g" onclick="setCandStatus('pending')">⏳ Remettre en attente</button>
-              <a id="cd-reply-link" href="#" class="abtn ab-g" target="_blank" style="text-decoration:none">✉️ Répondre par email</a>
-              <button class="abtn ab-d" style="margin-left:auto" onclick="delCand()">🗑 Supprimer</button>
-            </div>
-          </div>
         </div>
       </div>
       <!-- INFOS -->
       <div class="apanel" id="apanel-infos">
-        <div class="atopbar"><div><div class="apage-title">Infos générales</div><div class="apage-sub">Paramètres publics</div></div><button onclick="saveStats()">Sauvegarder</button>
+        <div class="atopbar"><div><div class="apage-title">Infos générales</div><div class="apage-sub">Paramètres publics</div></div><button class="save-btn" onclick="saveInfos()"><svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Sauvegarder</button></div>
         <div class="acard"><div class="acard-h"><div class="acard-t">Identité</div></div><div class="acard-b">
           <div class="arow c2"><div class="af3"><label class="al">Nom équipe</label><input type="text" class="ai" id="i-name" placeholder="PRIZM"></div><div class="af3"><label class="al">Jeu</label><input type="text" class="ai" id="i-game" placeholder="Valorant"></div></div>
           <div class="af3"><label class="al">Slogan</label><input type="text" class="ai" id="i-tagline" placeholder="Organisation esport..."></div>
@@ -1047,11 +1009,12 @@ const DD={
     desc:'PRIZM a été fondée avec une seule conviction : la compétition de haut niveau demande autant de rigueur que de créativité.',
     email:'contact@prizm.gg',email2:'business@prizm.gg',discord:'discord.gg/prizm',twitter:'@prizmesport',
     twitch:'twitch.tv/prizm',insta:'@prizm.esport',yt:'PRIZM Esport',
-    statPlayers:0,statWr:0,statTourn:0,statTitles:0
+    statPlayers:5,statWr:78,statTourn:12,statTitles:3
   }
 };
 
-// gd() et sd() sont définis plus bas avec Firebase intégré
+function gd(){const r=localStorage.getItem(DK);if(!r){localStorage.setItem(DK,JSON.stringify(DD));return DD;}return JSON.parse(r);}
+function sd(d){localStorage.setItem(DK,JSON.stringify(d));}
 function nid(arr){return arr.length?Math.max(...arr.map(x=>x.id))+1:1;}
 function gc(){const r=localStorage.getItem(CK);return r?JSON.parse(r):{user:'admin',pass:'prizm2025'};}
 function sc(u,p){localStorage.setItem(CK,JSON.stringify({user:u,pass:p}));}
@@ -1065,8 +1028,13 @@ function nav(page){
   const t=document.getElementById('page-'+page);
   if(t){t.style.display='block';window.scrollTo(0,0);setTimeout(trigRv,50);}
   document.querySelectorAll('.nav-link').forEach(a=>a.classList.toggle('active',a.dataset.page===page));
-  // Toujours re-render depuis les données fraîches
-  refreshSiteAll();
+  if(page==='roster'){renderSiteRoster();renderSiteStaff();}
+  if(page==='competitions'){renderSiteMatches();renderSiteCalendar();renderSiteArchive();}
+  if(page==='palmares')renderSitePalmares();
+  if(page==='actualites')renderSiteNews();
+  if(page==='recrutement')renderSiteRecrutement();
+  if(page==='contact')renderSiteContact();
+  if(page==='home'){renderHomeMatches();applyInfosToSite();}
 }
 document.querySelectorAll('[data-page]').forEach(el=>el.addEventListener('click',e=>{e.preventDefault();nav(el.dataset.page);}));
 // TABS
@@ -1203,339 +1171,45 @@ function toggleFormFields(type){
   document.getElementById('fields-player').style.display=type==='player'?'block':'none';
   document.getElementById('fields-staff').style.display=type==='staff'?'block':'none';
 }
-// ══════════════════════════════════════════════
-// WEB3FORMS — EMAIL DIRECT VERS GMAIL
-// 100% gratuit, pas de compte requis
-// ══════════════════════════════════════════════
-// SEULE ÉTAPE :
-// 1. Va sur https://web3forms.com
-// 2. Entre "prizmesport.contact@gmail.com" → clique "Create Access Key"
-// 3. Copie la clé et colle-la ci-dessous
-const WEB3FORMS_KEY = 'COLLE_TA_CLE_ICI';
-
-async function sendEmail(subject, bodyLines) {
-  if (!WEB3FORMS_KEY || WEB3FORMS_KEY === 'COLLE_TA_CLE_ICI') {
-    console.info('Web3Forms non configuré — email non envoyé');
-    return false;
-  }
-  try {
-    const res = await fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        access_key: WEB3FORMS_KEY,
-        subject: subject,
-        message: bodyLines.join('\n'),
-        from_name: 'PRIZM Site',
-        botcheck: ''
-      })
-    });
-    const data = await res.json();
-    return data.success === true;
-  } catch(e) {
-    console.warn('Email error:', e);
-    return false;
-  }
-}
-
-// ══════════════════════════════════════════════
-// CANDIDATURES — stockage Firebase + local
-// ══════════════════════════════════════════════
-const FB_CAND_URL = 'https://prizmweb-fad94-default-rtdb.europe-west1.firebasedatabase.app/candidatures.json';
-
-async function saveCandidature(entry) {
-  const d = getCandidatures();
-  d.push(entry);
-  localStorage.setItem('prizm_candidatures', JSON.stringify(d));
-  // Sauver sur Firebase
-  try { await fetch(FB_CAND_URL, { method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(d) }); }
-  catch(e) { console.warn('Firebase candidature save error', e); }
-  updateCandBadge();
-}
-
-function getCandidatures() {
-  try { return JSON.parse(localStorage.getItem('prizm_candidatures') || '[]'); }
-  catch(e) { return []; }
-}
-
-async function loadCandidaturesFromFirebase() {
-  try {
-    const res = await fetch(FB_CAND_URL);
-    if (!res.ok) return;
-    const data = await res.json();
-    if (Array.isArray(data)) {
-      localStorage.setItem('prizm_candidatures', JSON.stringify(data));
-      updateCandBadge();
-    }
-  } catch(e) {}
-}
-
-function updateCandBadge() {
-  const pending = getCandidatures().filter(c => c.status === 'pending').length;
-  const badge = document.getElementById('sb-cand-badge');
-  if (!badge) return;
-  if (pending > 0) { badge.style.display = 'inline'; badge.textContent = pending; }
-  else { badge.style.display = 'none'; }
-}
-
-// ══════════════════════════════════════════════
-// SUBMIT — CANDIDATURE JOUEUR/STAFF
-// ══════════════════════════════════════════════
-async function submitSiteForm() {
-  const activeType = document.querySelector('#site-type-radios .fr2.sel')?.dataset.type || 'player';
-  const isPlayer = activeType === 'player';
-
-  const nom    = isPlayer ? document.getElementById('f-name')?.value.trim()  : document.getElementById('f-sname')?.value.trim();
-  const email  = isPlayer ? document.getElementById('f-email')?.value.trim() : document.getElementById('f-semail')?.value.trim();
-  const discord= isPlayer ? document.getElementById('f-discord')?.value.trim(): document.getElementById('f-sdiscord')?.value.trim();
-  const motiv  = document.getElementById('f-motiv')?.value.trim();
-
-  if (!nom && !email) { showToast('Remplis au moins ton nom et ton email', true); return; }
-
-  // Build entry
-  const entry = {
-    id: Date.now(),
-    type: isPlayer ? 'candidature_joueur' : 'candidature_staff',
-    status: 'pending',
-    date: new Date().toLocaleDateString('fr-FR', {day:'2-digit',month:'short',year:'numeric'}),
-    timestamp: Date.now(),
-    nom: nom || '',
-    email: email || '',
-    discord: discord || '',
-    motivation: motiv || '',
-    ...(isPlayer ? {
-      ign:      document.getElementById('f-ign')?.value.trim() || '',
-      rang:     document.getElementById('f-rank')?.value || '',
-      role:     document.getElementById('f-role')?.value || '',
-      tracker:  document.getElementById('f-tracker')?.value.trim() || '',
-    } : {
-      experience: document.getElementById('f-sexp')?.value.trim() || '',
-      portfolio:  document.getElementById('f-sport')?.value.trim() || '',
-    })
-  };
-
-  await saveCandidature(entry);
-
-  // Email avec nouvelle signature
-  sendEmail(
-    `[PRIZM] Nouvelle ${isPlayer ? 'candidature joueur' : 'candidature staff'} — ${nom || entry.ign || 'Anonyme'}`,
-    buildEmailLines(entry)
-  );
-
-  // Confirm
-  document.getElementById('site-form-inner').style.display = 'none';
+function submitSiteForm(){
+  document.getElementById('site-form-inner').style.display='none';
   document.getElementById('site-form-ok').classList.add('show');
-  showToast('Candidature envoyée ✓');
-}
-
-// ══════════════════════════════════════════════
-// SUBMIT — MESSAGE DE CONTACT
-// ══════════════════════════════════════════════
-async function submitContactForm() {
-  const nom   = document.getElementById('c-nom')?.value.trim();
-  const email = document.getElementById('c-mail')?.value.trim();
-  const sujet = document.getElementById('c-sujet')?.value;
-  const msg   = document.getElementById('c-msg')?.value.trim();
-
-  if (!nom || !msg) { showToast('Nom et message obligatoires', true); return; }
-
-  const entry = {
-    id: Date.now(),
-    type: 'message',
-    status: 'pending',
-    date: new Date().toLocaleDateString('fr-FR', {day:'2-digit',month:'short',year:'numeric'}),
-    timestamp: Date.now(),
-    nom: nom || '',
-    email: email || '',
-    org: document.getElementById('c-org')?.value.trim() || '',
-    sujet: sujet || 'Question générale',
-    message: msg || ''
-  };
-
-  await saveCandidature(entry);
-
-  // Email avec nouvelle signature
-  sendEmail(
-    `[PRIZM] Nouveau message — ${sujet} — ${nom}`,
-    buildEmailLines(entry)
-  );
-
-  // Confirm
-  document.getElementById('c-submit-btn').style.display = 'none';
-  document.getElementById('c-success').style.display = 'block';
-  showToast('Message envoyé ✓');
-}
-
-function buildEmailLines(e) {
-  const lines = [`=== PRIZM — ${new Date().toLocaleString('fr-FR')} ===`, ''];
-  if (e.type)        lines.push(`Type        : ${e.type.replace('_',' ').toUpperCase()}`);
-  if (e.nom)         lines.push(`Nom         : ${e.nom}`);
-  if (e.ign)         lines.push(`IGN         : ${e.ign}`);
-  if (e.email)       lines.push(`Email       : ${e.email}`);
-  if (e.discord)     lines.push(`Discord     : ${e.discord}`);
-  if (e.rang)        lines.push(`Rang        : ${e.rang}`);
-  if (e.role)        lines.push(`Rôle        : ${e.role}`);
-  if (e.tracker)     lines.push(`Tracker     : ${e.tracker}`);
-  if (e.experience)  lines.push(`Expérience  : ${e.experience}`);
-  if (e.portfolio)   lines.push(`Portfolio   : ${e.portfolio}`);
-  if (e.org)         lines.push(`Organisation: ${e.org}`);
-  if (e.sujet)       lines.push(`Sujet       : ${e.sujet}`);
-  if (e.message) {
-    lines.push('');
-    lines.push('--- MESSAGE ---');
-    lines.push(e.message);
-  }
-  if (e.motivation) {
-    lines.push('');
-    lines.push('--- MOTIVATION ---');
-    lines.push(e.motivation);
-  }
-  return lines;
-}
-
-// ══════════════════════════════════════════════
-// ADMIN — RENDER CANDIDATURES
-// ══════════════════════════════════════════════
-let currentCandFilter = 'all';
-let currentCandId = null;
-
-function renderACandidatures() {
-  loadCandidaturesFromFirebase().then(() => _renderCandList());
-  _renderCandList();
-}
-
-function _renderCandList() {
-  const all = getCandidatures();
-  const filtered = currentCandFilter === 'all' ? all : all.filter(c => {
-    if (currentCandFilter === 'message') return c.type === 'message';
-    return c.status === currentCandFilter && c.type !== 'message';
-  });
-
-  const pending = all.filter(c => c.status === 'pending').length;
-  const el = document.getElementById('cand-count-label');
-  if (el) el.textContent = `${all.length} total · ${pending} en attente`;
-  updateCandBadge();
-
-  const list = document.getElementById('cand-list');
-  if (!list) return;
-
-  if (!filtered.length) {
-    list.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📭</div><div class="empty-state-txt">Aucune entrée dans cette catégorie</div></div>`;
-    return;
-  }
-
-  // Sort newest first
-  const sorted = [...filtered].sort((a,b) => (b.timestamp||0)-(a.timestamp||0));
-
-  list.innerHTML = sorted.map(c => {
-    const isMsg = c.type === 'message';
-    const typeLabel = isMsg ? '💬 Message' : c.type === 'candidature_joueur' ? '🎮 Joueur' : '🎧 Staff';
-    const statusColor = c.status === 'accepted' ? 'var(--green)' : c.status === 'rejected' ? 'var(--red)' : 'var(--muted2)';
-    const statusLabel = c.status === 'accepted' ? '✅ Accepté' : c.status === 'rejected' ? '❌ Refusé' : '⏳ En attente';
-    const unread = c.status === 'pending' ? 'border-left:3px solid var(--accent);' : '';
-    return `
-    <div class="irow" onclick="openCandDetail(${c.id})" style="cursor:pointer;${unread}">
-      <div class="irow-thumb-ph" style="font-size:20px">${isMsg ? '💬' : c.type === 'candidature_joueur' ? '🎮' : '🎧'}</div>
-      <div class="irow-info">
-        <div class="irow-t">${c.nom || c.ign || 'Anonyme'} ${c.ign && c.nom ? `<span style="color:var(--muted2);font-weight:400;font-size:11px">(${c.ign})</span>` : ''}</div>
-        <div class="irow-s">${typeLabel} · ${c.date}${c.email ? ` · ${c.email}` : ''}</div>
-      </div>
-      <span style="font-family:var(--fd);font-size:9px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:${statusColor};flex-shrink:0;padding:3px 8px;border:1px solid ${statusColor};opacity:.8;clip-path:polygon(4px 0,100% 0,calc(100% - 4px) 100%,0 100%)">${statusLabel}</span>
-    </div>`;
-  }).join('');
-}
-
-function filterCand(filter, btn) {
-  currentCandFilter = filter;
-  document.querySelectorAll('[data-ctab]').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('cand-detail').style.display = 'none';
-  _renderCandList();
-}
-
-function openCandDetail(id) {
-  const all = getCandidatures();
-  const c = all.find(x => x.id === id);
-  if (!c) return;
-  currentCandId = id;
-
-  const isMsg = c.type === 'message';
-  document.getElementById('cd-title').textContent = isMsg
-    ? `💬 Message de ${c.nom}` : `${c.type === 'candidature_joueur' ? '🎮' : '🎧'} Candidature — ${c.nom || c.ign}`;
-
-  const rows = [];
-  if (c.nom)         rows.push(['Nom', c.nom]);
-  if (c.ign)         rows.push(['IGN', c.ign]);
-  if (c.email)       rows.push(['Email', `<a href="mailto:${c.email}" style="color:var(--accent)">${c.email}</a>`]);
-  if (c.discord)     rows.push(['Discord', c.discord]);
-  if (c.rang)        rows.push(['Rang', c.rang]);
-  if (c.role)        rows.push(['Rôle souhaité', c.role]);
-  if (c.tracker)     rows.push(['Tracker', `<a href="${c.tracker}" target="_blank" style="color:var(--accent)">${c.tracker}</a>`]);
-  if (c.experience)  rows.push(['Expérience', c.experience]);
-  if (c.portfolio)   rows.push(['Portfolio', c.portfolio]);
-  if (c.org)         rows.push(['Organisation', c.org]);
-  if (c.sujet)       rows.push(['Sujet', c.sujet]);
-  rows.push(['Date', c.date]);
-
-  const mainText = c.motivation || c.message || '';
-
-  document.getElementById('cd-body').innerHTML = `
-    <div style="display:grid;grid-template-columns:140px 1fr;gap:8px 16px;margin-bottom:20px">
-      ${rows.map(([k,v]) => `
-        <div style="font-family:var(--fd);font-size:10px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--muted2);padding:8px 0;border-bottom:1px solid var(--border)">${k}</div>
-        <div style="font-size:13px;color:var(--white);padding:8px 0;border-bottom:1px solid var(--border)">${v}</div>`).join('')}
-    </div>
-    ${mainText ? `<div style="font-family:var(--fd);font-size:10px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--muted2);margin-bottom:10px">${c.motivation ? 'Motivation' : 'Message'}</div>
-    <div style="font-size:14px;color:var(--text);line-height:1.75;background:var(--bg2);padding:16px;border:1px solid var(--border);white-space:pre-wrap">${mainText}</div>` : ''}
-  `;
-
-  // Reply link
-  const subject = encodeURIComponent(`[PRIZM] Réponse à votre candidature`);
-  const body = encodeURIComponent(`Bonjour ${c.nom || c.ign || ''},\n\n`);
-  const replyLink = document.getElementById('cd-reply-link');
-  if (replyLink && c.email) { replyLink.href = `mailto:${c.email}?subject=${subject}&body=${body}`; replyLink.style.display=''; }
-  else if (replyLink) replyLink.style.display = 'none';
-
-  document.getElementById('cand-detail').style.display = 'block';
-  document.getElementById('cand-detail').scrollIntoView({ behavior:'smooth', block:'nearest' });
-}
-
-function setCandStatus(status) {
-  if (!currentCandId) return;
-  const all = getCandidatures();
-  const idx = all.findIndex(c => c.id === currentCandId);
-  if (idx === -1) return;
-  all[idx].status = status;
-  localStorage.setItem('prizm_candidatures', JSON.stringify(all));
-  // Sync Firebase
-  fetch(FB_CAND_URL, { method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(all) });
-  _renderCandList();
-  openCandDetail(currentCandId);
-  showToast(status === 'accepted' ? 'Candidature acceptée ✓' : status === 'rejected' ? 'Candidature refusée' : 'Remis en attente');
-}
-
-function delCand() {
-  if (!currentCandId || !confirm('Supprimer définitivement cette entrée ?')) return;
-  const all = getCandidatures().filter(c => c.id !== currentCandId);
-  localStorage.setItem('prizm_candidatures', JSON.stringify(all));
-  fetch(FB_CAND_URL, { method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(all) });
-  currentCandId = null;
-  document.getElementById('cand-detail').style.display = 'none';
-  _renderCandList();
-  showToast('Entrée supprimée');
-}
-
-function clearAllRead() {
-  if (!confirm('Supprimer toutes les candidatures acceptées et refusées ?')) return;
-  const remaining = getCandidatures().filter(c => c.status === 'pending');
-  localStorage.setItem('prizm_candidatures', JSON.stringify(remaining));
-  fetch(FB_CAND_URL, { method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(remaining) });
-  _renderCandList();
-  showToast('Entrées lues supprimées');
 }
 function renderSiteContact(){
-  // Délégué à applyInfosToSite qui gère déjà les infos contact
-  applyInfosToSite();
+  const d=gd();const inf=d.infos||{};
+  const set=(id,val)=>{const el=document.getElementById(id);if(el&&val)el.textContent=val;};
+  set('c-email',inf.email);set('c-discord',inf.discord);set('c-email2',inf.email2);
+  const socials=[['Twitter',inf.twitter||''],['Twitch',inf.twitch||''],['Instagram',inf.insta||''],['YouTube',inf.yt||'']];
+  document.getElementById('site-socials').innerHTML=socials.filter(s=>s[1]).map(s=>`
+    <a href="#" class="socc2"><div><div class="socn2">${s[0]}</div><div class="soch2">${s[1]}</div></div><svg class="soca2" viewBox="0 0 24 24" width="16" height="16" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>`).join('');
+}
+function applyInfosToSite(){
+  const d=gd();const inf=d.infos||{};
+  // Helpers — applique toujours, même si vide
+  const txt=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v||'';};
+  const htm=(id,v)=>{const el=document.getElementById(id);if(el)el.innerHTML=v||'';};
+  // Identité
+  txt('site-team-name', inf.name||'PRIZM');
+  txt('footer-name',    inf.name||'PRIZM');
+  txt('footer-copy',    inf.name||'PRIZM');
+  txt('footer-tag',     inf.tagline||'');
+  // Stats hero — toujours affichées depuis les données
+  htm('s-players', String(inf.statPlayers??5));
+  htm('s-wr',      (inf.statWr??78)+'<span>%</span>');
+  htm('s-tourn',   (inf.statTourn??12)+'<span>+</span>');
+  htm('s-titles',  String(inf.statTitles??3));
+  // Contact
+  txt('c-email',   inf.email||'');
+  txt('c-discord', inf.discord||'');
+  txt('c-email2',  inf.email2||'');
+  // Description
+  if(inf.desc){htm('about-teaser',`<p>${inf.desc}</p>`);htm('about-full',`<p>${inf.desc}</p>`);}
+  // Réseaux sociaux
+  const socials=[['Twitter',inf.twitter],['Twitch',inf.twitch],['Instagram',inf.insta],['YouTube',inf.yt],['Discord',inf.discord]].filter(([,v])=>v);
+  const fsoc=document.getElementById('footer-socials');
+  if(fsoc)fsoc.innerHTML=socials.map(([n])=>`<a href="#">${n}</a>`).join('');
+  const ssoc=document.getElementById('site-socials');
+  if(ssoc)ssoc.innerHTML=socials.map(([name,handle])=>`<a href="#" class="socc2"><div><div class="socn2">${name}</div><div class="soch2">${handle}</div></div><svg class="soca2" viewBox="0 0 24 24" width="16" height="16" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>`).join('');
 }
 
 // ══════════════════════════════════════════════
@@ -1597,7 +1271,6 @@ function renderAPanel(p){
   if(p==='palmares')renderAPalmares(d);
   if(p==='news')renderANews(d);
   if(p==='recrutement')renderARecrutement(d);
-  if(p==='candidatures')renderACandidatures();
   if(p==='infos')fillInfosForm(d);
 }
 function curPanel(){return document.querySelector('.sb-item.active')?.dataset.apanel||'dashboard';}
@@ -1880,59 +1553,21 @@ function delItem(section,id){delInline(section,id,'');}
 
 function fillInfosForm(d){
   const inf=d.infos||{};
-  const set=(id,v)=>{const el=document.getElementById(id);if(el)el.value=(v===undefined||v===null)?'':v;};
-  set('i-name',inf.name);      set('i-game',inf.game);
-  set('i-tagline',inf.tagline);set('i-desc',inf.desc);
-  set('i-email',inf.email);    set('i-email2',inf.email2);
-  set('i-discord',inf.discord);set('i-twitter',inf.twitter);
-  set('i-twitch',inf.twitch);  set('i-insta',inf.insta);
-  set('i-yt',inf.yt);
-  set('i-sp',inf.statPlayers); set('i-swr',inf.statWr);
-  set('i-st',inf.statTourn);   set('i-sti',inf.statTitles);
+  const s=(id,v)=>{const el=document.getElementById(id);if(el)el.value=v||'';};
+  s('i-name',inf.name);s('i-game',inf.game);s('i-tagline',inf.tagline);s('i-desc',inf.desc);
+  s('i-email',inf.email);s('i-email2',inf.email2);s('i-discord',inf.discord);s('i-twitter',inf.twitter);
+  s('i-twitch',inf.twitch);s('i-insta',inf.insta);s('i-yt',inf.yt);
+  s('i-sp',inf.statPlayers);s('i-swr',inf.statWr);s('i-st',inf.statTourn);s('i-sti',inf.statTitles);
 }
-
 function saveInfos(){
   const d=gd();
-  const g=id=>{const el=document.getElementById(id);return el?el.value.trim():'';}
-  const gn = id => {
-  const el = document.getElementById(id);
-  if (!el || el.value === '') return null;
-
-  const val = parseInt(el.value.replace(/\D/g, ''));
-  return isNaN(val) ? null : val;
-}
-const listenStats = () => {
-  db.collection('stats').doc('general')
-    .onSnapshot(doc => {
-      if (!doc.exists) return;
-      const data = doc.data();
-      document.getElementById('s-players').innerText = data.players || 5;
-      document.getElementById('s-wr').innerHTML = (data.winrate || 78) + '<span>%</span>';
-      document.getElementById('s-tourn').innerHTML = (data.tourn || 12) + '<span>+</span>';
-      document.getElementById('s-titles').innerText = data.titles || 3;
-    });
-}
-
-// Appelle au démarrage
-listenStats();
-  // Merge avec les infos existantes pour ne pas écraser les clés non présentes dans le form
-   const saveStats = () => {
-  db.collection('stats').doc('general').set({
-    players: gn('i-sp') ?? 5,
-    winrate: gn('i-swr') ?? 78,
-    tourn: gn('i-st') ?? 12,
-    titles: gn('i-sti') ?? 3
-  }).then(() => {
-    alert('Stats sauvegardées avec succès ! 🔥');
-  }).catch(err => {
-    console.error('Erreur Firestore:', err);
-    alert('Erreur lors de la sauvegarde !');
-  });
-}
-  d.infos = {
+  const g=id=>{const el=document.getElementById(id);return el?el.value.trim():'';};
+  const gn=id=>{const el=document.getElementById(id);return(el&&el.value!=='')?+el.value:null;};
+  // Merge avec les infos existantes — ne pas écraser avec des valeurs vides
+  d.infos={
     ...(d.infos||{}),
-    name:        g('i-name')    || 'PRIZM',
-    game:        g('i-game')    || 'Valorant',
+    name:        g('i-name')||'PRIZM',
+    game:        g('i-game'),
     tagline:     g('i-tagline'),
     desc:        g('i-desc'),
     email:       g('i-email'),
@@ -1942,53 +1577,12 @@ listenStats();
     twitch:      g('i-twitch'),
     insta:       g('i-insta'),
     yt:          g('i-yt'),
-    statPlayers: gn('i-sp') ?? 5,
-    statWr:      gn('i-swr') ?? 78,
-    statTourn:   gn('i-st') ?? 12,
-    statTitles:  gn('i-sti') ?? 3,
+    statPlayers: gn('i-sp')??5,
+    statWr:      gn('i-swr')??78,
+    statTourn:   gn('i-st')??12,
+    statTitles:  gn('i-sti')??3,
   };
-  sd(d);
-  showToast('Infos générales sauvegardées ✓');
-}
-
-function applyInfosToSite(){
-  const d=gd();
-  const inf=d.infos||{};
-  // Nom équipe
-  const setTxt=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v||'';};
-  setTxt('site-team-name', inf.name||'PRIZM');
-  setTxt('footer-name',    inf.name||'PRIZM');
-  setTxt('footer-copy',    inf.name||'PRIZM');
-  setTxt('footer-tag',     inf.tagline||'');
-  // Contact page
-  setTxt('c-email',   inf.email||'');
-  setTxt('c-discord', inf.discord||'');
-  setTxt('c-email2',  inf.email2||'');
-  // Stats hero
-  const setHTML=(id,v)=>{const el=document.getElementById(id);if(el)el.innerHTML=v;};
-  setHTML('s-players', inf.statPlayers||5);
-  setHTML('s-wr',      (inf.statWr||78)+'<span>%</span>');
-  setHTML('s-tourn',   (inf.statTourn||12)+'<span>+</span>');
-  setHTML('s-titles',  inf.statTitles||3);
-  // Description À propos
-  if(inf.desc){
-    const ab1=document.getElementById('about-teaser');
-    const ab2=document.getElementById('about-full');
-    if(ab1)ab1.innerHTML=`<p>${inf.desc}</p>`;
-    if(ab2)ab2.innerHTML=`<p>${inf.desc}</p>`;
-  }
-  // Footer réseaux
-  const socials=[
-    ['Twitter',inf.twitter],['Twitch',inf.twitch],
-    ['Instagram',inf.insta],['YouTube',inf.yt],['Discord',inf.discord]
-  ].filter(s=>s[1]);
-  const fsoc=document.getElementById('footer-socials');
-  if(fsoc)fsoc.innerHTML=socials.map(s=>`<a href="#">${s[0]}</a>`).join('');
-  // Page contact réseaux
-  const siteSoc=document.getElementById('site-socials');
-  if(siteSoc)siteSoc.innerHTML=socials.map(([name,handle])=>`
-    <a href="#" class="socc2"><div><div class="socn2">${name}</div><div class="soch2">${handle}</div></div>
-    <svg class="soca2" viewBox="0 0 24 24" width="16" height="16" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>`).join('');
+  sd(d);showToast('Infos générales sauvegardées ✓');
 }
 function delItem(section,id){
   if(!confirm('Supprimer ?'))return;
@@ -2162,219 +1756,200 @@ function showToast(msg,err=false){
 }
 
 
-// ═══════════════════════════════════════════════════════
-// FIREBASE REALTIME DATABASE — SYNC PARTOUT
-// URL: https://prizmweb-fad94-default-rtdb.firebaseio.com
-// ═══════════════════════════════════════════════════════
-const FB_URL = 'https://prizmweb-fad94-default-rtdb.europe-west1.firebasedatabase.app/prizm.json';
-let _fbEnabled = false;
-let _lastKnownHash = '';
-let _isSaving = false;
 
-// ── Vérifier que Firebase répond ──
-async function fbPing() {
-  try {
-    const r = await fetch(FB_URL + '?shallow=true', { method: 'GET' });
-    return r.ok;
-  } catch(e) { return false; }
+
+//  FIREBASE REALTIME DATABASE — SYNC TEMPS RÉEL PARTOUT
+
+//
+//  CONFIGURATION EN 3 ÉTAPES :
+//
+//  1. Va sur https://console.firebase.google.com
+//     → Nouveau projet → nom "prizm-esport"
+//     → Menu gauche : Build → Realtime Database → Créer une base
+//     → Région : europe-west1 → Mode test → Activer
+//
+//  2. Copie l'URL affichée (format ci-dessous) et colle-la dans
+//     FIREBASE_DB_URL juste en dessous
+//
+//  3. Dans l'onglet "Règles" de ta Realtime Database, colle :
+//     { "rules": { ".read": true, ".write": true } }
+//     puis Publier
+//
+//  C'est tout. Pas de SDK, pas de config complexe.
+
+
+// 👇 COLLE ICI L'URL DE TA REALTIME DATABASE FIREBASE
+// Exemple : "https://prizm-esport-default-rtdb.europe-west1.firebasedatabase.app"
+const FIREBASE_DB_URL = "https://prizmweb-fad94-default-rtdb.europe-west1.firebasedatabase.app";
+
+// ──────────────────────────────────────────────────────────────
+// Internals — ne pas modifier
+// ──────────────────────────────────────────────────────────────
+const FB_PATH = FIREBASE_DB_URL + '/prizm.json';
+let fbActive = false;
+let localWriteLock = false; // empêche boucle écriture→lecture
+
+function isFbConfigured() {
+  return FIREBASE_DB_URL && FIREBASE_DB_URL !== "COLLE_TON_URL_ICI" && FIREBASE_DB_URL.startsWith("https://");
 }
 
-// ── Écrire TOUT dans Firebase (sans les images base64 qui sont trop lourdes) ──
-async function fbSave(data) {
-  if (!_fbEnabled) return;
-  // Queue-based: on annule le timer précédent et on attend 400ms
-  // pour grouper les sauvegardes rapides successives
-  clearTimeout(fbSave._timer);
-  fbSave._timer = setTimeout(async () => {
+// ── Écriture vers Firebase (REST API — pas de SDK nécessaire) ──
+async function fbWrite(data) {
+  if (!isFbConfigured()) return;
   try {
-    const d = JSON.parse(JSON.stringify(data));
-    // Remplacer les grosses images base64 par un placeholder léger
+    // On filtre les images base64 qui sont trop lourdes pour la Realtime DB gratuite
+    // On les garde uniquement en localStorage
+    const lean = JSON.parse(JSON.stringify(data));
     ['roster','staff','palmares','news'].forEach(col => {
-      if (d[col]) d[col] = d[col].map(item => {
-        const copy = {...item};
-        if (copy.img && copy.img.length > 200) copy.img = '__IMG__';
-        return copy;
-      });
+      if (lean[col]) lean[col] = lean[col].map(item => ({ ...item, img: item.img ? '__HAS_IMG__' : '' }));
     });
-    const res = await fetch(FB_URL, {
+    await fetch(FB_PATH, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(d)
+      body: JSON.stringify(lean)
     });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    console.log('[Firebase] ✓ Sauvegardé');
   } catch(e) {
-    console.error('[Firebase] Erreur écriture:', e);
-    showToast('Erreur Firebase — données en local uniquement', true);
+    console.warn('Firebase write error:', e);
   }
-  }, 400);
 }
 
-// ── Lire depuis Firebase ──
-async function fbLoad() {
+// ── Lecture depuis Firebase ──
+async function fbRead() {
+  if (!isFbConfigured()) return null;
   try {
-    const res = await fetch(FB_URL);
+    const res = await fetch(FB_PATH);
     if (!res.ok) return null;
-    const text = await res.text();
-    if (!text || text === 'null') return null;
-    return JSON.parse(text);
+    return await res.json();
   } catch(e) {
-    console.error('[Firebase] Erreur lecture:', e);
+    console.warn('Firebase read error:', e);
     return null;
   }
 }
 
-// ── Fusionner données Firebase + images localStorage ──
-function fbMerge(fbData) {
-  if (!fbData) return null;
+// ── Merge Firebase data avec localStorage (les images restent en local) ──
+function mergeWithLocal(fbData) {
+  if (!fbData) return;
   const local = gd();
-  const result = { ...local, ...fbData };
-  // Récupérer les images qui sont stockées en local
-  ['roster','staff','palmares','news'].forEach(col => {
+  // Pour chaque collection, prendre les données Firebase mais garder les images du localStorage
+  const cols = ['roster','staff','matches','calendar','palmares','news','openings'];
+  const merged = { ...local, ...fbData };
+  cols.forEach(col => {
     if (!fbData[col]) return;
     const localItems = local[col] || [];
-    result[col] = fbData[col].map(fbItem => {
-      if (fbItem.img !== '__IMG__') return fbItem;
-      const localMatch = localItems.find(l => l.id === fbItem.id);
-      return { ...fbItem, img: localMatch?.img || '' };
+    merged[col] = fbData[col].map(fbItem => {
+      const localItem = localItems.find(l => l.id === fbItem.id);
+      // Si l'image était présente localement et que Firebase dit '__HAS_IMG__', on garde la locale
+      const img = (fbItem.img === '__HAS_IMG__' && localItem?.img) ? localItem.img : (fbItem.img !== '__HAS_IMG__' ? fbItem.img : '');
+      return { ...fbItem, img };
     });
   });
-  return result;
-}
-
-// ── Hash simple pour détecter les vrais changements ──
-function makeHash(data) {
-  if (!data) return '';
-  // On hash sur le contenu textuel en ignorant les images
-  const d = JSON.parse(JSON.stringify(data));
-  ['roster','staff','palmares','news'].forEach(col => {
-    if (d[col]) d[col] = d[col].map(i => ({...i, img:''}));
-  });
-  return JSON.stringify(d);
-}
-
-// ── Polling toutes les 2.5s — détecte les changements d'autres navigateurs ──
-async function fbPoll() {
-  if (!_fbEnabled) return;
-  const fbData = await fbLoad();
-  if (!fbData) return;
-  const hash = makeHash(fbData);
-  if (hash === _lastKnownHash) return;
-  _lastKnownHash = hash;
-  // Données modifiées depuis un autre navigateur — merge et rafraîchit tout
-  const merged = fbMerge(fbData);
-  if (!merged) return;
+  // Sauver sans déclencher fbWrite (évite boucle)
   localStorage.setItem('prizm_data', JSON.stringify(merged));
-  refreshSiteAll();
-  // Rafraîchir le panel admin si ouvert
-  if (document.getElementById('admin-wrap')?.style.display === 'block') {
-    const ap = document.querySelector('.sb-item.active')?.dataset.apanel;
-    if (ap) renderAPanel(ap);
-  }
-  console.log('[Firebase] ✓ Sync depuis un autre client');
+  return merged;
 }
 
-// ── sd() — SEUL POINT D'ENTRÉE pour toutes les sauvegardes ──
-function sd(data) {
-  // 1. Sauvegarder en local immédiatement
+// ── Polling temps réel (Server-Sent Events / long-polling avec Firebase REST) ──
+let lastFbHash = null;
+async function fbPoll() {
+  if (!isFbConfigured() || localWriteLock) return;
+  try {
+    const fbData = await fbRead();
+    if (!fbData) return;
+    const hash = JSON.stringify(fbData).length + '_' + (fbData.matches?.length||0) + '_' + (fbData.roster?.length||0);
+    if (hash !== lastFbHash) {
+      lastFbHash = hash;
+      const merged = mergeWithLocal(fbData);
+      if (merged) refreshAllSiteSections(merged);
+    }
+  } catch(e) {}
+}
+
+// ── Actualise toutes les sections visibles du site ──
+function refreshAllSiteSections(d) {
+  const page = document.querySelector('.page[style*="block"]')?.id?.replace('page-','') || 'home';
+  applyInfosToSite();
+  if (page === 'home') renderHomeMatches();
+  if (page === 'roster') { renderSiteRoster(); renderSiteStaff(); }
+  if (page === 'competitions') { renderSiteMatches(); renderSiteCalendar(); renderSiteArchive(); }
+  if (page === 'palmares') renderSitePalmares();
+  if (page === 'actualites') renderSiteNews();
+  if (page === 'recrutement') renderSiteRecrutement();
+  // Mettre à jour le panel admin si ouvert
+  const activePanel = document.querySelector('.sb-item.active')?.dataset.apanel;
+  if (document.getElementById('admin-wrap')?.style.display === 'block' && activePanel) {
+    renderAPanel(activePanel);
+  }
+}
+
+// ── Override de sd() pour sauvegarder partout ──
+const _sdOriginal = window.sd || function(data){ localStorage.setItem('prizm_data', JSON.stringify(data)); };
+window.sd = function(data) {
+  // 1. Sauvegarder en localStorage (instantané)
   localStorage.setItem('prizm_data', JSON.stringify(data));
-
-  // 2. Rafraîchir TOUT le site public instantanément
-  refreshSiteAll();
-
-  // 3. Pousser vers Firebase (asynchrone, debounced)
-  if (_fbEnabled) {
-    fbSave(data).then(() => {
-      _lastKnownHash = makeHash(data); // évite que fbPoll re-trigger
+  // 2. Pousser vers Firebase (asynchrone)
+  if (isFbConfigured()) {
+    localWriteLock = true;
+    fbWrite(data).then(() => {
+      setTimeout(() => { localWriteLock = false; }, 2000);
     });
   }
-}
+};
 
-// ── Rafraîchit toutes les sections du site public en une fois ──
-function refreshSiteAll() {
-  applyInfosToSite();
-  renderHomeMatches();
-  // Détecte la page publique visible (pas le panel admin)
-  const page = document.querySelector('#page-home[style*="block"], #page-roster[style*="block"], #page-competitions[style*="block"], #page-palmares[style*="block"], #page-actualites[style*="block"], #page-recrutement[style*="block"], #page-contact[style*="block"], #page-about[style*="block"]')?.id?.replace('page-','');
-  if (page === 'roster')       { renderSiteRoster(); renderSiteStaff(); }
-  if (page === 'competitions') { renderSiteMatches(); renderSiteCalendar(); renderSiteArchive(); }
-  if (page === 'palmares')     renderSitePalmares();
-  if (page === 'actualites')   renderSiteNews();
-  if (page === 'recrutement')  renderSiteRecrutement();
-  if (page === 'contact')      renderSiteContact();
-}
-
-// ── gd() — Lire depuis localStorage ──
-function gd() {
-  const raw = localStorage.getItem('prizm_data');
-  if (!raw) {
-    localStorage.setItem('prizm_data', JSON.stringify(DD));
-    return DD;
-  }
-  try { return JSON.parse(raw); }
-  catch(e) { return DD; }
-}
-
-// ── INIT ──
+// ── Démarrage et polling ──
 async function initFirebase() {
-  console.log('[Firebase] Connexion à prizmweb-fad94-default-rtdb...');
-  setFbStatus('connecting');
-
-  const ok = await fbPing();
-  if (!ok) {
-    console.warn('[Firebase] Inaccessible — mode local uniquement');
+  if (!isFbConfigured()) {
+    console.warn('⚠️ Firebase non configuré — mode localStorage uniquement.');
     setFbStatus(false);
     bootSite();
     return;
   }
 
-  _fbEnabled = true;
+  setFbStatus('connecting');
 
-  // Charger les données Firebase au premier chargement
-  const fbData = await fbLoad();
-
-  if (fbData) {
-    // Firebase a des données — on les prend comme source de vérité
-    const merged = fbMerge(fbData);
-    if (merged) {
-      localStorage.setItem('prizm_data', JSON.stringify(merged));
-      _lastKnownHash = makeHash(fbData);
-      console.log('[Firebase] Données chargées depuis Firebase');
+  // Charger les données Firebase au démarrage
+  try {
+    const fbData = await fbRead();
+    if (fbData) {
+      const merged = mergeWithLocal(fbData);
+      lastFbHash = JSON.stringify(fbData).length + '_' + (fbData.matches?.length||0) + '_' + (fbData.roster?.length||0);
+      if (merged) localStorage.setItem('prizm_data', JSON.stringify(merged));
+    } else {
+      // Première connexion — pousser les données locales vers Firebase
+      await fbWrite(gd());
     }
-  } else {
-    // Firebase est vide — on y pousse les données locales
-    console.log('[Firebase] Base vide, envoi des données locales...');
-    await fbSave(gd());
-    _lastKnownHash = makeHash(gd());
+    fbActive = true;
+    setFbStatus(true);
+    showToast('🔥 Firebase connecté — sync en temps réel actif');
+  } catch(e) {
+    console.warn('Firebase init error:', e);
+    setFbStatus(false);
   }
 
-  setFbStatus(true);
-  showToast('🔥 Firebase connecté — sync temps réel actif');
-
-  // Polling toutes les 2.5 secondes
-  setInterval(fbPoll, 2500);
-
   bootSite();
+
+  // Polling toutes les 3 secondes pour détecter les changements depuis d'autres navigateurs
+  if (fbActive) {
+    setInterval(fbPoll, 3000);
+  }
 }
 
 function setFbStatus(state) {
   const el = document.getElementById('fb-status');
   if (!el) return;
-  if (state === 'connecting') el.innerHTML = `<span style="color:var(--muted2)">⏳ Connexion Firebase...</span>`;
+  if (state === 'connecting') el.innerHTML = `<span style="color:var(--muted2)">● Connexion...</span>`;
   else if (state === true)    el.innerHTML = `<span style="color:var(--green)">● Firebase sync ✓</span>`;
-  else                        el.innerHTML = `<span style="color:var(--red)">● Mode local — Firebase hors ligne</span>`;
+  else                        el.innerHTML = `<span style="color:var(--muted2)">● Mode local uniquement</span>`;
 }
 
-// ═══════════════════════════════════════════════════════
-// BOOT SITE
-// ═══════════════════════════════════════════════════════
+// ══════════════════════════════════════════════
+// BOOT
+// ══════════════════════════════════════════════
 function bootSite() {
   applyInfosToSite();
   renderHomeMatches();
   document.getElementById('page-home').style.display = 'block';
   setTimeout(trigRv, 100);
-  // Charger les candidatures dès le boot
-  loadCandidaturesFromFirebase().then(updateCandBadge);
+  // Auto-login si session active
   if (sessionStorage.getItem('prizm_auth')) {
     openAdmin();
     document.getElementById('adm-login').style.display = 'none';
@@ -2384,46 +1959,7 @@ function bootSite() {
   }
 }
 
-// Lancer Firebase
 initFirebase();
-     // 🔹 2. Fonction gn() pour nettoyer les inputs
-  const gn = id => {
-    const el = document.getElementById(id);
-    if (!el || el.value === '') return null;
-    const val = parseInt(el.value.replace(/\D/g, ''));
-    return isNaN(val) ? null : val;
-  }
-
-  // 🔹 3. Fonction pour sauvegarder depuis l'admin
-  const saveStats = () => {
-    db.collection('stats').doc('general').set({
-      players: gn('i-sp') ?? 5,
-      winrate: gn('i-swr') ?? 78,
-      tourn: gn('i-st') ?? 12,
-      titles: gn('i-sti') ?? 3
-    }).then(() => {
-      alert('Stats sauvegardées ! 🔥');
-    }).catch(err => {
-      console.error('Erreur Firestore:', err);
-      alert('Erreur lors de la sauvegarde !');
-    });
-  }
-
-  // 🔹 4. FONCTION À AJOUTER POUR MISE À JOUR REALTIME
-  const listenStats = () => {
-    db.collection('stats').doc('general')
-      .onSnapshot(doc => {
-        if (!doc.exists) return;
-        const data = doc.data();
-        document.getElementById('s-players').innerText = data.players || 5;
-        document.getElementById('s-wr').innerHTML = (data.winrate || 78) + '<span>%</span>';
-        document.getElementById('s-tourn').innerHTML = (data.tourn || 12) + '<span>+</span>';
-        document.getElementById('s-titles').innerText = data.titles || 3;
-      });
-  }
-
-  // 🔹 5. Appel immédiat de listenStats() pour que la home récupère les stats
-  listenStats();
 
 </script>
 </body>
