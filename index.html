@@ -343,13 +343,19 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:60px 56px
 .asel{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2374748a' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:calc(100% - 12px) 50%;padding-right:28px;cursor:pointer}
 .asel option{background:var(--bg2)}.ata{resize:vertical;min-height:70px;line-height:1.5}
 /* IMAGE UPLOAD */
-.img-upload-area{border:1px dashed var(--border2);padding:16px;text-align:center;cursor:pointer;transition:border-color .2s;position:relative;overflow:hidden}
-.img-upload-area:hover{border-color:var(--accent)}
+.img-upload-area{border:1px dashed var(--border2);padding:14px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;position:relative;background:var(--bg2)}
+.img-upload-area:hover{border-color:var(--accent);background:rgba(92,111,255,.04)}
 .img-upload-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.img-preview{width:100%;height:120px;object-fit:cover;margin-bottom:8px;display:none}
+.img-preview{width:100%;height:120px;object-fit:cover;margin-bottom:8px;display:none;border:1px solid var(--border)}
 .img-preview.show{display:block}
-.img-upload-text{font-family:var(--fd);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted2)}
+.img-upload-text{font-family:var(--fd);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted2)}
 .img-upload-text span{color:var(--accent)}
+.img-uploading{font-family:var(--fd);font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);padding:6px 0;display:none;animation:pulse2 1s ease-in-out infinite}
+.img-uploading.show{display:block}
+@keyframes pulse2{0%,100%{opacity:1}50%{opacity:.4}}
+.img-del-btn{font-family:var(--fd);font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--red);background:transparent;border:1px solid rgba(255,68,68,.3);padding:4px 10px;cursor:pointer;margin-top:6px;display:none;clip-path:polygon(4px 0,100% 0,calc(100% - 4px) 100%,0 100%)}
+.img-del-btn.show{display:inline-block}
+.img-del-btn:hover{background:rgba(255,68,68,.1)}
 /* ITEM LIST */
 .ilist{display:flex;flex-direction:column;gap:6px}
 .irow{background:var(--bg2);border:1px solid var(--border);padding:12px 14px;display:flex;align-items:center;gap:12px;transition:border-color .15s}
@@ -678,11 +684,13 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:60px 56px
             <div class="acard-h"><div class="acard-t" id="roster-form-title">➕ Ajouter un joueur</div></div>
             <div class="acard-b">
               <div class="af3"><label class="al">Photo du joueur</label>
-                <div class="img-upload-area" onclick="document.getElementById('p-img-file').click()" style="margin-bottom:0">
+                <div class="img-upload-area" id="p-img-area" onclick="handleImgClick('p-img',event)">
                   <img class="img-preview" id="p-img-preview">
-                  <div class="img-upload-text"><span>Cliquer pour uploader</span><br>JPG, PNG, WebP</div>
-                  <input type="file" id="p-img-file" accept="image/*" style="display:none" onchange="previewImg('p-img',this)">
+                  <div class="img-uploading" id="p-img-uploading">⏳ Upload en cours...</div>
+                  <div class="img-upload-text" id="p-img-text"><span>Cliquer pour uploader</span><br>JPG, PNG, WebP — stocké sur Firebase</div>
+                  <input type="file" id="p-img-file" accept="image/*" style="display:none" onchange="uploadImgToStorage('p-img',this)">
                 </div>
+                <button class="img-del-btn" id="p-img-del" onclick="removeImg('p-img')">✕ Retirer l'image</button>
                 <input type="hidden" id="p-img-data">
               </div>
               <div class="arow c2" style="margin-top:12px">
@@ -721,11 +729,13 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:60px 56px
             <div class="acard-h"><div class="acard-t" id="staff-form-title">➕ Ajouter un membre</div></div>
             <div class="acard-b">
               <div class="af3"><label class="al">Photo</label>
-                <div class="img-upload-area" onclick="document.getElementById('s-img-file').click()">
+                <div class="img-upload-area" id="s-img-area" onclick="handleImgClick('s-img',event)">
                   <img class="img-preview" id="s-img-preview">
-                  <div class="img-upload-text"><span>Cliquer pour uploader</span><br>JPG, PNG, WebP</div>
-                  <input type="file" id="s-img-file" accept="image/*" style="display:none" onchange="previewImg('s-img',this)">
+                  <div class="img-uploading" id="s-img-uploading">⏳ Upload en cours...</div>
+                  <div class="img-upload-text" id="s-img-text"><span>Cliquer pour uploader</span><br>JPG, PNG, WebP — stocké sur Firebase</div>
+                  <input type="file" id="s-img-file" accept="image/*" style="display:none" onchange="uploadImgToStorage('s-img',this)">
                 </div>
+                <button class="img-del-btn" id="s-img-del" onclick="removeImg('s-img')">✕ Retirer l'image</button>
                 <input type="hidden" id="s-img-data">
               </div>
               <div class="arow c2" style="margin-top:12px">
@@ -805,11 +815,13 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:60px 56px
             <div class="acard-h"><div class="acard-t" id="palm-form-title">➕ Ajouter un trophée</div></div>
             <div class="acard-b">
               <div class="af3"><label class="al">Image de l'événement</label>
-                <div class="img-upload-area" onclick="document.getElementById('tr-img-file').click()">
+                <div class="img-upload-area" id="tr-img-area" onclick="handleImgClick('tr-img',event)">
                   <img class="img-preview" id="tr-img-preview">
-                  <div class="img-upload-text"><span>Cliquer pour uploader</span><br>JPG, PNG, WebP</div>
-                  <input type="file" id="tr-img-file" accept="image/*" style="display:none" onchange="previewImg('tr-img',this)">
+                  <div class="img-uploading" id="tr-img-uploading">⏳ Upload en cours...</div>
+                  <div class="img-upload-text" id="tr-img-text"><span>Cliquer pour uploader</span><br>JPG, PNG, WebP — stocké sur Firebase</div>
+                  <input type="file" id="tr-img-file" accept="image/*" style="display:none" onchange="uploadImgToStorage('tr-img',this)">
                 </div>
+                <button class="img-del-btn" id="tr-img-del" onclick="removeImg('tr-img')">✕ Retirer l'image</button>
                 <input type="hidden" id="tr-img-data">
               </div>
               <div class="arow c2" style="margin-top:12px">
@@ -839,11 +851,13 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:60px 56px
             <div class="acard-h"><div class="acard-t" id="news-form-title">➕ Nouvel article</div></div>
             <div class="acard-b">
               <div class="af3"><label class="al">Image de couverture</label>
-                <div class="img-upload-area" onclick="document.getElementById('nw-img-file').click()">
+                <div class="img-upload-area" id="nw-img-area" onclick="handleImgClick('nw-img',event)">
                   <img class="img-preview" id="nw-img-preview">
-                  <div class="img-upload-text"><span>Cliquer pour uploader</span><br>JPG, PNG, WebP</div>
-                  <input type="file" id="nw-img-file" accept="image/*" style="display:none" onchange="previewImg('nw-img',this)">
+                  <div class="img-uploading" id="nw-img-uploading">⏳ Upload en cours...</div>
+                  <div class="img-upload-text" id="nw-img-text"><span>Cliquer pour uploader</span><br>JPG, PNG, WebP — stocké sur Firebase</div>
+                  <input type="file" id="nw-img-file" accept="image/*" style="display:none" onchange="uploadImgToStorage('nw-img',this)">
                 </div>
+                <button class="img-del-btn" id="nw-img-del" onclick="removeImg('nw-img')">✕ Retirer l'image</button>
                 <input type="hidden" id="nw-img-data">
               </div>
               <div class="af3" style="margin-top:12px"><label class="al">Titre *</label><input class="ai" id="nw-title" placeholder="Titre de l'article"></div>
@@ -1185,31 +1199,18 @@ function renderSiteContact(){
 }
 function applyInfosToSite(){
   const d=gd();const inf=d.infos||{};
-  // Helpers — applique toujours, même si vide
-  const txt=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v||'';};
-  const htm=(id,v)=>{const el=document.getElementById(id);if(el)el.innerHTML=v||'';};
-  // Identité
-  txt('site-team-name', inf.name||'PRIZM');
-  txt('footer-name',    inf.name||'PRIZM');
-  txt('footer-copy',    inf.name||'PRIZM');
-  txt('footer-tag',     inf.tagline||'');
-  // Stats hero — toujours affichées depuis les données
-  htm('s-players', String(inf.statPlayers??5));
-  htm('s-wr',      (inf.statWr??78)+'<span>%</span>');
-  htm('s-tourn',   (inf.statTourn??12)+'<span>+</span>');
-  htm('s-titles',  String(inf.statTitles??3));
-  // Contact
-  txt('c-email',   inf.email||'');
-  txt('c-discord', inf.discord||'');
-  txt('c-email2',  inf.email2||'');
+  const s=(id,v)=>{const el=document.getElementById(id);if(el&&v)el.textContent=v;};
+  s('site-team-name',inf.name);s('footer-name',inf.name);s('footer-copy',inf.name);s('footer-tag',inf.tagline);
+  // Stats
+  if(inf.statPlayers)document.getElementById('s-players').textContent=inf.statPlayers;
+  if(inf.statWr)document.getElementById('s-wr').innerHTML=inf.statWr+'<span>%</span>';
+  if(inf.statTourn)document.getElementById('s-tourn').innerHTML=inf.statTourn+'<span>+</span>';
+  if(inf.statTitles)document.getElementById('s-titles').textContent=inf.statTitles;
+  // Footer socials
+  const socials=[['Twitter',inf.twitter||''],['Twitch',inf.twitch||''],['Instagram',inf.insta||''],['YouTube',inf.yt||''],['Discord',inf.discord||'']];
+  document.getElementById('footer-socials').innerHTML=socials.filter(s=>s[1]).map(s=>`<a href="#">${s[0]}</a>`).join('');
   // Description
-  if(inf.desc){htm('about-teaser',`<p>${inf.desc}</p>`);htm('about-full',`<p>${inf.desc}</p>`);}
-  // Réseaux sociaux
-  const socials=[['Twitter',inf.twitter],['Twitch',inf.twitch],['Instagram',inf.insta],['YouTube',inf.yt],['Discord',inf.discord]].filter(([,v])=>v);
-  const fsoc=document.getElementById('footer-socials');
-  if(fsoc)fsoc.innerHTML=socials.map(([n])=>`<a href="#">${n}</a>`).join('');
-  const ssoc=document.getElementById('site-socials');
-  if(ssoc)ssoc.innerHTML=socials.map(([name,handle])=>`<a href="#" class="socc2"><div><div class="socn2">${name}</div><div class="soch2">${handle}</div></div><svg class="soca2" viewBox="0 0 24 24" width="16" height="16" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>`).join('');
+  if(inf.desc){document.getElementById('about-teaser').innerHTML=`<p>${inf.desc}</p>`;document.getElementById('about-full').innerHTML=`<p>${inf.desc}</p>`;}
 }
 
 // ══════════════════════════════════════════════
@@ -1300,10 +1301,7 @@ function thumbHTML(img,ph){
 }
 function setFormTitle(id,txt){const el=document.getElementById(id);if(el)el.textContent=txt;}
 function showResetBtn(id,show){const el=document.getElementById(id);if(el)el.style.display=show?'':'none';}
-function clearImg(prefix){
-  const prev=document.getElementById(prefix+'-preview'),data=document.getElementById(prefix+'-data'),file=document.getElementById(prefix+'-file');
-  if(prev){prev.src='';prev.classList.remove('show');}if(data)data.value='';if(file)file.value='';
-}
+function clearImg(prefix){ removeImg(prefix); }
 
 /* ── ROSTER ── */
 function renderARoster(d){
@@ -1324,9 +1322,7 @@ function editInlinePlayer(id){
   document.getElementById('p-ign').value=p.ign||'';document.getElementById('p-name').value=p.name||'';
   document.getElementById('p-role').value=p.role||'Duelist';document.getElementById('p-country').value=p.country||'🇫🇷';
   document.getElementById('p-rank').value=p.rank||'Radiant';document.getElementById('p-edit-id').value=id;
-  document.getElementById('p-img-data').value=p.img||'';
-  const prev=document.getElementById('p-img-preview');
-  if(p.img){prev.src=p.img;prev.classList.add('show');}else{prev.src='';prev.classList.remove('show');}
+  loadImgPreview('p-img', p.img||'');
   setFormTitle('roster-form-title','✏️ Modifier le joueur');showResetBtn('roster-reset-btn',true);
 }
 function saveInlinePlayer(){
@@ -1356,9 +1352,8 @@ function editInlineStaff(id){
   document.getElementById('staff-row-'+id)?.classList.add('editing');
   document.getElementById('s-alias').value=s.alias||'';document.getElementById('s-name').value=s.name||'';
   document.getElementById('s-role').value=s.role||'Head Coach';document.getElementById('s-bio').value=s.bio||'';
-  document.getElementById('s-edit-id').value=id;document.getElementById('s-img-data').value=s.img||'';
-  const prev=document.getElementById('s-img-preview');
-  if(s.img){prev.src=s.img;prev.classList.add('show');}else{prev.src='';prev.classList.remove('show');}
+  document.getElementById('s-edit-id').value=id;
+  loadImgPreview('s-img', s.img||'');
   setFormTitle('staff-form-title','✏️ Modifier le membre');showResetBtn('staff-reset-btn',true);
 }
 function saveInlineStaff(){
@@ -1450,9 +1445,8 @@ function editInlinePalm(id){
   document.getElementById('palm-row-'+id)?.classList.add('editing');
   document.getElementById('tr-place').value=t.place||'1ère place';document.getElementById('tr-icon').value=t.icon||'🏆';
   document.getElementById('tr-event').value=t.event||'';document.getElementById('tr-date').value=t.date||'';
-  document.getElementById('tr-edit-id').value=id;document.getElementById('tr-img-data').value=t.img||'';
-  const prev=document.getElementById('tr-img-preview');
-  if(t.img){prev.src=t.img;prev.classList.add('show');}else{prev.src='';prev.classList.remove('show');}
+  document.getElementById('tr-edit-id').value=id;
+  loadImgPreview('tr-img', t.img||'');
   setFormTitle('palm-form-title','✏️ Modifier le trophée');showResetBtn('palm-reset-btn',true);
 }
 function saveInlinePalm(){
@@ -1482,9 +1476,8 @@ function editInlineNews(id){
   document.getElementById('news-row-'+id)?.classList.add('editing');
   document.getElementById('nw-title').value=n.title||'';document.getElementById('nw-date').value=n.date||'';
   document.getElementById('nw-tag').value=n.tag||'Résultat';document.getElementById('nw-exc').value=n.excerpt||'';
-  document.getElementById('nw-edit-id').value=id;document.getElementById('nw-img-data').value=n.img||'';
-  const prev=document.getElementById('nw-img-preview');
-  if(n.img){prev.src=n.img;prev.classList.add('show');}else{prev.src='';prev.classList.remove('show');}
+  document.getElementById('nw-edit-id').value=id;
+  loadImgPreview('nw-img', n.img||'');
   setFormTitle('news-form-title','✏️ Modifier l\'article');showResetBtn('news-reset-btn',true);
 }
 function saveInlineNews(){
@@ -1560,29 +1553,12 @@ function fillInfosForm(d){
   s('i-sp',inf.statPlayers);s('i-swr',inf.statWr);s('i-st',inf.statTourn);s('i-sti',inf.statTitles);
 }
 function saveInfos(){
-  const d=gd();
-  const g=id=>{const el=document.getElementById(id);return el?el.value.trim():'';};
-  const gn=id=>{const el=document.getElementById(id);return(el&&el.value!=='')?+el.value:null;};
-  // Merge avec les infos existantes — ne pas écraser avec des valeurs vides
-  d.infos={
-    ...(d.infos||{}),
-    name:        g('i-name')||'PRIZM',
-    game:        g('i-game'),
-    tagline:     g('i-tagline'),
-    desc:        g('i-desc'),
-    email:       g('i-email'),
-    email2:      g('i-email2'),
-    discord:     g('i-discord'),
-    twitter:     g('i-twitter'),
-    twitch:      g('i-twitch'),
-    insta:       g('i-insta'),
-    yt:          g('i-yt'),
-    statPlayers: gn('i-sp')??5,
-    statWr:      gn('i-swr')??78,
-    statTourn:   gn('i-st')??12,
-    statTitles:  gn('i-sti')??3,
-  };
-  sd(d);showToast('Infos générales sauvegardées ✓');
+  const d=gd();const g=id=>document.getElementById(id)?.value||'';
+  d.infos={name:g('i-name'),game:g('i-game'),tagline:g('i-tagline'),desc:g('i-desc'),
+    email:g('i-email'),email2:g('i-email2'),discord:g('i-discord'),twitter:g('i-twitter'),
+    twitch:g('i-twitch'),insta:g('i-insta'),yt:g('i-yt'),
+    statPlayers:+g('i-sp'),statWr:+g('i-swr'),statTourn:+g('i-st'),statTitles:+g('i-sti')};
+  sd(d);applyInfosToSite();showToast('Infos sauvegardées ✓');
 }
 function delItem(section,id){
   if(!confirm('Supprimer ?'))return;
@@ -1593,26 +1569,101 @@ function delItem(section,id){
 // ══════════════════════════════════════════════
 // IMAGE UPLOAD HELPER
 // ══════════════════════════════════════════════
-function imgUploadField(fieldId,currentImg,label='Photo'){
-  return`
-    <div class="af3"><label class="al">${label}</label>
-      <div class="img-upload-area" onclick="document.getElementById('${fieldId}-file').click()">
-        ${currentImg?`<img src="${currentImg}" class="img-preview show" id="${fieldId}-preview">`:`<img class="img-preview" id="${fieldId}-preview">`}
-        <div class="img-upload-text"><span>Cliquer pour uploader</span> une image (JPG, PNG, WebP)</div>
-        <input type="file" id="${fieldId}-file" accept="image/*" style="display:none" onchange="previewImg('${fieldId}',this)">
-      </div>
-    </div>`;
+// ══════════════════════════════════════════════
+// IMGBB — UPLOAD GRATUIT D'IMAGES
+// 1. Va sur https://imgbb.com → Compte gratuit
+// 2. Account → API → Add API Key → copie la clé
+// 3. Colle-la ci-dessous
+// ══════════════════════════════════════════════
+const IMGBB_KEY = 'da8b4e98f1c7ab53bc1a120d9d7f7f72';
+
+async function uploadToImgBB(file) {
+  const formData = new FormData();
+  formData.append('image', file);
+  formData.append('key', IMGBB_KEY);
+  const res = await fetch('https://api.imgbb.com/1/upload', {
+    method: 'POST',
+    body: formData
+  });
+  const data = await res.json();
+  if (data.success) return data.data.url;
+  throw new Error(data.error?.message || 'Upload échoué');
 }
-function previewImg(fieldId,input){
-  if(!input.files[0])return;
-  const r=new FileReader();
-  r.onload=e=>{
-    const prev=document.getElementById(fieldId+'-preview');
-    prev.src=e.target.result;prev.classList.add('show');
-    document.getElementById(fieldId+'-data').value=e.target.result;
-  };
-  r.readAsDataURL(input.files[0]);
+
+// Gère le clic sur la zone upload (évite le déclenchement si bouton delete)
+function handleImgClick(prefix, e) {
+  if (e.target.classList.contains('img-del-btn')) return;
+  document.getElementById(prefix + '-file').click();
 }
+
+async function uploadImgToStorage(prefix, input) {
+  if (!input.files[0]) return;
+
+  // Vérif clé ImgBB
+  if (!IMGBB_KEY || IMGBB_KEY === 'da8b4e98f1c7ab53bc1a120d9d7f7f72') {
+    // Fallback base64 si pas de clé ImgBB
+    const reader = new FileReader();
+    reader.onload = e => {
+      setImgPreview(prefix, e.target.result);
+    };
+    reader.readAsDataURL(input.files[0]);
+    showToast('⚠️ Clé ImgBB manquante — image stockée en local uniquement', true);
+    return;
+  }
+
+  // Affiche état "en cours"
+  const area = document.getElementById(prefix + '-area');
+  const uploading = document.getElementById(prefix + '-uploading');
+  const txt = document.getElementById(prefix + '-text');
+  if (area) area.style.pointerEvents = 'none';
+  if (uploading) uploading.classList.add('show');
+  if (txt) txt.style.display = 'none';
+
+  try {
+    const url = await uploadToImgBB(input.files[0]);
+    setImgPreview(prefix, url);
+    showToast('Image uploadée ✓');
+  } catch(e) {
+    showToast('Erreur upload : ' + e.message, true);
+    console.error('ImgBB error:', e);
+  } finally {
+    if (area) area.style.pointerEvents = '';
+    if (uploading) uploading.classList.remove('show');
+    if (txt) txt.style.display = '';
+  }
+}
+
+function setImgPreview(prefix, url) {
+  const prev = document.getElementById(prefix + '-preview');
+  const data = document.getElementById(prefix + '-data');
+  const del  = document.getElementById(prefix + '-del');
+  const txt  = document.getElementById(prefix + '-text');
+  if (prev) { prev.src = url; prev.classList.add('show'); }
+  if (data) data.value = url;
+  if (del)  del.classList.add('show');
+  if (txt)  txt.style.display = 'none';
+}
+
+function removeImg(prefix) {
+  const prev = document.getElementById(prefix + '-preview');
+  const data = document.getElementById(prefix + '-data');
+  const del  = document.getElementById(prefix + '-del');
+  const txt  = document.getElementById(prefix + '-text');
+  const file = document.getElementById(prefix + '-file');
+  if (prev) { prev.src = ''; prev.classList.remove('show'); }
+  if (data) data.value = '';
+  if (del)  del.classList.remove('show');
+  if (txt)  txt.style.display = '';
+  if (file) file.value = '';
+}
+
+function loadImgPreview(prefix, url) {
+  if (!url) { removeImg(prefix); return; }
+  setImgPreview(prefix, url);
+}
+
+// imgUploadField gardé pour compatibilité modal (non utilisé dans inline forms)
+function imgUploadField(fieldId, currentImg, label='Photo') { return ''; }
 
 // ══════════════════════════════════════════════
 // MODAL
@@ -1799,10 +1850,8 @@ async function fbWrite(data) {
   try {
     // On filtre les images base64 qui sont trop lourdes pour la Realtime DB gratuite
     // On les garde uniquement en localStorage
+    // Images sont des URLs ImgBB (légères) — on les garde telles quelles
     const lean = JSON.parse(JSON.stringify(data));
-    ['roster','staff','palmares','news'].forEach(col => {
-      if (lean[col]) lean[col] = lean[col].map(item => ({ ...item, img: item.img ? '__HAS_IMG__' : '' }));
-    });
     await fetch(FB_PATH, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -1830,18 +1879,10 @@ async function fbRead() {
 function mergeWithLocal(fbData) {
   if (!fbData) return;
   const local = gd();
-  // Pour chaque collection, prendre les données Firebase mais garder les images du localStorage
-  const cols = ['roster','staff','matches','calendar','palmares','news','openings'];
+  // Images = URLs ImgBB stockées dans Firebase — merge direct
   const merged = { ...local, ...fbData };
-  cols.forEach(col => {
-    if (!fbData[col]) return;
-    const localItems = local[col] || [];
-    merged[col] = fbData[col].map(fbItem => {
-      const localItem = localItems.find(l => l.id === fbItem.id);
-      // Si l'image était présente localement et que Firebase dit '__HAS_IMG__', on garde la locale
-      const img = (fbItem.img === '__HAS_IMG__' && localItem?.img) ? localItem.img : (fbItem.img !== '__HAS_IMG__' ? fbItem.img : '');
-      return { ...fbItem, img };
-    });
+  ['roster','staff','matches','calendar','palmares','news','openings'].forEach(col => {
+    if (fbData[col]) merged[col] = fbData[col];
   });
   // Sauver sans déclencher fbWrite (évite boucle)
   localStorage.setItem('prizm_data', JSON.stringify(merged));
