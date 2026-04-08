@@ -1841,7 +1841,7 @@ let fbActive = false;
 let localWriteLock = false; // empêche boucle écriture→lecture
 
 function isFbConfigured() {
-  return FIREBASE_DB_URL && FIREBASE_DB_URL !== "COLLE_TON_URL_ICI" && FIREBASE_DB_URL.startsWith("https://");
+  return FIREBASE_DB_URL && FIREBASE_DB_URL !== "https://prizmweb-fad94-default-rtdb.europe-west1.firebasedatabase.app/" && FIREBASE_DB_URL.startsWith("https://");
 }
 
 // ── Écriture vers Firebase (REST API — pas de SDK nécessaire) ──
