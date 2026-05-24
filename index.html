@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width" />
+
+    <link rel="stylesheet" href="./global.css" />
+    <link rel="stylesheet" href="./index.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Ethnocentric:wght@400&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue:wght@400&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap"
+    />
+  </head>
+  <body>
+    <div class="desktop">
+      <!-- ══════════════════════════════════
+           HEADER / NAV
+      ══════════════════════════════════ -->
+      <header class="header" id="top">
+        <a href="#accueil" class="logo-link">
+          <img
+            class="logonobg-1-icon"
+            loading="lazy"
+            alt="Prizm Esport"
+            src="./public/LOGOnoBG-1@2x.png"
+          />
+          <div class="logo-text">
+            <h1 class="prizm">PRIZM</h1>
+            <div class="esport">ESPORT</div>
+          </div>
+        </a>
+
+        <nav
+          class="nav-tabs"
+          role="navigation"
+          aria-label="Navigation principale"
+        >
+          <a href="#accueil" class="nav-tab" data-section="accueil">ACCUEil</a>
+          <a href="#equipe" class="nav-tab" data-section="equipe">ÉQUIPE</a>
+          <a href="#matchs" class="nav-tab" data-section="matchs">MATCHS</a>
+          <a href="#actualites" class="nav-tab" data-section="actualites"
+            >ACTUALITÉS</a
+          >
+          <a href="#boutique" class="nav-tab" data-section="boutique"
+            >BOUTIQUE</a
+          >
+          <a href="#partenaires" class="nav-tab" data-section="partenaires"
+            >PARTENAIRES</a
+          >
+        </nav>
+
+        <div class="header-socials">
+          <a href="https://twitter.com" target="_blank" aria-label="Twitter">
+            <img
+              class="social-icon"
+              alt="Twitter"
+              src="./public/twitter-social-media-logo-icon-free-png-1.svg"
+            />
+          </a>
+          <a
+            href="https://instagram.com"
+            target="_blank"
+            aria-label="Instagram"
+          >
+            <img
+              class="social-icon"
+              alt="Instagram"
+              src="./public/Instagram-logo-transparent-noir-1.svg"
+            />
+          </a>
+          <a href="https://discord.com" target="_blank" aria-label="Discord">
+            <img
+              class="social-icon"
+              alt="Discord"
+              src="./public/discord-white-icon-1.svg"
+            />
+          </a>
+        </div>
+
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </header>
+
+      <!-- ══════════════════════════════════
+           HERO SECTION
+      ══════════════════════════════════ -->
+      <section class="frame" id="accueil">
+        <div class="frame-row-0">
+          <h2 class="focus-precision-dominate">
+            FOCUS<br />PRECISION<br />DOMINATE
+          </h2>
+          <h2 class="focus">FOCUS<br /></h2>
+        </div>
+        <div class="team-matches-row">
+          <a href="#equipe" class="team-matches-link">
+            <div class="dcouvrir-lquipe">Découvrir l'équipe</div>
+          </a>
+          <a href="#matchs" class="team-matches-link2">
+            <div class="voir-les-matchs">VOIR LES MATCHS</div>
+          </a>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════
+           FEATURE 1: MATCH COUNTDOWN
+      ══════════════════════════════════ -->
+      <section class="countdown-section" id="matchs">
+        <div class="countdown-inner">
+          <div class="countdown-label-row">
+            <span class="live-badge">LIVE SOON</span>
+            <p class="countdown-title">PROCHAIN MATCH OFFICIEL</p>
+          </div>
+          <div class="matchup-row">
+            <div class="team-block">
+              <img
+                class="team-logo-small"
+                src="./public/LOGOnoBG-1@2x.png"
+                alt="PRIZM"
+              />
+              <span class="team-name-big">PRIZM</span>
+            </div>
+            <div class="vs-block">VS</div>
+            <div class="team-block enemy">
+              <div class="enemy-logo">PH</div>
+              <span class="team-name-big">PHANTOM FC</span>
+            </div>
+          </div>
+          <div class="countdown-timer" id="countdown-timer">
+            <div class="time-block">
+              <span class="time-val" id="cd-days">00</span
+              ><span class="time-lbl">JOURS</span>
+            </div>
+            <div class="time-sep">:</div>
+            <div class="time-block">
+              <span class="time-val" id="cd-hours">00</span
+              ><span class="time-lbl">HEURES</span>
+            </div>
+            <div class="time-sep">:</div>
+            <div class="time-block">
+              <span class="time-val" id="cd-mins">00</span
+              ><span class="time-lbl">MINS</span>
+            </div>
+            <div class="time-sep">:</div>
+            <div class="time-block">
+              <span class="time-val" id="cd-secs">00</span
+              ><span class="time-lbl">SECS</span>
+            </div>
+          </div>
+          <p class="match-meta">Valorant Champions Tour — Stage 2 Qualifiers</p>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════
+           TEAM SECTION
+      ══════════════════════════════════ -->
+      <section class="team-section" id="equipe">
+        <div class="team-section2">
+          <div class="team-section-column-0">
+            <div class="notre-quipe">notre équipe</div>
+            <button class="team-button">
+              <div class="dcouvrir-lquipe">Découvrir l'équipe</div>
+            </button>
+          </div>
+          <div class="player-cards-row">
+            <div class="frame2">
+              <div class="joueur">joueur</div>
+              <div class="joueur2">joueur</div>
+            </div>
+            <div class="frame3">
+              <div class="joueur">joueur</div>
+              <div class="joueur2">joueur</div>
+            </div>
+            <div class="frame3">
+              <div class="joueur">joueur</div>
+              <div class="joueur2">joueur</div>
+            </div>
+            <div class="frame5">
+              <div class="joueur">joueur</div>
+              <div class="joueur2">joueur</div>
+            </div>
+            <div class="frame3">
+              <div class="joueur">joueur</div>
+              <div class="joueur2">joueur</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════
+           BOUTIQUE SECTION
+      ══════════════════════════════════ -->
+      <section class="boutique-section" id="boutique">
+        <img
+          class="tshirtsitewebgrosplan-1-icon"
+          alt="Boutique Prizm"
+          src="./public/TshirtSITEWEBgrosplan-1@2x.png"
+        />
+        <div class="boutique-overlay">
+          <p class="boutique-label">COLLECTION OFFICIELLE</p>
+          <h3 class="boutique-title">PORTE NOS COULEURS</h3>
+          <a href="./boutique.html" class="btn-boutique">DÉCOUVRIR</a>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════
+           ACTUALITÉS SECTION (stub)
+      ══════════════════════════════════ -->
+      <section class="actu-section" id="actualites">
+        <h3 class="section-heading">ACTUALITÉS</h3>
+        <div class="actu-grid">
+          <div class="actu-card">
+            <div class="actu-tag">Résultat</div>
+            <p class="actu-title">PRIZM remporte le tournoi régional 3-1</p>
+            <span class="actu-date">12 Juin 2025</span>
+          </div>
+          <div class="actu-card">
+            <div class="actu-tag">Recrutement</div>
+            <p class="actu-title">
+              Nouveau joueur rejoint la lineup principale
+            </p>
+            <span class="actu-date">8 Juin 2025</span>
+          </div>
+          <div class="actu-card">
+            <div class="actu-tag">Annonce</div>
+            <p class="actu-title">
+              Partenariat avec GEAR confirmé pour la saison 2
+            </p>
+            <span class="actu-date">3 Juin 2025</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════
+           PARTENAIRES SECTION (stub)
+      ══════════════════════════════════ -->
+      <section class="partenaires-section" id="partenaires">
+        <h3 class="section-heading">PARTENAIRES</h3>
+        <div class="partners-row">
+          <div class="partner-logo">GEAR</div>
+          <div class="partner-logo">HYPERX</div>
+          <div class="partner-logo">LOGITECH</div>
+          <div class="partner-logo">RED BULL</div>
+        </div>
+      </section>
+
+      <section class="page"></section>
+      <section class="page2"></section>
+
+      <!-- ══════════════════════════════════
+           FOOTER
+      ══════════════════════════════════ -->
+      <section class="footer">
+        <div class="footer2">
+          <footer class="footer3">
+            <div class="footer-brand-col">
+              <div class="footer-logo-group">
+                <img
+                  class="footer-logo-img"
+                  src="./public/LOGOnoBG-1@2x.png"
+                  alt="Prizm Logo"
+                />
+                <div>
+                  <h2 class="prizm2">PRIZM</h2>
+                  <div class="esport2">ESPORT</div>
+                </div>
+              </div>
+              <div class="footer-social-icons">
+                <a href="https://twitter.com" target="_blank">
+                  <img
+                    class="twitter-social-media-logo-icon2"
+                    alt="Twitter"
+                    src="./public/twitter-social-media-logo-icon-free-png-1.svg"
+                  />
+                </a>
+                <a href="https://instagram.com" target="_blank">
+                  <img
+                    class="instagram-logo-transparent-noi-icon2"
+                    alt="Instagram"
+                    src="./public/Instagram-logo-transparent-noir-1.svg"
+                  />
+                </a>
+                <a href="https://discord.com" target="_blank">
+                  <img
+                    class="discord-footer-icon"
+                    alt="Discord"
+                    src="./public/discord-white-icon-1.svg"
+                  />
+                </a>
+              </div>
+              <div class="equipe-professionelle-valorant">
+                Equipe professionelle<br />Valorant compétant au plus haut
+                niveau.
+              </div>
+            </div>
+            <div class="footer-inner">
+              <div class="frame-child"></div>
+            </div>
+            <div class="footer-child"></div>
+            <div class="footer-contact-col">
+              <div class="contact">CONTACT</div>
+              <a
+                class="prizmesportcontactgmailcom"
+                href="mailto:prizmesport.contact@gmail.com"
+                target="_blank"
+                >prizmesport.contact@gmail.com</a
+              >
+            </div>
+          </footer>
+        </div>
+      </section>
+    </div>
+
+    <script src="./index.js"></script>
+  </body>
+</html>
