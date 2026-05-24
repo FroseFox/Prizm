@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width" />
+    <title>Boutique — PRIZM Esport</title>
+
+    <link rel="stylesheet" href="./global.css" />
+    <link rel="stylesheet" href="./boutique.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Ethnocentric:wght@400&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue:wght@400&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap"
+    />
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header class="header">
+      <a href="/" class="logo-link">
+        <img
+          class="logonobg-1-icon"
+          loading="lazy"
+          alt="Prizm Esport"
+          src="./public/LOGOnoBG-1@2x.png"
+        />
+        <div class="logo-text">
+          <span class="prizm">PRIZM</span>
+          <span class="esport">ESPORT</span>
+        </div>
+      </a>
+
+      <nav class="nav-tabs" role="navigation">
+        <a href="/#accueil" class="nav-tab">ACCUEil</a>
+        <a href="/#equipe" class="nav-tab">ÉQUIPE</a>
+        <a href="/#matchs" class="nav-tab">MATCHS</a>
+        <a href="/#actualites" class="nav-tab">ACTUALITÉS</a>
+        <a href="/boutique.html" class="nav-tab active">BOUTIQUE</a>
+        <a href="/#partenaires" class="nav-tab">PARTENAIRES</a>
+      </nav>
+
+      <div class="header-socials">
+        <a href="https://twitter.com" target="_blank" aria-label="Twitter">
+          <img
+            class="social-icon"
+            alt="Twitter"
+            src="./public/twitter-social-media-logo-icon-free-png-1.svg"
+          />
+        </a>
+        <a href="https://instagram.com" target="_blank" aria-label="Instagram">
+          <img
+            class="social-icon"
+            alt="Instagram"
+            src="./public/Instagram-logo-transparent-noir-1.svg"
+          />
+        </a>
+        <a href="https://discord.com" target="_blank" aria-label="Discord">
+          <img
+            class="social-icon"
+            alt="Discord"
+            src="./public/discord-white-icon-1.svg"
+          />
+        </a>
+      </div>
+
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </header>
+
+    <!-- HERO BOUTIQUE -->
+    <section class="boutique-hero">
+      <div class="hero-bg-overlay"></div>
+      <img
+        class="hero-jersey"
+        src="./public/TshirtSITEWEBgrosplan-1@2x.png"
+        alt="Maillot PRIZM"
+      />
+      <div class="hero-content">
+        <p class="hero-label">COLLECTION OFFICIELLE 2025</p>
+        <h1 class="hero-title">PORTE NOS<br />COULEURS</h1>
+        <p class="hero-sub">
+          Rejoins l'identité PRIZM. Maillots officiels portés par nos joueurs.
+        </p>
+        <a href="#produits" class="btn-primary">COMMANDER MAINTENANT</a>
+      </div>
+    </section>
+
+    <!-- FILTER BAR -->
+    <div class="filter-bar" id="produits">
+      <button class="filter-btn active" data-filter="all">TOUT</button>
+      <button class="filter-btn" data-filter="maillot">MAILLOTS</button>
+      <button class="filter-btn" data-filter="hoodie">HOODIES</button>
+      <button class="filter-btn" data-filter="accessoire">ACCESSOIRES</button>
+    </div>
+
+    <!-- PRODUCTS GRID -->
+    <section class="products-section">
+      <div class="products-grid" id="products-grid">
+        <!-- Maillot Domicile -->
+        <div class="product-card" data-cat="maillot">
+          <div class="product-img-wrap">
+            <img
+              src="./public/TshirtSITEWEBgrosplan-1@2x.png"
+              alt="Maillot Domicile"
+              class="product-img"
+            />
+            <div class="product-badge">BEST SELLER</div>
+            <div class="product-actions">
+              <button
+                class="action-btn"
+                title="Aperçu rapide"
+                onclick="openModal('maillot-dom')"
+              >
+                APERÇU
+              </button>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-cat">MAILLOT</p>
+            <h3 class="product-name">Maillot Domicile — KAYZEN #07</h3>
+            <div class="product-sizes">
+              <button class="size-btn">S</button>
+              <button class="size-btn active">M</button>
+              <button class="size-btn">L</button>
+              <button class="size-btn">XL</button>
+            </div>
+            <div class="product-footer">
+              <span class="product-price">59,99 €</span>
+              <button class="btn-add-cart">AJOUTER AU PANIER</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Maillot Extérieur -->
+        <div class="product-card" data-cat="maillot">
+          <div class="product-img-wrap">
+            <img
+              src="./public/TshirtSITEWEBgrosplan-1@2x.png"
+              alt="Maillot Extérieur"
+              class="product-img product-img--alt"
+            />
+            <div class="product-badge new">NOUVEAU</div>
+            <div class="product-actions">
+              <button class="action-btn" onclick="openModal('maillot-ext')">
+                APERÇU
+              </button>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-cat">MAILLOT</p>
+            <h3 class="product-name">Maillot Extérieur — Edition Limitée</h3>
+            <div class="product-sizes">
+              <button class="size-btn">S</button>
+              <button class="size-btn">M</button>
+              <button class="size-btn active">L</button>
+              <button class="size-btn">XL</button>
+            </div>
+            <div class="product-footer">
+              <span class="product-price">64,99 €</span>
+              <button class="btn-add-cart">AJOUTER AU PANIER</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hoodie -->
+        <div class="product-card" data-cat="hoodie">
+          <div class="product-img-wrap">
+            <div class="product-img product-img--placeholder">
+              <span>PRIZM</span>
+            </div>
+            <div class="product-actions">
+              <button class="action-btn" onclick="openModal('hoodie')">
+                APERÇU
+              </button>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-cat">HOODIE</p>
+            <h3 class="product-name">Hoodie PRIZM — Saison 2</h3>
+            <div class="product-sizes">
+              <button class="size-btn">S</button>
+              <button class="size-btn active">M</button>
+              <button class="size-btn">L</button>
+              <button class="size-btn">XL</button>
+              <button class="size-btn">XXL</button>
+            </div>
+            <div class="product-footer">
+              <span class="product-price">79,99 €</span>
+              <button class="btn-add-cart">AJOUTER AU PANIER</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Casquette -->
+        <div class="product-card" data-cat="accessoire">
+          <div class="product-img-wrap">
+            <div class="product-img product-img--placeholder product-img--acc">
+              <span>P</span>
+            </div>
+            <div class="product-actions">
+              <button class="action-btn" onclick="openModal('casquette')">
+                APERÇU
+              </button>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-cat">ACCESSOIRE</p>
+            <h3 class="product-name">Casquette Snapback PRIZM</h3>
+            <div class="product-sizes">
+              <button class="size-btn active">UNIQUE</button>
+            </div>
+            <div class="product-footer">
+              <span class="product-price">29,99 €</span>
+              <button class="btn-add-cart">AJOUTER AU PANIER</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Maillot Player Edition -->
+        <div class="product-card" data-cat="maillot">
+          <div class="product-img-wrap">
+            <img
+              src="./public/TshirtSITEWEBgrosplan-1@2x.png"
+              alt="Player Edition"
+              class="product-img product-img--dark"
+            />
+            <div class="product-badge sale">SOLDES</div>
+            <div class="product-actions">
+              <button class="action-btn" onclick="openModal('player-ed')">
+                APERÇU
+              </button>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-cat">MAILLOT</p>
+            <h3 class="product-name">Maillot Player Edition — Saison 1</h3>
+            <div class="product-sizes">
+              <button class="size-btn">S</button>
+              <button class="size-btn active">M</button>
+              <button class="size-btn">L</button>
+            </div>
+            <div class="product-footer">
+              <div class="price-group">
+                <span class="product-price">44,99 €</span>
+                <span class="product-price-old">59,99 €</span>
+              </div>
+              <button class="btn-add-cart">AJOUTER AU PANIER</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pack Bundle -->
+        <div class="product-card product-card--featured" data-cat="accessoire">
+          <div class="product-img-wrap">
+            <img
+              src="./public/TshirtSITEWEBgrosplan-1@2x.png"
+              alt="Pack Fan"
+              class="product-img"
+            />
+            <div class="product-badge featured">PACK FAN</div>
+            <div class="product-actions">
+              <button class="action-btn" onclick="openModal('pack')">
+                APERÇU
+              </button>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-cat">BUNDLE</p>
+            <h3 class="product-name">Pack Fan PRIZM — Maillot + Casquette</h3>
+            <div class="product-sizes">
+              <button class="size-btn">S</button>
+              <button class="size-btn active">M</button>
+              <button class="size-btn">L</button>
+              <button class="size-btn">XL</button>
+            </div>
+            <div class="product-footer">
+              <div class="price-group">
+                <span class="product-price">79,99 €</span>
+                <span class="product-price-old">89,98 €</span>
+              </div>
+              <button class="btn-add-cart">AJOUTER AU PANIER</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SIZE GUIDE BANNER -->
+    <section class="size-guide-banner">
+      <div class="size-guide-inner">
+        <div class="size-guide-text">
+          <h3>Guide des tailles</h3>
+          <p>
+            Nos maillots sont taillés slim fit. Pour plus de confort, nous
+            recommandons de prendre une taille au-dessus.
+          </p>
+        </div>
+        <div class="size-table-wrap">
+          <table class="size-table">
+            <thead>
+              <tr>
+                <th>Taille</th>
+                <th>Poitrine</th>
+                <th>Longueur</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>S</td>
+                <td>88–92 cm</td>
+                <td>68 cm</td>
+              </tr>
+              <tr>
+                <td>M</td>
+                <td>92–96 cm</td>
+                <td>70 cm</td>
+              </tr>
+              <tr>
+                <td>L</td>
+                <td>96–102 cm</td>
+                <td>72 cm</td>
+              </tr>
+              <tr>
+                <td>XL</td>
+                <td>102–108 cm</td>
+                <td>74 cm</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- CART TOAST -->
+    <div class="cart-toast" id="cart-toast">
+      <span class="toast-icon">✓</span>
+      <span class="toast-msg">Article ajouté au panier !</span>
+    </div>
+
+    <!-- PRODUCT MODAL -->
+    <div class="modal-overlay" id="modal-overlay">
+      <div class="modal" id="modal">
+        <button class="modal-close" id="modal-close">✕</button>
+        <div class="modal-body">
+          <div class="modal-img-side">
+            <img
+              id="modal-img"
+              src="./public/TshirtSITEWEBgrosplan-1@2x.png"
+              alt=""
+            />
+          </div>
+          <div class="modal-info-side">
+            <p class="modal-cat" id="modal-cat">MAILLOT</p>
+            <h2 class="modal-title" id="modal-title">Maillot Domicile</h2>
+            <p class="modal-desc" id="modal-desc">
+              Le maillot officiel porté par l'équipe PRIZM lors des
+              compétitions. Tissu respirant haute performance, broderie
+              officielle.
+            </p>
+            <p class="modal-price" id="modal-price">59,99 €</p>
+            <div class="modal-sizes">
+              <p class="modal-size-label">TAILLE</p>
+              <div class="modal-size-row">
+                <button class="size-btn">S</button>
+                <button class="size-btn active">M</button>
+                <button class="size-btn">L</button>
+                <button class="size-btn">XL</button>
+              </div>
+            </div>
+            <button class="btn-primary modal-cta">AJOUTER AU PANIER</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="shop-footer">
+      <div class="shop-footer-inner">
+        <div class="footer-brand">
+          <img
+            src="./public/LOGOnoBG-1@2x.png"
+            alt="PRIZM"
+            class="footer-logo-img"
+          />
+          <div>
+            <p class="prizm2">PRIZM</p>
+            <p class="esport2">ESPORT</p>
+          </div>
+        </div>
+        <p class="footer-info">
+          Livraison en 5–7 jours ouvrés · Retours gratuits sous 30 jours
+        </p>
+        <a href="mailto:prizmesport.contact@gmail.com" class="footer-mail"
+          >prizmesport.contact@gmail.com</a
+        >
+      </div>
+    </footer>
+
+    <script src="./boutique.js"></script>
+  </body>
+</html>
